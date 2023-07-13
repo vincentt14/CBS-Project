@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 const Navbar = () => {
   const [login, setLogin] = useState(true);
@@ -9,6 +11,14 @@ const Navbar = () => {
 
   const onToggleClick = () => {
     setToggle(!toggle);
+  };
+
+  const onLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.log("[AUTH_LOGOUT]", error);
+    }
   };
 
   return (
@@ -36,7 +46,7 @@ const Navbar = () => {
                 }
               >
                 <ul className="block lg:flex">
-                  {login && (
+                  {login ? (
                     <>
                       <li className="group">
                         <Link to="/attend" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
@@ -48,17 +58,15 @@ const Navbar = () => {
                           employee Management
                         </Link>
                       </li>
+                      <li className="group">
+                        <CustomButton btnType="submit" title="Logout" containerStyles="ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" textStyles="text-secondary" onClick={onLogout} />
+                      </li>
                     </>
+                  ) : (
+                    <li className="group">
+                      <CustomButton btnType="button" title="Login" to="/login" containerStyles="bg-black hover:bg-borderColor lg:my-0 py-[10px]" textStyles="text-white" />
+                    </li>
                   )}
-                  <li className="group">
-                    <CustomButton
-                      btnType="button"
-                      title={login ? "Logout" : "Login"}
-                      to={login ? "/logout" : "/login"}
-                      containerStyles={login ? "ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" : "bg-black hover:bg-borderColor lg:my-0 py-[10px]"}
-                      textStyles={login ? "text-secondary" : "text-white"}
-                    />
-                  </li>
                 </ul>
               </nav>
             </div>

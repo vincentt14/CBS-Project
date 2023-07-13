@@ -8,9 +8,3 @@ export interface CustomButtonProps {
   to?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
-
-export interface AuthFormProps {
-  titleBtn1: string;
-  titleBtn2: string;
-  toBtn2: string;
-}
