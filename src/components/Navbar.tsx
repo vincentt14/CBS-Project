@@ -52,6 +52,7 @@ const Navbar = () => {
                   )}
                   <li className="group">
                     <CustomButton
+                      btnType="button"
                       title={login ? "Logout" : "Login"}
                       to={login ? "/logout" : "/login"}
                       containerStyles={login ? "ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" : "bg-black hover:bg-borderColor lg:my-0 py-[10px]"}

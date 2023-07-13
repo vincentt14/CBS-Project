@@ -18,12 +18,12 @@ const HomePage = () => {
             <div className="flex flex-col md:flex-row my-3">
               {login ? (
                 <>
-                  <CustomButton title="Browse Movie" to="/attend" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
-                  <CustomButton title="Manage Packages or Movie" to="/employeeManagement" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
+                  <CustomButton btnType="button" title="Browse Movie" to="/browse" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+                  <CustomButton btnType="button" title="Manage Packages or Movie" to="/adminDashboard" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
                 </>
               ) : (
                 <>
-                  <CustomButton title="Login for Book or Manage" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+                  <CustomButton btnType="button" title="Login for Book or Manage" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
                 </>
               )}
             </div>

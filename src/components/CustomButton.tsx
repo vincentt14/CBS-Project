@@ -1,13 +1,21 @@
 import { CustomButtonProps } from "../types";
 import { Link } from "react-router-dom";
 
-const CustomButton = ({ title, btnType, containerStyles, handleClick, textStyles, to }: CustomButtonProps) => {
+const CustomButton = ({ title, btnType = "button", containerStyles, handleClick, textStyles, to }: CustomButtonProps) => {
+  if (btnType === "button") {
+    return (
+      <Link to={to!}>
+        <button type={btnType} className={`my-4 py-3 px-6 rounded-md font-semibold border ${containerStyles}`} onClick={handleClick}>
+          <span className={`${textStyles}`}>{title}</span>
+        </button>
+      </Link>
+    );
+  }
+
   return (
-    <Link to={to}>
-      <button type={btnType || "button"} className={`my-4 py-3 px-6 rounded-md font-semibold border ${containerStyles}`} onClick={handleClick}>
-        <span className={`${textStyles}`}>{title}</span>
-      </button>
-    </Link>
+    <button type={btnType} className={`my-4 py-3 px-6 rounded-md font-semibold border ${containerStyles}`} onClick={handleClick}>
+      <span className={`${textStyles}`}>{title}</span>
+    </button>
   );
 };
 
