@@ -1,4 +1,4 @@
-import CustomButton from "../components/CustomButton";
+import AuthForm from "../components/AuthForm";
 
 const LoginPage = () => {
   return (
@@ -6,16 +6,7 @@ const LoginPage = () => {
       <div className="border-borderColor border-2 py-5 px-20 rounded-md">
         <h1 className="text-4xl font-bold text-secondary">Login</h1>
         <hr className="w-12 my-4 p-1 bg-secondary border border-borderColor rounded-sm mx-auto" />
-        <div className="flex items-center justify-between my-4">
-          <p className="text-secondary text-xl max-w-xl">Email</p>
-          <input className="ml-8 p-2 border-borderColor border rounded-md" />
-        </div>
-        <div className="flex items-center justify-between my-4">
-          <p className="text-secondary text-xl max-w-xl">Password</p>
-          <input type="password" className="ml-8 p-2 border-borderColor border rounded-md" />
-        </div>
-        <CustomButton btnType="submit" title="Login" containerStyles="border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
-        <CustomButton to="/register" btnType="button" title="Register" containerStyles="ml-5 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+        <AuthForm titleBtn1="Login" titleBtn2="Register" toBtn2="/register" />
       </div>
     </div>
   );

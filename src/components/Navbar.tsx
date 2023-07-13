@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import CustomButton from "./CustomButton";
 
 const Navbar = () => {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
   const [toggle, setToggle] = useState(false);
 
   const onToggleClick = () => {

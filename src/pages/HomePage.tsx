@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import CustomButton from "../components/CustomButton";
+import { auth } from "../config/firebase";
 
 const HomePage = () => {
   const [login, setLogin] = useState(false);
@@ -10,6 +11,7 @@ const HomePage = () => {
       <div className="container">
         <div className="flex flex-wrap">
           <div className="w-full self-center px-4 lg:w-1/2">
+            <h1 className="py-1 text-5xl font-bold text-secondary">{auth.currentUser?.email}</h1>
             <h1 className="py-1 text-5xl font-bold text-secondary">Cinema Booking System.</h1>
             <hr className="w-[200px] my-3 p-1 bg-secondary border border-borderColor rounded-sm" />
             <p className="text-primary text-xl max-w-xl">
