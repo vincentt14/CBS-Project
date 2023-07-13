@@ -11,9 +11,9 @@ module.exports = {
     extend: {
       colors: {
         primary: "#727272",
-        secondary: "#ED4C42",
+        secondary: "#000",
         borderColor: "#3e3e3e",
-        bgColor: "#111",
+        bgColor: "#FFF",
       },
       screens: {
         "2xl": "1320px",

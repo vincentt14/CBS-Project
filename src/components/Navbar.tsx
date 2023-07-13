@@ -1,24 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
 
 const Navbar = () => {
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const refHead = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    window.onscroll = () => {
-      const fixedNav: any = refHead.current?.offsetTop;
-
-      if (window.pageYOffset > fixedNav) {
-        refHead.current?.classList.add("navbar-fixed");
-      } else {
-        refHead.current?.classList.remove("navbar-fixed");
-      }
-    };
-  }, []);
 
   const onToggleClick = () => {
     setToggle(!toggle);
@@ -26,12 +13,12 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div ref={refHead} className="bg-transparant absolute top-0 left-0 w-full flex items-center z-10 transition duration-150 ease-in-out pt-2">
+      <div className="absolute top-0 left-0 w-full flex items-center z-10 pt-2 border-b-2">
         <div className="container">
           <div className="flex items-center justify-between relative">
             <div className="px-4">
-              <Link to="/" className="cursor-pointer text-primary font-bold text-lg block py-6 hover:text-white">
-                Employee Management.
+              <Link to="/" className="cursor-pointer text-primary font-bold text-lg block py-6 hover:text-secondary">
+                CBS.
               </Link>
             </div>
             <div className="flex items-center px-4">
@@ -67,8 +54,8 @@ const Navbar = () => {
                     <CustomButton
                       title={login ? "Logout" : "Login"}
                       to={login ? "/logout" : "/login"}
-                      containerStyles={login ? "ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" : "border-black bg-white hover:bg-[#ededed] lg:my-0 py-[10px]"}
-                      textStyles={login ? "text-white" : "text-black hover:text-[#262626]"}
+                      containerStyles={login ? "ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" : "bg-black hover:bg-borderColor lg:my-0 py-[10px]"}
+                      textStyles={login ? "text-secondary" : "text-white"}
                     />
                   </li>
                 </ul>
