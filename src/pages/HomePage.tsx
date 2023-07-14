@@ -1,24 +1,22 @@
-import { useState } from "react";
-
 import CustomButton from "../components/CustomButton";
-import { auth } from "../config/firebase";
 
-const HomePage = () => {
-  const [login, setLogin] = useState(false);
+interface HomePageProps {
+  authUser: string;
+}
 
+const HomePage = ({ authUser }: HomePageProps) => {
   return (
     <section className="pt-28 pb-24 lg:pt-48 lg:pb-32">
       <div className="container">
         <div className="flex flex-wrap">
           <div className="w-full self-center px-4 lg:w-1/2">
-            <h1 className="py-1 text-5xl font-bold text-secondary">{auth.currentUser?.email}</h1>
             <h1 className="py-1 text-5xl font-bold text-secondary">Cinema Booking System.</h1>
             <hr className="w-[200px] my-3 p-1 bg-secondary border border-borderColor rounded-sm" />
             <p className="text-primary text-xl max-w-xl">
               This application is used for <span className="text-secondary">Booking</span> and <span className="text-secondary">Manage Movies and Packages</span>.
             </p>
             <div className="flex flex-col md:flex-row my-3">
-              {login ? (
+              {authUser ? (
                 <>
                   <CustomButton btnType="button" title="Browse Movie" to="/browse" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
                   <CustomButton btnType="button" title="Manage Packages or Movie" to="/adminDashboard" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />

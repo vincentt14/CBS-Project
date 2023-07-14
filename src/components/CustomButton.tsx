@@ -1,5 +1,14 @@
-import { CustomButtonProps } from "../types";
+import { MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
+
+export interface CustomButtonProps {
+  title: string;
+  btnType: "button" | "submit";
+  textStyles?: string;
+  containerStyles?: string;
+  to?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+}
 
 const CustomButton = ({ title, btnType = "button", containerStyles, onClick, textStyles, to }: CustomButtonProps) => {
   if (btnType === "button") {

@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import CustomButton from "./CustomButton";
 import { signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { logout } from "../utils/authentication";
 
-const Navbar = () => {
-  const [login, setLogin] = useState(true);
+interface NavbarProps {
+  authUser: string;
+}
+
+const Navbar = ({ authUser }: NavbarProps) => {
   const [toggle, setToggle] = useState(false);
+  const navigate = useNavigate();
 
   const onToggleClick = () => {
     setToggle(!toggle);
   };
 
-  const onLogout = async () => {
+  const onLogout = () => {
     try {
-      await signOut(auth);
+      logout();
+      navigate("/");
     } catch (error) {
       console.log("[AUTH_LOGOUT]", error);
     }
@@ -46,7 +50,7 @@ const Navbar = () => {
                 }
               >
                 <ul className="block lg:flex">
-                  {login ? (
+                  {authUser ? (
                     <>
                       <li className="group">
                         <Link to="/attend" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>

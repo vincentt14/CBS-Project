@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 
@@ -9,14 +7,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit = async () => {
-    try {
-      signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
-    } catch (error) {
-      console.log("[Login]", error);
-    }
-  };
+  // const onSubmit = async () => {
+  //   try {
+  //     signInWithEmailAndPassword(auth, email, password);
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.log("[Login]", error);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen text-center">
@@ -31,7 +29,7 @@ const LoginPage = () => {
           <p className="text-secondary text-xl max-w-xl">Password</p>
           <input type="password" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <CustomButton btnType="submit" title="Login" containerStyles="border-borderColor bg-secondary hover:border-primary" textStyles="text-white" onClick={onSubmit} />
+        <CustomButton btnType="submit" title="Login" containerStyles="border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
         <CustomButton to="/register" btnType="button" title="Register" containerStyles="ml-5 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
       </div>
     </div>
