@@ -45,13 +45,13 @@ const AdminDashboardPage = () => {
           </div>
         </div>
 
-        {isPackages ? (
+        {!isPackages ? (
           <>
-            <ManagePackages />
+            <ManageMovies />
           </>
         ) : (
           <>
-            <ManageMovies />
+            <ManagePackages />
           </>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import { getPackageList } from "../utils/packages";
+import ReadMore from "./ReadMore";
 
 interface IPackages {
   name: string;
@@ -29,13 +30,13 @@ const ManagePackages = () => {
         {packages.map((packagee: IPackages) => (
           <div key={packagee.name}>
             <div className="bg-secondary px-8 pt-8 flex justify-center items-center rounded-t-xl">
-              <h1 className="text-white font-bold text-2xl">{packagee.name}</h1>
+              <h1 className="text-white font-bold text-2xl capitalize">{packagee.name}</h1>
             </div>
             <div className="flex flex-col py-4 px-10 bg-secondary rounded-b-xl">
-              <p className="mb-2 text-white">
+              <p className="mb-2 text-white text-justify">
                 Price: <span className="text-primary">{packagee.price}</span>
               </p>
-              <p className="mb-2 text-primary">{packagee.description}</p>
+              <ReadMore pStyle="mb-2 text-primary text-justify">{packagee.description}</ReadMore>
               <CustomButton btnType="button" to="/editpackage" title="Edit" containerStyles="bg-secondary  w-full" textStyles="text-white" />
             </div>
           </div>
