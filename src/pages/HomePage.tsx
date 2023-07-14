@@ -1,7 +1,7 @@
 import CustomButton from "../components/CustomButton";
 
 interface HomePageProps {
-  authUser: string;
+  authUser: any;
 }
 
 const HomePage = ({ authUser }: HomePageProps) => {
@@ -12,18 +12,25 @@ const HomePage = ({ authUser }: HomePageProps) => {
           <div className="w-full self-center px-4 lg:w-1/2">
             <h1 className="py-1 text-5xl font-bold text-secondary">Cinema Booking System.</h1>
             <hr className="w-[200px] my-3 p-1 bg-secondary border border-borderColor rounded-sm" />
-            <p className="text-primary text-xl max-w-xl">
-              This application is used for <span className="text-secondary">Booking</span> and <span className="text-secondary">Manage Movies and Packages</span>.
-            </p>
+            {authUser ? (
+              <p className="text-primary text-xl max-w-xl">
+                Hello and Welcome back <span className="text-secondary font-bold capitalize">{authUser.displayName}</span>. Make your day by booking tickets online, <span className="text-secondary capitalize">Easy</span> and{" "}
+                <span className="text-secondary capitalize">Simple</span>.
+              </p>
+            ) : (
+              <p className="text-primary text-xl max-w-xl">
+                This application is used for <span className="text-secondary">Booking</span> and <span className="text-secondary">Manage Movies and Packages</span>.
+              </p>
+            )}
             <div className="flex flex-col md:flex-row my-3">
               {authUser ? (
                 <>
-                  <CustomButton btnType="button" title="Browse Movie" to="/browse" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
-                  <CustomButton btnType="button" title="Manage Packages or Movie" to="/adminDashboard" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
+                  <CustomButton btnType="button" title="Playing Now" to="/playingNow" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+                  <CustomButton btnType="button" title="Manage Packages or Movies" to="/adminDashboard" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
                 </>
               ) : (
                 <>
-                  <CustomButton btnType="button" title="Login for Book or Manage" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+                  <CustomButton btnType="button" title="Login for Book a ticket or Manage movies" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
                 </>
               )}
             </div>

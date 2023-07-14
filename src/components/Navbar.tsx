@@ -5,7 +5,7 @@ import { logout } from "../utils/authentication";
 import Swal from "sweetalert2";
 
 interface NavbarProps {
-  authUser: string;
+  authUser: any;
 }
 
 const Navbar = ({ authUser }: NavbarProps) => {
@@ -21,7 +21,7 @@ const Navbar = ({ authUser }: NavbarProps) => {
       title: "Are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes",
+      confirmButtonText: "Logout",
       confirmButtonColor: "#000",
       cancelButtonText: "Cancel",
     }).then(async (result) => {
@@ -58,18 +58,19 @@ const Navbar = ({ authUser }: NavbarProps) => {
                 <ul className="block lg:flex">
                   {authUser ? (
                     <>
+                    
                       <li className="group">
-                        <Link to="/attend" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
-                          Attend
+                        <Link to="/playingNow" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
+                          Playing Now
                         </Link>
                       </li>
                       <li className="group">
-                        <Link to="/employeeManagement" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
-                          employee Management
+                        <Link to="/adminDashboard" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
+                          Admin Dashboard
                         </Link>
                       </li>
                       <li className="group">
-                        <CustomButton btnType="submit" title="Logout" containerStyles="ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" textStyles="text-secondary" onClick={onLogout} />
+                        <CustomButton btnType="submit" title="Logout" containerStyles="ml-5 lg:ml-0  border-black bg-white hover:bg-[#ededed] lg:my-0 py-[10px]" textStyles="text-black hover:text-[#262626]" onClick={onLogout} />
                       </li>
                     </>
                   ) : (
