@@ -9,7 +9,7 @@ const HomePage = ({ authUser }: HomePageProps) => {
     <section className="pt-28 pb-24 lg:pt-48 lg:pb-32">
       <div className="container">
         <div className="flex flex-wrap">
-          <div className="w-full self-center px-4 lg:w-1/2">
+          <div className="w-full self-center px-4">
             <h1 className="py-1 text-5xl font-bold text-secondary">Cinema Booking System.</h1>
             <hr className="w-[200px] my-3 p-1 bg-secondary border border-borderColor rounded-sm" />
             {authUser ? (

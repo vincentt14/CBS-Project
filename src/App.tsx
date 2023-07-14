@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import { auth } from "./utils/authentication";
 import { onAuthStateChanged } from "firebase/auth";
 import PlayingNowPage from "./pages/PlayingNowPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 
 const App = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/playingNow" element={<PlayingNowPage />} />
+        <Route path="/adminDashboard" element={<AdminDashboardPage />} />
       </Routes>
     </>
   );
