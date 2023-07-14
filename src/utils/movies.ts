@@ -1,5 +1,6 @@
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore } from "firebase/firestore";
+
 import { app } from "../config/firebase";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 
 const db = getFirestore(app);
 
@@ -31,4 +32,19 @@ const createMovie = async (title: string, synopsis: string, playing_time: string
   }
 };
 
-export { getMovieList, createMovie };
+const deleteMovie = async (id: string) => {
+  try {
+    const movieDoc = doc(db, "movies", id);
+    await deleteDoc(movieDoc);
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed Delete Movie",
+    };
+  }
+};
+
+export { moviesCollectionRef, getMovieList, createMovie, deleteMovie };

@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { useState } from "react";
+
 import { createMovie } from "../utils/movies";
 import CustomButton from "./CustomButton";
-import Swal from "sweetalert2";
-
-interface IMovies {
-  title: string;
-  synopsis: string;
-  playing_time: string;
-  genre: string;
-  duration: string;
-}
 
 interface AddMovieProps {
-  manageMovie: () => void;
+  backToManageMovie: () => void;
 }
 
-const AddMovie = ({ manageMovie }: AddMovieProps) => {
+const AddMovie = ({ backToManageMovie }: AddMovieProps) => {
   const [title, setTitle] = useState("");
   const [playingTime, setPlayingTime] = useState("");
   const [duration, setDuration] = useState("");
@@ -33,7 +26,7 @@ const AddMovie = ({ manageMovie }: AddMovieProps) => {
         showConfirmButton: false,
         timer: 1000,
       });
-      manageMovie();
+      backToManageMovie();
     } else {
       Swal.fire({
         icon: "error",
@@ -69,7 +62,7 @@ const AddMovie = ({ manageMovie }: AddMovieProps) => {
               <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to Manage Movie" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" onClick={manageMovie} />
+              <CustomButton btnType="button" title="Back to Manage Movie" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" onClick={backToManageMovie} />
               <CustomButton btnType="submit" title="Add Movie" containerStyles="ml-4 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
             </div>
           </div>

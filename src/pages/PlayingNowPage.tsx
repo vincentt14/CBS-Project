@@ -1,7 +1,9 @@
+import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import CustomButton from "../components/CustomButton";
-import { getMovieList } from "../utils/movies";
+
 import ReadMore from "../components/ReadMore";
+import CustomButton from "../components/CustomButton";
+import { moviesCollectionRef } from "../utils/movies";
 
 interface IMovies {
   title: string;
@@ -15,12 +17,17 @@ const PlayingNowPage = () => {
   const [movies, setMovies] = useState<any>([]);
 
   useEffect(() => {
-    const getMovie = async () => {
-      const data = await getMovieList();
-      setMovies(data);
-    };
+    const getMovie = onSnapshot(moviesCollectionRef, (querySnapshot) => {
+      const items: any[] = [];
+      querySnapshot.forEach((doc) => {
+        items.push({ ...doc.data(), id: doc.id });
+      });
+      setMovies(items);
+    });
 
-    getMovie();
+    return () => {
+      getMovie();
+    };
   }, []);
 
   console.log(movies);
@@ -46,7 +53,9 @@ const PlayingNowPage = () => {
                     <p className="mb-2 text-primary">Playing at {movie.playing_time}</p>
                     <p className="mb-2 text-primary">{movie.duration}</p>
                   </div>
-                  <ReadMore textSlice={100} pStyle="mb-2 text-justify">{movie.synopsis}</ReadMore>
+                  <ReadMore textSlice={100} pStyle="mb-2 text-justify">
+                    {movie.synopsis}
+                  </ReadMore>
                   <CustomButton btnType="button" to="/detail" title="Book Now" containerStyles="bg-secondary  w-full" textStyles="text-white" />
                 </div>
               </div>

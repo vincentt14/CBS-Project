@@ -1,5 +1,5 @@
-import { MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
+import { MouseEventHandler } from "react";
 
 export interface CustomButtonProps {
   title: string;

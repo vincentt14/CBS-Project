@@ -1,7 +1,8 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import CustomButton from "../components/CustomButton";
-import Swal from "sweetalert2";
 import { login } from "../utils/authentication";
 
 const LoginPage = () => {

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import { auth } from "./utils/authentication";
-import { onAuthStateChanged } from "firebase/auth";
+import RegisterPage from "./pages/RegisterPage";
 import PlayingNowPage from "./pages/PlayingNowPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 
@@ -26,8 +27,6 @@ const App = () => {
 
     return checkUser;
   }, []);
-
-  console.log(user);
 
   if (loading) {
     return (

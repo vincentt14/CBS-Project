@@ -1,39 +1,44 @@
 import { useEffect, useState } from "react";
-import CustomButton from "../components/CustomButton";
-import { getMovieList } from "../utils/movies";
-import ManageMovies from "../components/ManageMovies";
-import ManagePackages from "../components/ManagePackages";
+import { onSnapshot } from "firebase/firestore";
+
 import AddMovie from "../components/AddMovie";
+import CustomButton from "../components/CustomButton";
+import ManageMovies from "../components/ManageMovies";
+import { moviesCollectionRef } from "../utils/movies";
+import ManagePackages from "../components/ManagePackages";
 
 const AdminDashboardPage = () => {
   const [movies, setMovies] = useState<any>([]);
   const [adminRoute, setAdminRoute] = useState(1);
 
   useEffect(() => {
-    const getMovie = async () => {
-      const data = await getMovieList();
-      setMovies(data);
-    };
+    const getMovie = onSnapshot(moviesCollectionRef, (querySnapshot) => {
+      const items: any[] = [];
+      querySnapshot.forEach((doc) => {
+        items.push({ ...doc.data(), id: doc.id });
+      });
+      setMovies(items);
+    });
 
-    getMovie();
+    return () => {
+      getMovie();
+    };
   }, []);
+
+  console.log(movies);
 
   const manageMovie = () => {
     setAdminRoute(1);
   };
-
   const managePackages = () => {
     setAdminRoute(2);
   };
-
   const createMovie = () => {
     setAdminRoute(3);
   };
-
   const editMovie = () => {
     setAdminRoute(4);
   };
-
   const editPackage = () => {
     setAdminRoute(5);
   };
@@ -68,7 +73,7 @@ const AdminDashboardPage = () => {
 
         {adminRoute === 1 ? (
           <>
-            <ManageMovies createMovie={createMovie} />
+            <ManageMovies movies={movies} createMovie={createMovie} />
           </>
         ) : adminRoute === 2 ? (
           <>
@@ -76,7 +81,7 @@ const AdminDashboardPage = () => {
           </>
         ) : adminRoute === 3 ? (
           <>
-            <AddMovie manageMovie={manageMovie} />
+            <AddMovie backToManageMovie={manageMovie} />
           </>
         ) : (
           <></>

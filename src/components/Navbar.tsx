@@ -1,8 +1,9 @@
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import CustomButton from "./CustomButton";
 import { logout } from "../utils/authentication";
-import Swal from "sweetalert2";
 
 interface NavbarProps {
   authUser: any;

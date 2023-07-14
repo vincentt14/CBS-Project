@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+
+import ReadMore from "./ReadMore";
 import CustomButton from "./CustomButton";
 import { getPackageList } from "../utils/packages";
-import ReadMore from "./ReadMore";
 
 interface IPackages {
   name: string;
