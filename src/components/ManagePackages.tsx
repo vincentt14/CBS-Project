@@ -36,8 +36,8 @@ const ManagePackages = () => {
               <p className="mb-2 text-white text-justify">
                 Price: <span className="text-primary">{packagee.price}</span>
               </p>
-              <ReadMore pStyle="mb-2 text-primary text-justify">{packagee.description}</ReadMore>
-              <CustomButton btnType="button" to="/editpackage" title="Edit" containerStyles="bg-secondary  w-full" textStyles="text-white" />
+              <ReadMore textSlice={100} pStyle="mb-2 text-primary text-justify">{packagee.description}</ReadMore>
+              <CustomButton btnType="button" to="/editPackage" title="Edit" containerStyles="bg-secondary  w-full" textStyles="text-white" />
             </div>
           </div>
         ))}

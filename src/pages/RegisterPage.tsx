@@ -41,15 +41,15 @@ const RegisterPage = () => {
           <hr className="w-20 my-4 p-1 bg-secondary border border-borderColor rounded-sm mx-auto" />
           <div className="flex items-center justify-between my-4">
             <p className="text-secondary text-xl max-w-xl">Name</p>
-            <input className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setName(e.target.value)} />
+            <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="flex items-center justify-between my-4">
             <p className="text-secondary text-xl max-w-xl">Email</p>
-            <input className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setEmail(e.target.value)} />
+            <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="flex items-center justify-between my-4">
             <p className="text-secondary text-xl max-w-xl">Password</p>
-            <input type="password" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setPassword(e.target.value)} />
+            <input required type="password" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setPassword(e.target.value)} />
           </div>
           <CustomButton btnType="submit" title="Register" containerStyles="border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
           <CustomButton to="/login" btnType="button" title="Login" containerStyles="ml-5 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />

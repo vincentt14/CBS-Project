@@ -11,7 +11,11 @@ interface IMovies {
   duration: string;
 }
 
-const ManageMovies = () => {
+interface ManageMoviesProps {
+  createMovie: () => void;
+}
+
+const ManageMovies = ({ createMovie }: ManageMoviesProps) => {
   const [movies, setMovies] = useState<any>([]);
 
   useEffect(() => {
@@ -23,7 +27,6 @@ const ManageMovies = () => {
     getMovie();
   }, []);
 
-  console.log(movies);
 
   return (
     <div className="flex flex-col">
@@ -31,23 +34,28 @@ const ManageMovies = () => {
         <hr className="w-[150px] my-3 p-1 bg-secondary border border-borderColor rounded-sm" />
       </div>
       <div className="m-4 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="border-2 border-borderColor bg-secondary rounded-md flex flex-col justify-center items-center">
+        <div className="border-2 border-borderColor bg-secondary rounded-md flex flex-col justify-center items-center p-8">
           <h1 className="text-white font-bold text-2xl">Add Movie</h1>
-          <CustomButton btnType="button" to="/detail" title="Book Now" containerStyles="bg-secondary  w-full" textStyles="text-white" />
+          <CustomButton btnType="button" title="Add" containerStyles="bg-secondary w-full" textStyles="text-white" onClick={createMovie} />
         </div>
         {movies.map((movie: IMovies) => (
           <div key={movie.title} className="border-2 border-borderColor rounded-md">
-            <div className="bg-secondary p-8 flex justify-center items-center ">
+            <div className="bg-secondary p-8 h-[120px] flex justify-center items-center">
               <h1 className="text-white font-bold text-2xl">{movie.title}</h1>
             </div>
-            <div className="flex flex-col p-4 ">
+            <div className="flex flex-col px-4 pt-4">
               <p className="mb-2 text-justify">{movie.genre}</p>
               <div className="flex justify-between text-justify">
                 <p className="mb-2 text-primary">Playing at {movie.playing_time}</p>
                 <p className="mb-2 text-primary">{movie.duration}</p>
               </div>
-              <ReadMore pStyle="mb-2 text-justify">{movie.synopsis}</ReadMore>
-              <CustomButton btnType="button" to="/detail" title="Book Now" containerStyles="bg-secondary  w-full" textStyles="text-white" />
+              <ReadMore textSlice={55} pStyle="mb-2 text-justify">
+                {movie.synopsis}
+              </ReadMore>
+            </div>
+            <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
+              <CustomButton btnType="button" to="/editMovie" title="Edit" containerStyles="w-full border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+              <CustomButton btnType="button" to="/deleteMovie" title="Delete" containerStyles="w-full bg-secondary hover:border-primary" textStyles="text-white" />
             </div>
           </div>
         ))}
@@ -57,3 +65,5 @@ const ManageMovies = () => {
 };
 
 export default ManageMovies;
+
+// lg:w-[121px]

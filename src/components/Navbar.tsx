@@ -27,6 +27,13 @@ const Navbar = ({ authUser }: NavbarProps) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         logout();
+        Swal.fire({
+          icon: "success",
+          title: "Log Out Success",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/");
       }
     });
   };
@@ -58,7 +65,6 @@ const Navbar = ({ authUser }: NavbarProps) => {
                 <ul className="block lg:flex">
                   {authUser ? (
                     <>
-                    
                       <li className="group">
                         <Link to="/playingNow" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
                           Playing Now
