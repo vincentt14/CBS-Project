@@ -27,13 +27,15 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center w-full h-screen text-center">
-        <div className="bg-secondary py-5 px-20 rounded-sm">
-          <h1 className="text-4xl font-bold text-white">Loading</h1>
+      <div className="flex flex-col items-center justify-center w-full h-screen">
+        <div className="flex flex-col">
+          <h1 className="text-5xl font-bold text-secondary">Loading</h1>
+          <hr className="w-24 my-3 mx-1 p-1 bg-secondary border border-borderColor rounded-sm" />
         </div>
       </div>
     );
   }
+
   return (
     <>
       <Navbar authUser={user} />

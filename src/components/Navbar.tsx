@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CustomButton from "./CustomButton";
-import { signOut } from "firebase/auth";
 import { logout } from "../utils/authentication";
+import Swal from "sweetalert2";
 
 interface NavbarProps {
   authUser: string;
@@ -17,12 +17,18 @@ const Navbar = ({ authUser }: NavbarProps) => {
   };
 
   const onLogout = () => {
-    try {
-      logout();
-      navigate("/");
-    } catch (error) {
-      console.log("[AUTH_LOGOUT]", error);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      confirmButtonColor: "#000",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        logout();
+      }
+    });
   };
 
   return (
