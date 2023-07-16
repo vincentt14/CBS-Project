@@ -4,16 +4,20 @@ import { useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
 import { login } from "../utils/authentication";
+import { User } from "../models/User";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await login(email, password);
+
+    // const data = await login(email, password);
+    const data = await User.login(email, password);
+
     if (data.success) {
       Swal.fire({
         icon: "success",

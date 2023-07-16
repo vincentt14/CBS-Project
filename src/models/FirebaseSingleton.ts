@@ -1,18 +1,55 @@
 import { Auth, getAuth } from "firebase/auth";
 import { app } from "../config/firebase";
+import { CollectionReference, Firestore, collection, getFirestore, doc, DocumentReference } from "firebase/firestore";
+
+// https://www.typescriptlang.org/docs/handbook/enums.html#const-enums
+export const enum Endpoint {
+  users = 'users',
+  movies = 'movies',
+  packages = 'packages',
+}
 
 // https://refactoring.guru/design-patterns/singleton/typescript/example
+// https://www.typescriptlang.org/docs/handbook/2/classes.html#getters--setters
+// https://firebase.google.com/docs/firestore/data-model?hl=en&authuser=0#references
 export class FirebaseSingleton {
 
   private static auth: Auth;
 
+  private static db: Firestore;
+
   private constructor() { }
 
-  public static getAuth(): Auth {
-    if (!this.auth || this.auth === undefined) {
+  public static get getAuth(): Auth {
+    if (!this.auth || this.auth === undefined)
       this.auth = getAuth(app);
-    }
     return this.auth;
+  }
+
+  private static get getFirestore(): Firestore {
+    if (!this.db || this.db === undefined)
+      this.db = getFirestore(app);
+    return this.db;
+  }
+
+  public static usersCollectionRef(): CollectionReference {
+    return collection(this.getFirestore, Endpoint.users);
+  }
+
+  public static usersDocRef(id: string = ''): DocumentReference {
+
+    return doc(this.getFirestore, `${Endpoint.users}/${id}`);
+  }
+
+  // TODO change to DocumentReference
+  public static get moviesRef(): CollectionReference {
+
+    return collection(this.getFirestore, Endpoint.movies);
+  }
+
+  // TODO change to DocumentReference
+  public static get packagesRef(): CollectionReference {
+    return collection(this.getFirestore, Endpoint.packages);
   }
 
 }
