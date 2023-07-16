@@ -5,6 +5,7 @@ interface HomePageProps {
 }
 
 const HomePage = ({ authUser }: HomePageProps) => {
+
   return (
     <section className="pt-28 pb-24 lg:pt-48 lg:pb-32">
       <div className="container">

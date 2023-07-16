@@ -9,7 +9,7 @@ import ManagePackages from "../components/ManagePackages";
 
 const AdminDashboardPage = () => {
   const [movies, setMovies] = useState<any>([]);
-  const [adminRoute, setAdminRoute] = useState(1);
+  const [adminRoute, setAdminRoute] = useState<number>(1);
 
   useEffect(() => {
     const getMovie = onSnapshot(moviesCollectionRef, (querySnapshot) => {

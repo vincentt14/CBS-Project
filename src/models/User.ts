@@ -1,10 +1,16 @@
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import { doc, setDoc } from "firebase/firestore";
-import { dblClick } from "@testing-library/user-event/dist/click";
 
 export class User {
-  constructor(public id: string, public name: string) {
+  constructor(
+    public id: string, 
+    public name: string,
+    public gender: string,
+    public email: string,
+    public password: string,
+    public isAdmin: boolean
+  ) {
 
   }
 

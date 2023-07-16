@@ -2,10 +2,15 @@ import { describe, test, expect } from "@jest/globals";
 import { User } from "../models/User";
 
 describe("User Model Constructor", () => {
-  const user = new User("1", 'Rucci');
+  const date = new Date();
+  console.log(date);
+  console.log(date.toISOString());
+  console.log(date.toUTCString());
+  console.log(date.toString());
+  const user = new User('1','rucci','L','rucci@gmail.com','***',true);
   console.log(user);
   test('user.name = Rucci', () => {
-    return expect(user.name).toBe('Rucci');
+    return expect(user.name).toBe('rucci');
   })
 });
 
@@ -26,11 +31,11 @@ describe("User Model Register", () => {
 
 describe("User Model Login", () => {
 
-  // test('login success', async () => {
-  //   const res = await User.login('ruccii@gmail.com', 'ruccii');
-  //   console.log(res.success, res.message);
-  //   expect(res.success).toBe(true);
-  // })
+  test('login success', async () => {
+    const res = await User.login('ruccii@gmail.com', 'ruccii');
+    console.log(res.success, res.message);
+    expect(res.success).toBe(true);
+  })
 
   test('login failed', async () => {
     const res = await User.login('aselole@gmail.com', 'aselole');

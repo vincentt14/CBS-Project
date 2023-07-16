@@ -5,16 +5,17 @@ import { onAuthStateChanged } from "firebase/auth";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
-import { auth } from "./utils/authentication";
 import RegisterPage from "./pages/RegisterPage";
 import PlayingNowPage from "./pages/PlayingNowPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import { FirebaseSingleton } from "./models/FirebaseSingleton";
 
 const App = () => {
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const auth = FirebaseSingleton.getAuth;
     const checkUser = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);

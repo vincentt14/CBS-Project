@@ -3,18 +3,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
-import { register } from "../utils/authentication";
+import { User } from "../models/User";
 
 const RegisterPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await register(name, email, password);
+    const data = await User.register(name, email, password);
     if (data.success) {
       Swal.fire({
         icon: "success",
