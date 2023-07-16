@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
 
 import { app } from "../config/firebase";
 
@@ -28,6 +28,24 @@ const createMovie = async (title: string, synopsis: string, playing_time: string
     return {
       success: false,
       message: "Failed Add Movie",
+    };
+  }
+};
+
+const updateMovie = async (id: string, title: string, synopsis: string, playing_time: string, genre: string, duration: string) => {
+  try {
+    const movieDoc = doc(db, "movies", id);
+    await updateDoc(movieDoc, {
+      title,
+      synopsis,
+      playing_time,
+      genre,
+      duration,
+    });
+  } catch (error) {
+    return {
+      success: false,
+      message: "Failed Edit Movie",
     };
   }
 };
