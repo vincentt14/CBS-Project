@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
-import { User } from "../models/User";
+import { UserModel } from "../models/UserModel";
 
 const RegisterPage = () => {
   const [name, setName] = useState<string>("");
@@ -14,7 +14,7 @@ const RegisterPage = () => {
   const onSubmit = async (e: any) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await User.register(name, email, password);
+    const data = await UserModel.register(name, email, password);
     if (data.success) {
       Swal.fire({
         icon: "success",

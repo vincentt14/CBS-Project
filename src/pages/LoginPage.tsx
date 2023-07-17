@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
-import { login } from "../utils/authentication";
-import { User } from "../models/User";
+import { UserModel } from "../models/UserModel";
 
 const LoginPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -14,10 +13,7 @@ const LoginPage = () => {
   const onSubmit = async (e: any) => {
     e.preventDefault();
     Swal.showLoading();
-
-    // const data = await login(email, password);
-    const data = await User.login(email, password);
-
+    const data = await UserModel.login(email, password);
     if (data.success) {
       Swal.fire({
         icon: "success",

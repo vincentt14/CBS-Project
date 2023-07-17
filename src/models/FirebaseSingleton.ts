@@ -24,7 +24,7 @@ export class FirebaseSingleton {
     return this.auth;
   }
 
-  private static get getFirestore(): Firestore {
+  public static get getFirestore(): Firestore {
     if (!this.db || this.db === undefined) this.db = getFirestore(app);
     return this.db;
   }

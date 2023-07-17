@@ -9,16 +9,20 @@ import RegisterPage from "./pages/RegisterPage";
 import PlayingNowPage from "./pages/PlayingNowPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
+import { UserModel } from "./models/UserModel";
 
 const App = () => {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<UserModel | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const auth = FirebaseSingleton.getAuth;
-    const checkUser = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
+    const checkUser = onAuthStateChanged(auth, (userCredential) => {
+      if (userCredential) {
+        
+        // await getUserFromFirestore(userCredential.uid)
+
+        // setUser(userCredential);
         setLoading(false);
       } else {
         setUser(null);
