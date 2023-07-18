@@ -76,7 +76,7 @@ const ManageMovies = ({ movies }: ManageMoviesProps) => {
                 <p className="mb-2 text-primary">Playing at {movie.playingTime}</p>
                 <p className="mb-2 text-primary">{movie.duration}</p>
               </div>
-              <ReadMore textSlice={55} pStyle="mb-2 text-justify">
+              <ReadMore textSlice={60} pStyle="mb-2 text-justify">
                 {movie.synopsis}
               </ReadMore>
             </div>

@@ -67,6 +67,11 @@ const Navbar = ({ authUser }: NavbarProps) => {
                   {authUser ? (
                     <>
                       <li className="group">
+                        <Link to="/" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
+                          Home Page
+                        </Link>
+                      </li>
+                      <li className="group">
                         <Link to="/playingNow" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
                           Playing Now
                         </Link>

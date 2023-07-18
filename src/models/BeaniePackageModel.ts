@@ -1,7 +1,7 @@
 import { CinemaModel } from "./CinemaModel";
-import { RoomPackagesModel } from "./RoomPackageModel";
+import { RoomPackageModel } from "./RoomPackageModel";
 
-export class BeaniePackageModel extends RoomPackagesModel{
+export class BeaniePackageModel extends RoomPackageModel{
   constructor(
     public id: string,
     public price: number,

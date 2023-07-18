@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
+import { DocumentData } from "firebase/firestore";
 
 const EditMovie = () => {
   const [title, setTitle] = useState<string>("");
@@ -16,8 +17,8 @@ const EditMovie = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await MoviesModel.getMovie(id);
-      console.log(data);
+      const data: DocumentData = (await MoviesModel.getMovie(id as string))!;
+
       setTitle(data.title);
       setPlayingTime(data.playingTime);
       setDuration(data.duration);
@@ -39,7 +40,7 @@ const EditMovie = () => {
         showConfirmButton: false,
         timer: 1000,
       });
-      navigate('/adminDashboard/manageMovies')
+      navigate("/adminDashboard/manageMovies");
     } else {
       Swal.fire({
         icon: "error",

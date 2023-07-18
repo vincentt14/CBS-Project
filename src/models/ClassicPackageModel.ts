@@ -1,14 +1,14 @@
 import { updateDoc } from "firebase/firestore";
 import { CinemaModel } from "./CinemaModel";
 import { FirebaseSingleton } from "./FirebaseSingleton";
-import { RoomPackagesModel } from "./RoomPackageModel";
+import { RoomPackageModel } from "./RoomPackageModel";
 
 interface PackageResponse {
   success: boolean;
   message?: any;
 }
 
-export class ClassicPackageModel extends RoomPackagesModel{
+export class ClassicPackageModel extends RoomPackageModel{
   constructor(
     public id: string,
     public price: number,

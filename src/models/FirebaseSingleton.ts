@@ -6,6 +6,7 @@ import { CollectionReference, Firestore, collection, getFirestore, doc, Document
 export const enum Endpoint {
   users = "users",
   movies = "movies",
+  cinemas = "cinemas",
   packages = "packages",
 }
 
@@ -37,7 +38,7 @@ export class FirebaseSingleton {
     return doc(this.getFirestore, `${Endpoint.users}/${id}`);
   }
 
-  // TODO change to DocumentReference
+  // movies
   public static moviesCollectionRef(): CollectionReference {
     return collection(this.getFirestore, Endpoint.movies);
   }
@@ -46,7 +47,16 @@ export class FirebaseSingleton {
     return doc(this.getFirestore, `${Endpoint.movies}/${id}`);
   }
 
-  // TODO change to DocumentReference
+  // cinemas
+  public static cinemaCollectionRef(): CollectionReference {
+    return collection(this.getFirestore, Endpoint.cinemas);
+  }
+
+  public static cinemasDocRef(id: string = ""): DocumentReference {
+    return doc(this.getFirestore, `${Endpoint.cinemas}/${id}`);
+  }
+
+  // packages
   public static packagesCollectionRef(): CollectionReference {
     return collection(this.getFirestore, Endpoint.packages);
   }

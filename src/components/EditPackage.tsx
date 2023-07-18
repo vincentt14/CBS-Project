@@ -16,7 +16,7 @@ const EditPackage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await MoviesModel.getMovie(id);
+      const data = await MoviesModel.getMovie(id as string);
       setPreviousValue(data);
     };
 
