@@ -12,13 +12,13 @@ export class Movies {
     public id: string, 
     public title: string, 
     public synopsis: string, 
-    public playingTime: Date, 
-    public duration: number, 
+    public playingTime: string, 
+    public duration: string, 
     public genre: string, 
     public cinema: RoomPackages
     ) {}
 
-  static createMovie = async (title: string, synopsis: string, playingTime: Date, duration: number, genre: string) => {
+  static createMovie = async (title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
     try {
       const ref = FirebaseSingleton.moviesCollectionRef();
       await addDoc(ref, {
@@ -37,10 +37,11 @@ export class Movies {
         success: false,
         message: error,
       };
+      return res;
     }
   };
 
-  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: Date, duration: number, genre: string) => {
+  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
     try {
       const ref = FirebaseSingleton.moviesDocRef(id);
       await updateDoc(ref, {

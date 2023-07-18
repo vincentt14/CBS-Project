@@ -1,24 +1,20 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
 
-import { createMovie } from "../utils/movies";
 import CustomButton from "./CustomButton";
+import { Movies } from "../models/Movies";
 
-interface AddMovieProps {
-  backToManageMovie: () => void;
-}
-
-const AddMovie = ({ backToManageMovie }: AddMovieProps) => {
-  const [title, setTitle] = useState("");
-  const [playingTime, setPlayingTime] = useState("");
-  const [duration, setDuration] = useState("");
-  const [genre, setGenre] = useState("");
-  const [synopsis, setSynopsis] = useState("");
+const AddMovie = () => {
+  const [title, setTitle] = useState<string>("");
+  const [playingTime, setPlayingTime] = useState<string>("");
+  const [duration, setDuration] = useState<string>("");
+  const [genre, setGenre] = useState<string>("");
+  const [synopsis, setSynopsis] = useState<string>("");
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await createMovie(title, synopsis, playingTime, genre, duration);
+    const data = await Movies.createMovie(title, synopsis, playingTime, duration, genre);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -26,7 +22,6 @@ const AddMovie = ({ backToManageMovie }: AddMovieProps) => {
         showConfirmButton: false,
         timer: 1000,
       });
-      backToManageMovie();
     } else {
       Swal.fire({
         icon: "error",
@@ -62,7 +57,7 @@ const AddMovie = ({ backToManageMovie }: AddMovieProps) => {
               <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to Manage Movie" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" onClick={backToManageMovie} />
+              <CustomButton btnType="button" title="Close Add Movie Tab" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageMovies" />
               <CustomButton btnType="submit" title="Add Movie" containerStyles="ml-4 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
             </div>
           </div>

@@ -1,48 +1,19 @@
-import { useEffect, useState } from "react";
-import { onSnapshot } from "firebase/firestore";
+import { Outlet } from "react-router-dom";
 
-import AddMovie from "../components/AddMovie";
 import CustomButton from "../components/CustomButton";
-import ManageMovies from "../components/ManageMovies";
-import { moviesCollectionRef } from "../utils/movies";
-import ManagePackages from "../components/ManagePackages";
 
-const AdminDashboardPage = () => {
-  const [movies, setMovies] = useState<any>([]);
-  const [adminRoute, setAdminRoute] = useState<number>(1);
+interface AdminDahsboardProps {
+  movies: {
+    id: string;
+    title: string;
+    synopsis: string;
+    playingTime: string;
+    duration: string;
+    genre: string;
+  }[];
+}
 
-  useEffect(() => {
-    const getMovie = onSnapshot(moviesCollectionRef, (querySnapshot) => {
-      const items: any[] = [];
-      querySnapshot.forEach((doc) => {
-        items.push({ ...doc.data(), id: doc.id });
-      });
-      setMovies(items);
-    });
-
-    return () => {
-      getMovie();
-    };
-  }, []);
-
-  console.log(movies);
-
-  const manageMovie = () => {
-    setAdminRoute(1);
-  };
-  const managePackages = () => {
-    setAdminRoute(2);
-  };
-  const createMovie = () => {
-    setAdminRoute(3);
-  };
-  const editMovie = () => {
-    setAdminRoute(4);
-  };
-  const editPackage = () => {
-    setAdminRoute(5);
-  };
-
+const AdminDashboardPage = ({ movies }: AdminDahsboardProps) => {
   return (
     <section className="pt-28 pb-8 lg:pt-32">
       <div className="container w-full">
@@ -54,8 +25,8 @@ const AdminDashboardPage = () => {
               Wellcome back <span className="text-secondary capitalize">Admin</span>. You can manage <span className="text-secondary capitalize">Movies</span> and <span className="text-secondary capitalize">Packages</span> here.
             </p>
             <div className="flex flex-col md:flex-row my-3">
-              <CustomButton btnType="button" title="Manage Movies" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" onClick={manageMovie} />
-              <CustomButton btnType="button" title="Manage Packages" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" onClick={managePackages} />
+              <CustomButton btnType="button" title="Manage Movies" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageMovies" />
+              <CustomButton btnType="button" title="Manage Packages" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" to="/adminDashboard/managePackages" />
             </div>
           </div>
 
@@ -71,21 +42,7 @@ const AdminDashboardPage = () => {
           </div>
         </div>
 
-        {adminRoute === 1 ? (
-          <>
-            <ManageMovies movies={movies} createMovie={createMovie} />
-          </>
-        ) : adminRoute === 2 ? (
-          <>
-            <ManagePackages />
-          </>
-        ) : adminRoute === 3 ? (
-          <>
-            <AddMovie backToManageMovie={manageMovie} />
-          </>
-        ) : (
-          <></>
-        )}
+        <Outlet />
       </div>
     </section>
   );
