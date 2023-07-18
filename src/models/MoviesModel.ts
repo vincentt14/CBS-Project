@@ -1,5 +1,5 @@
-import { addDoc, deleteDoc, updateDoc } from "firebase/firestore";
-import { RoomPackages } from "./RoomPackage";
+import { addDoc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
+import { RoomPackagesModel } from "./RoomPackageModel";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 
 interface MovieResponse {
@@ -7,7 +7,7 @@ interface MovieResponse {
   message?: any;
 }
 
-export class Movies {
+export class MoviesModel {
   constructor(
     public id: string, 
     public title: string, 
@@ -15,8 +15,17 @@ export class Movies {
     public playingTime: string, 
     public duration: string, 
     public genre: string, 
-    public cinema: RoomPackages
+    public cinema: RoomPackagesModel
     ) {}
+
+    static getMovie = async (id: any) => {
+      const ref = FirebaseSingleton.moviesDocRef(id);
+      const docSnap = await getDoc(ref);
+
+      if(docSnap.exists()){
+        return docSnap.data()
+      }
+    };
 
   static createMovie = async (title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
     try {
@@ -41,7 +50,7 @@ export class Movies {
     }
   };
 
-  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
+  static updateMovie = async (id: any, title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
     try {
       const ref = FirebaseSingleton.moviesDocRef(id);
       await updateDoc(ref, {
@@ -60,6 +69,7 @@ export class Movies {
         success: false,
         message: error,
       };
+      return res;
     }
   };
 
@@ -76,6 +86,7 @@ export class Movies {
         success: false,
         message: error,
       };
+      return res;
     }
   };
 }

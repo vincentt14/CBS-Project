@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 
 import ReadMore from "../components/ReadMore";
 import CustomButton from "../components/CustomButton";
-import { moviesCollectionRef } from "../utils/movies";
+import { FirebaseSingleton } from "../models/FirebaseSingleton";
 
 interface IMovies {
+  id: string;
   title: string;
   synopsis: string;
   playing_time: string;
@@ -17,7 +18,7 @@ const PlayingNowPage = () => {
   const [movies, setMovies] = useState<any>([]);
 
   useEffect(() => {
-    const getMovie = onSnapshot(moviesCollectionRef, (querySnapshot) => {
+    const getMovie = onSnapshot(FirebaseSingleton.moviesCollectionRef(), (querySnapshot) => {
       const items: any[] = [];
       querySnapshot.forEach((doc) => {
         items.push({ ...doc.data(), id: doc.id });
@@ -56,7 +57,7 @@ const PlayingNowPage = () => {
                   <ReadMore textSlice={100} pStyle="mb-2 text-justify">
                     {movie.synopsis}
                   </ReadMore>
-                  <CustomButton btnType="button" to="/detail" title="Book Now" containerStyles="bg-secondary  w-full" textStyles="text-white" />
+                  <CustomButton btnType="button" to={`/book/${movie.id}`} title="Book Now" containerStyles="bg-secondary  w-full" textStyles="text-white" />
                 </div>
               </div>
             ))}

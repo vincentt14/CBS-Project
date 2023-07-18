@@ -1,12 +1,12 @@
-import { Cinema } from "./Cinema";
-import { RoomPackages } from "./RoomPackage";
+import { CinemaModel } from "./CinemaModel";
+import {RoomPackagesModel } from "./RoomPackageModel";
 
-export class DeluxePackage extends RoomPackages{
+export class DeluxePackageModel extends RoomPackagesModel{
   constructor(
     public id: string,
     public price: number,
     public description: string,
-    public cinema: Cinema,
+    public cinema: CinemaModel,
     public foodDiscount: number,
     public bedType: string,
     public souvenir: string,
@@ -15,10 +15,6 @@ export class DeluxePackage extends RoomPackages{
   }
 
   public override editPackageInfo(): void {
-      
-  }
-
-  public override deletePackage(): void {
       
   }
 }

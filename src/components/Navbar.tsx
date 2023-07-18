@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
-import { logout } from "../utils/authentication";
+import { UserModel } from "../models/UserModel";
 
 interface NavbarProps {
   authUser: any;
@@ -27,7 +27,7 @@ const Navbar = ({ authUser }: NavbarProps) => {
       cancelButtonText: "Cancel",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        logout();
+        UserModel.logout();
         Swal.fire({
           icon: "success",
           title: "Log Out Success",

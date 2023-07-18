@@ -1,26 +1,38 @@
 import { useEffect, useState } from "react";
+import { onSnapshot } from "firebase/firestore";
 
 import ReadMore from "./ReadMore";
 import CustomButton from "./CustomButton";
-import { getPackageList } from "../utils/packages";
+import { FirebaseSingleton } from "../models/FirebaseSingleton";
 
 interface IPackages {
+  id: string;
   name: string;
   price: number;
+  bedType: string;
+  souvenir: string;
   description: string;
+  foodDiscount: number;
 }
 
 const ManagePackages = () => {
   const [packages, setPackages] = useState<any>([]);
 
   useEffect(() => {
-    const getPackage = async () => {
-      const data = await getPackageList();
-      setPackages(data);
-    };
+    const getPackages = onSnapshot(FirebaseSingleton.packagesCollectionRef(), (querySnapshot) => {
+      const items: any[] = [];
+      querySnapshot.forEach((doc) => {
+        items.push({ ...doc.data(), id: doc.id });
+      });
+      setPackages(items);
+    });
 
-    getPackage();
+    return () => {
+      getPackages();
+    };
   }, []);
+
+  console.log(packages);
 
   return (
     <div className="flex flex-col">
@@ -29,16 +41,49 @@ const ManagePackages = () => {
       </div>
       <div className="m-4 grid lg:grid-cols-3 gap-5">
         {packages.map((packagee: IPackages) => (
-          <div key={packagee.name}>
+          <div key={packagee.id}>
             <div className="bg-secondary px-8 pt-8 flex justify-center items-center rounded-t-xl">
               <h1 className="text-white font-bold text-2xl capitalize">{packagee.name}</h1>
             </div>
             <div className="flex flex-col py-4 px-10 bg-secondary rounded-b-xl">
-              <p className="mb-2 text-white text-justify">
-                Price: <span className="text-primary">{packagee.price}</span>
-              </p>
-              <ReadMore textSlice={100} pStyle="mb-2 text-primary text-justify">{packagee.description}</ReadMore>
-              <CustomButton btnType="button" to="/editPackage" title="Edit" containerStyles="bg-secondary  w-full" textStyles="text-white" />
+              <div className="flex justify-between">
+                <p className="mb-2 text-white text-justify">
+                  Price: <span className="text-white">{packagee.price}</span>
+                </p>
+                {packagee.souvenir ? (
+                  <p className="mb-2 text-white text-justify">
+                    Souvenir: <span className="text-white">{packagee.souvenir}</span>
+                  </p>
+                ) : (
+                  <p className="mb-2 text-primary text-justify">
+                    Souvenir: <span className="text-primary">-</span>
+                  </p>
+                )}
+              </div>
+              <div className="flex justify-between">
+                {packagee.foodDiscount ? (
+                  <p className="mb-2 text-white text-justify">
+                    Food Discount: <span className="text-white">{packagee.foodDiscount}</span>
+                  </p>
+                ) : (
+                  <p className="mb-2 text-primary text-justify">
+                    Food Discount: <span className="text-primary">-</span>
+                  </p>
+                )}
+                {packagee.bedType ? (
+                  <p className="mb-2 text-white text-justify">
+                    Bed Type: <span className="text-white">{packagee.bedType}</span>
+                  </p>
+                ) : (
+                  <p className="mb-2 text-primary text-justify">
+                    Bed Type: <span className="text-primary">-</span>
+                  </p>
+                )}
+              </div>
+              <ReadMore textSlice={100} pStyle="mb-2 text-primary text-justify">
+                {packagee.description}
+              </ReadMore>
+              <CustomButton btnType="button" to={`/adminDashboard/editPackage/${packagee.id}`} title="Edit" containerStyles="bg-secondary  w-full" textStyles="text-white" />
             </div>
           </div>
         ))}

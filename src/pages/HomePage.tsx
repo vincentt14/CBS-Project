@@ -1,10 +1,11 @@
 import CustomButton from "../components/CustomButton";
 
 interface HomePageProps {
+  movies: any;
   authUser: any;
 }
 
-const HomePage = ({ authUser }: HomePageProps) => {
+const HomePage = ({ authUser, movies }: HomePageProps) => {
 
   return (
     <section className="pt-28 pb-24 lg:pt-48 lg:pb-32">
@@ -38,7 +39,7 @@ const HomePage = ({ authUser }: HomePageProps) => {
             <div>
               <div className="mb-6 grid max-w-lg grid-cols-2 gap-0 border-2 border-borderColor bg-bgColor p-6 text-primary md:max-w-md rounded-md">
                 <div className="grid grid-cols-3">
-                  <div className="col-1 col-span-1 flex items-center justify-center text-2xl font-bold text-primary">12</div>
+                  <div className="col-1 col-span-1 flex items-center justify-center text-2xl font-bold text-primary">{movies.length}</div>
                   <div className="col-2 col-span-2">
                     <p className="text-xs lg:text-base">Movies</p>
                     <p className="text-xs lg:text-base">Playing</p>
@@ -47,7 +48,7 @@ const HomePage = ({ authUser }: HomePageProps) => {
                 <div className="grid grid-cols-3">
                   <div className="col-1 col-span-1 flex items-center justify-center text-2xl font-bold text-primary">12</div>
                   <div className="col-2 col-span-2">
-                    <p className="text-xs lg:text-base">Seat</p>
+                    <p className="text-xs lg:text-base">Movies</p>
                     <p className="text-xs lg:text-base">Booked</p>
                   </div>
                 </div>

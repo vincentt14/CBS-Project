@@ -6,16 +6,20 @@ import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import AddMovie from "./components/AddMovie";
+import EditMovie from "./components/EditMovie";
 import RegisterPage from "./pages/RegisterPage";
+import EditPackage from "./components/EditPackage";
 import PlayingNowPage from "./pages/PlayingNowPage";
 import ManageMovies from "./components/ManageMovies";
 import ManagePackages from "./components/ManagePackages";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+
 // import { FirebaseSingleton } from "./models/FirebaseSingleton";
 // import { UserModel } from "./models/UserModel";
 import { app } from "./config/firebase";
 import { onSnapshot } from "firebase/firestore";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
+import Bookpage from "./pages/BookPage";
 
 const App = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -36,9 +40,7 @@ const App = () => {
       }
     });
 
-    // return checkUser;
-
-    const getMovie = onSnapshot(FirebaseSingleton.moviesCollectionRef(), (querySnapshot) => {
+    const getMovies = onSnapshot(FirebaseSingleton.moviesCollectionRef(), (querySnapshot) => {
       const items: any[] = [];
       querySnapshot.forEach((doc) => {
         items.push({ ...doc.data(), id: doc.id });
@@ -47,7 +49,7 @@ const App = () => {
     });
 
     return () => {
-      getMovie();
+      getMovies();
       checkUser();
     };
   }, []);
@@ -67,15 +69,17 @@ const App = () => {
     <>
       <Navbar authUser={user} />
       <Routes>
-        <Route path="/" element={<HomePage authUser={user} />} />
+        <Route path="/" element={<HomePage authUser={user} movies={movies} />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="playingNow" element={<PlayingNowPage />} />
+        <Route path="book/:id" element={<Bookpage />} />
         <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} />}>
-          <Route path="manageMovies" element={<ManageMovies movies={movies} />}>
-            <Route path="addMovie" element={<AddMovie />} />
-          </Route>
+          <Route path="manageMovies" element={<ManageMovies movies={movies} />} />
+          <Route path="addMovie" element={<AddMovie />} />
+          <Route path="editMovie/:id" element={<EditMovie />} />
           <Route path="managePackages" element={<ManagePackages />} />
+          <Route path="editPackage/:id" element={<EditPackage />} />
         </Route>
       </Routes>
     </>

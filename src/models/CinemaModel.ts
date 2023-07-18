@@ -1,6 +1,4 @@
-import { RoomPackages } from "./RoomPackage";
-
-export class Cinema {
+export class CinemaModel {
   constructor(
     public id: string,
     public totalSeats: number,
