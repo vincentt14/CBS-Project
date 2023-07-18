@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
 import { UserModel } from "../models/UserModel";
@@ -9,25 +9,36 @@ const RegisterPage = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    Swal.showLoading();
-    const data = await UserModel.register(name, email, password);
-    if (data.success) {
-      Swal.fire({
-        icon: "success",
-        title: "Register Success",
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      navigate("/");
+    if (gender !== "") {
+      Swal.showLoading();
+      const data = await UserModel.register(name, email, password, gender, isAdmin);
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Register Success",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Register Failed",
+          text: `${data.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Register Failed",
-        text: `${data.message}`,
+        icon: "warning",
+        title: "You must choose your gender",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -45,15 +56,45 @@ const RegisterPage = () => {
             <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="flex items-center justify-between my-4">
+            <p className="text-secondary text-xl max-w-xl">Gender</p>
+            <div className="flex gap-3 ml-8">
+              <CustomButton
+                btnType="button"
+                title="Male"
+                containerStyles={gender === "m" ? "my-1 bg-secondary" : "my-1 border-black bg-white hover:bg-[#ededed]"}
+                textStyles={gender === "m" ? "text-white" : "text-black hover:text-[#262626]"}
+                onClick={() => {
+                  setGender("m");
+                }}
+              />
+              <CustomButton
+                btnType="button"
+                title="Female"
+                containerStyles={gender === "f" ? "my-1 bg-secondary" : "my-1 border-black bg-white hover:bg-[#ededed]"}
+                textStyles={gender === "f" ? "text-white" : "text-black hover:text-[#262626]"}
+                onClick={() => {
+                  setGender("f");
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-between my-4">
             <p className="text-secondary text-xl max-w-xl">Email</p>
-            <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setEmail(e.target.value)} />
+            <input required type="email" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="flex items-center justify-between my-4">
             <p className="text-secondary text-xl max-w-xl">Password</p>
             <input required type="password" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <CustomButton btnType="submit" title="Register" containerStyles="border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
-          <CustomButton to="/login" btnType="button" title="Login" containerStyles="ml-5 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+          <div className="flex flex-col">
+            <CustomButton btnType="submit" title="Register" containerStyles="my-1 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
+            <div className="flex py-2 mx-8 text-primary">
+              <p>Already have an account?</p>
+              <Link to="/login" className="ml-2 cursor-pointer hover:text-secondary">
+                Click Here
+              </Link>
+            </div>
+          </div>
         </div>
       </form>
     </div>

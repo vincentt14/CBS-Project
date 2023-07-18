@@ -12,14 +12,7 @@ interface AuthenticationResponse {
 }
 
 export class UserModel {
-  constructor(
-    public id: string, 
-    public name: string, 
-    public gender: string, 
-    public email: string, 
-    public password: string, 
-    public isAdmin: boolean
-    ) {}
+  constructor(public id: string, public name: string, public gender: string, public email: string, public password: string, public isAdmin: boolean) {}
 
   static getUserFromFirestore = async (userUid: string): Promise<void> => {
     try {
@@ -38,11 +31,11 @@ export class UserModel {
         // docSnap.data() will be undefined in this case
         console.log("No such document!");
       }
-      return ;
+      return;
     } catch (error) {
-      return ;
+      return;
     }
-  }
+  };
 
   static login = async (email: string, password: string): Promise<AuthenticationResponse> => {
     try {
@@ -63,7 +56,7 @@ export class UserModel {
   };
 
   // https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#sign_up_new_users
-  static register = async (name: string, email: string, password: string) => {
+  static register = async (name: string, email: string, password: string, gender: string, isAdmin: boolean) => {
     try {
       const auth = FirebaseSingleton.getAuth;
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -71,6 +64,8 @@ export class UserModel {
       await setDoc(ref, {
         name,
         email,
+        gender,
+        isAdmin,
       });
       const res: AuthenticationResponse = {
         success: true,

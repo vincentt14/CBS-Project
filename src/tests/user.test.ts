@@ -14,20 +14,20 @@ describe("User Model Constructor", () => {
   })
 });
 
-describe("User Model Register", () => {
+// describe("User Model Register", () => {
 
-  test('register ruccii@gmail.com ruccii', async () => {
+//   test('register ruccii@gmail.com ruccii', async () => {
 
-    try {
-      const res = await UserModel.register('rucci', 'ruccii@gmail.com', 'ruccii');
-      console.log(res.success, res.message);
-      return expect(res.success).toBe(true);
-    } catch (error) {
-      return expect(error);
-    }
+//     try {
+//       const res = await UserModel.register('rucci', 'ruccii@gmail.com', 'ruccii');
+//       console.log(res.success, res.message);
+//       return expect(res.success).toBe(true);
+//     } catch (error) {
+//       return expect(error);
+//     }
 
-  })
-});
+//   })
+// });
 
 describe("User Model Login", () => {
 

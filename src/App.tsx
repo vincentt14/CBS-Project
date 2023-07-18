@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
@@ -8,21 +8,21 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import PlayingNowPage from "./pages/PlayingNowPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import { FirebaseSingleton } from "./models/FirebaseSingleton";
+// import { FirebaseSingleton } from "./models/FirebaseSingleton";
 import { UserModel } from "./models/UserModel";
+import { app } from "./config/firebase";
 
 const App = () => {
-  const [user, setUser] = useState<UserModel | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const auth = getAuth(app);
 
   useEffect(() => {
-    const auth = FirebaseSingleton.getAuth;
+    // const auth = FirebaseSingleton.getAuth;
     const checkUser = onAuthStateChanged(auth, (userCredential) => {
       if (userCredential) {
-        
         // await getUserFromFirestore(userCredential.uid)
-
-        // setUser(userCredential);
+        setUser(userCredential);
         setLoading(false);
       } else {
         setUser(null);
@@ -32,6 +32,8 @@ const App = () => {
 
     return checkUser;
   }, []);
+
+  console.log(user);
 
   if (loading) {
     return (
