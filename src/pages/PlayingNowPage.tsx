@@ -51,7 +51,7 @@ const PlayingNowPage = () => {
                 <div className="flex flex-col p-4 ">
                   <p className="mb-2 text-justify">{movie.genre}</p>
                   <div className="flex justify-between text-justify">
-                    <p className="mb-2 text-primary">Playing at {movie.playing_time}</p>
+                    <p className="mb-2 text-primary">Playing at {movie.playingTime}</p>
                     <p className="mb-2 text-primary">{movie.duration}</p>
                   </div>
                   <ReadMore textSlice={100} pStyle="mb-2 text-justify">

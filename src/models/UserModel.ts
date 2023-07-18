@@ -1,9 +1,6 @@
 import { User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { FirebaseSingleton } from "./FirebaseSingleton";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
-import { app } from "../config/firebase";
-
-const db = getFirestore(app);
+import { getDoc, setDoc } from "firebase/firestore";
 
 interface AuthenticationResponse {
   success: boolean;
@@ -12,26 +9,23 @@ interface AuthenticationResponse {
 }
 
 export class UserModel {
-  constructor(public id: string, public name: string, public gender: string, public email: string, public password: string, public isAdmin: boolean) {}
+  constructor(
+    public id: string, 
+    public name: string, 
+    public gender: string, 
+    public email: string, 
+    public password: string, 
+    public isAdmin: boolean
+  ) {}
 
-  static getUserFromFirestore = async (userUid: string): Promise<void> => {
+  static getUserFromFirestore = async (userUid: string) => {
     try {
-      // const ref = FirebaseSingleton.usersDocRef(userUid);
-      // const result = await getDoc(ref);
-      // if(result.exists()){
-      //   console.log(result.data())
-      // }else {
-      //   console.log("kosong")
-      // }
-      const docRef = doc(db, "users", "cLrhHPW1dlg1QPTeDeORaNcISXZ2");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
+      const ref = FirebaseSingleton.usersDocRef(userUid);
+      const result = await getDoc(ref);
+
+      if (result.exists()) {
+        return result.data();
       }
-      return;
     } catch (error) {
       return;
     }

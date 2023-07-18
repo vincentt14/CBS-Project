@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
+import Bookpage from "./pages/BookPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
@@ -14,31 +15,42 @@ import ManageMovies from "./components/ManageMovies";
 import ManagePackages from "./components/ManagePackages";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 
-// import { FirebaseSingleton } from "./models/FirebaseSingleton";
-// import { UserModel } from "./models/UserModel";
-import { app } from "./config/firebase";
+import { UserModel } from "./models/UserModel";
 import { onSnapshot } from "firebase/firestore";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
-import Bookpage from "./pages/BookPage";
 
 const App = () => {
   const [user, setUser] = useState<any | null>(null);
   const [movies, setMovies] = useState<any>([]);
   const [loading, setLoading] = useState(true);
-  const auth = getAuth(app);
 
   useEffect(() => {
-    // const auth = FirebaseSingleton.getAuth;
-    const checkUser = onAuthStateChanged(auth, (userCredential) => {
+    const auth = FirebaseSingleton.getAuth;
+    const checkActiveUser = onAuthStateChanged(auth, (userCredential) => {
       if (userCredential) {
-        // await getUserFromFirestore(userCredential.uid)
-        setUser(userCredential);
-        setLoading(false);
+        const getUser = async () => {
+          const activeUser = await UserModel.getUserFromFirestore(userCredential.uid);
+          setUser(activeUser);
+          setLoading(false);
+        };
+        getUser();
       } else {
         setUser(null);
         setLoading(false);
       }
     });
+
+    // manual --------------- dari firebase authentication belum cek di firestore
+    // const auth = getAuth(app);
+    // const checkUser = onAuthStateChanged(auth, (userCredential) => {
+    //   if (userCredential) {
+    //     setUser(userCredential);
+    //     setLoading(false);
+    //   } else {
+    //     setUser(null);
+    //     setLoading(false);
+    //   }
+    // });
 
     const getMovies = onSnapshot(FirebaseSingleton.moviesCollectionRef(), (querySnapshot) => {
       const items: any[] = [];
@@ -50,9 +62,11 @@ const App = () => {
 
     return () => {
       getMovies();
-      checkUser();
+      checkActiveUser();
     };
   }, []);
+
+  console.log(user);
 
   if (loading) {
     return (

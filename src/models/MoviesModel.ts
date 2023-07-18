@@ -20,10 +20,10 @@ export class MoviesModel {
 
     static getMovie = async (id: any) => {
       const ref = FirebaseSingleton.moviesDocRef(id);
-      const docSnap = await getDoc(ref);
+      const result = await getDoc(ref);
 
-      if(docSnap.exists()){
-        return docSnap.data()
+      if(result.exists()){
+        return result.data()
       }
     };
 
