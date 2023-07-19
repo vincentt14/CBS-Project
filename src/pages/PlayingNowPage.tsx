@@ -1,9 +1,10 @@
 import ReadMore from "../components/ReadMore";
 import CustomButton from "../components/CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
+import { secondToHms } from "../utils/secondToHms";
 
 interface PlayingNowPageProps {
-  movies: MoviesModel[]
+  movies: MoviesModel[];
 }
 
 const PlayingNowPage = ({ movies }: PlayingNowPageProps) => {
@@ -23,10 +24,17 @@ const PlayingNowPage = ({ movies }: PlayingNowPageProps) => {
                   <h1 className="text-white font-bold text-2xl">{movie.title}</h1>
                 </div>
                 <div className="flex flex-col p-4 ">
-                  <p className="mb-2 text-justify">{movie.genre}</p>
                   <div className="flex justify-between text-justify">
-                    <p className="mb-2 text-primary">Playing at <span className="text-white">{movie.playingTime}</span></p>
-                    <p className="mb-2 text-white">{movie.duration}</p>
+                    <p className="mb-2 text-justify">{movie.genre}</p>
+                    <p className="mb-2 text-primary">
+                      Cinema: <span className="text-white">{movie.cinemaId}</span>
+                    </p>
+                  </div>
+                  <div className="flex justify-between text-justify">
+                    <p className="mb-2 text-primary">
+                      Playing at <span className="text-white">{movie.playingTime}</span>
+                    </p>
+                    <p className="mb-2 text-white">{secondToHms(movie.duration)}</p>
                   </div>
                   <ReadMore textSlice={65} pStyle="mb-2 text-justify text-primary">
                     {movie.synopsis}

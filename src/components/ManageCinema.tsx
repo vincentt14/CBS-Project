@@ -1,5 +1,4 @@
 import Swal from "sweetalert2";
-import { useEffect } from "react";
 
 import CustomButton from "./CustomButton";
 import { CinemaModel } from "../models/CinemaModel";
@@ -9,12 +8,6 @@ interface ManageCinemaProps {
 }
 
 const ManageCinemas = ({ cinemas }: ManageCinemaProps) => {
-  console.log(cinemas);
-
-  useEffect(() => {
-    
-  }, []);
-
   const onDeleteMovie = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -69,7 +62,7 @@ const ManageCinemas = ({ cinemas }: ManageCinemaProps) => {
                 Total Seats: <span className="text-white">{cinema.totalSeats}</span>{" "}
               </p>
               <p className="mb-2 text-primary">
-                Package: <span className="text-white">{cinema.packageId}</span>
+                Package: <span className="text-white">{cinema.packageId === "CS" ? "Classic Package" : cinema.packageId === "DX" ? "Deluxe Package" : "Beanie Package"}</span>
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-4 w-full justify-center">

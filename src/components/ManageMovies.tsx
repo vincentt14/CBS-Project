@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import ReadMore from "./ReadMore";
 import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
+import { secondToHms } from "../utils/secondToHms";
 
 interface ManageMoviesProps {
   movies: MoviesModel[];
@@ -59,16 +60,19 @@ const ManageMovies = ({ movies }: ManageMoviesProps) => {
               <h1 className="text-white font-bold text-2xl">{movie.title}</h1>
             </div>
             <div className="flex flex-col px-4 pt-4">
-              <p className="mb-2 text-justify">{movie.genre}</p>
+              <div className="flex justify-between text-justify">
+                <p className="mb-2 text-justify">{movie.genre}</p>
+                <p className="mb-2 text-primary">
+                  Cinema: <span className="text-white">{movie.cinemaId}</span>
+                </p>
+              </div>
               <div className="flex justify-between text-justify">
                 <p className="mb-2 text-primary">
                   Playing at <span className="text-white">{movie.playingTime}</span>
                 </p>
-                <p className="mb-2 text-white">{movie.duration}</p>
+                <p className="mb-2 text-white">{secondToHms(movie.duration)}</p>
               </div>
-              <p className="mb-2 text-primary">
-                Cinema <span className="text-white">{movie.cinemaId}</span>
-              </p>
+
               <ReadMore textSlice={60} pStyle="mb-2 text-justify text-primary">
                 {movie.synopsis}
               </ReadMore>
