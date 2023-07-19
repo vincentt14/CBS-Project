@@ -13,6 +13,7 @@ interface EditCinemaProps {
 const EditCinema = ({ packages }: EditCinemaProps) => {
   const [name, setName] = useState<string>("");
   const [totalSeats, setTotalSeats] = useState<number>(0);
+  const [codeId, setCodeId] = useState<string>("");
   const [packageId, setPackageId] = useState<string>("");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,10 +21,11 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
   useEffect(() => {
     const getData = async () => {
       const data: DocumentData = (await CinemaModel.getCinema(id as string))!;
-
+      
       setName(data.name);
       setTotalSeats(data.totalSeats);
       setPackageId(data.packageId);
+      setCodeId(data.codeId);
     };
     getData();
   }, []);
@@ -31,7 +33,7 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await CinemaModel.updateCinema(id as string, name, totalSeats, packageId);
+    const data = await CinemaModel.updateCinema(id as string, name, totalSeats, codeId, packageId);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -62,7 +64,7 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
         <div className=" bg-bgColor border border-borderColor flex justify-center items-center p-5">
           <h1 className="text-white font-bold text-2xl">Add Cinema</h1>
         </div>
-        <div className="flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center justify-start text-center">
           <div className="p-5">
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Name</p>
@@ -78,11 +80,15 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center text-center">
+        <div className="flex flex-col items-center justify-start text-center">
           <div className="p-5">
             <div className="flex items-center justify-between my-4">
+              <p className="text-primary text-xl max-w-xl">Cinema Id</p>
+              <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" value={codeId} onChange={(e) => setCodeId(e.target.value)} />
+            </div>
+            <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
-              <select required value={packageId} className="w-44 bg-bgColor ml-8 p-2  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
+              <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-2  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
                 {packages.map((packagee: DocumentData) => (
                   <option value={packagee.codeId}>{packagee.name}</option>
                 ))}

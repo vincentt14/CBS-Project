@@ -104,8 +104,8 @@ const App = () => {
         <Route path="book/:id" element={<Bookpage />} />
         <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} cinemas={cinemas} />}>
           <Route path="manageMovies" element={<ManageMovies movies={movies} />} />
-          <Route path="addMovie" element={<AddMovie />} />
-          <Route path="editMovie/:id" element={<EditMovie />} />
+          <Route path="addMovie" element={<AddMovie cinemas={cinemas} />} />
+          <Route path="editMovie/:id" element={<EditMovie cinemas={cinemas} />} />
 
           <Route path="manageCinemas" element={<ManageCinemas cinemas={cinemas} />} />
           <Route path="addCinema" element={<AddCinema packages={packages} />} />

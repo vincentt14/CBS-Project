@@ -4,19 +4,27 @@ import { useState } from "react";
 import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { useNavigate } from "react-router-dom";
+import { CinemaModel } from "../models/CinemaModel";
 
-const AddMovie = () => {
+interface AddMovieProps {
+  cinemas: CinemaModel[];
+}
+
+const AddMovie = ({ cinemas }: AddMovieProps) => {
   const [title, setTitle] = useState<string>("");
   const [playingTime, setPlayingTime] = useState<string>("");
-  const [duration, setDuration] = useState<string>("");
+  const [duration, setDuration] = useState<number>(0);
   const [genre, setGenre] = useState<string>("");
   const [synopsis, setSynopsis] = useState<string>("");
+  const [cinemaId, setCinemaId] = useState<string>("");
   const navigate = useNavigate();
+
+  console.log(cinemas);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await MoviesModel.createMovie(title, synopsis, playingTime, duration, genre);
+    const data = await MoviesModel.createMovie(title, synopsis, playingTime, duration, cinemaId, genre);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -25,7 +33,7 @@ const AddMovie = () => {
         showConfirmButton: false,
         timer: 1000,
       });
-      navigate('/adminDashboard/manageMovies')
+      navigate("/adminDashboard/manageMovies");
     } else {
       Swal.fire({
         icon: "error",
@@ -59,7 +67,7 @@ const AddMovie = () => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Duration</p>
-              <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(e.target.value)} />
+              <input required type="number" className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(+e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
               <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageMovies" />
@@ -74,8 +82,16 @@ const AddMovie = () => {
               <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setGenre(e.target.value)} />
             </div>
             <div className="flex items-center justify-between my-4">
+              <p className="text-primary text-xl max-w-xl">Package</p>
+              <select required value={cinemaId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setCinemaId(e.target.value)}>
+                {cinemas.map((cinema: CinemaModel) => (
+                  <option value={cinema.codeId}>{cinema.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Synopsis</p>
-              <textarea style={{ "overflow" : "hidden" }}  required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md w-[198px] h-44" onChange={(e) => setSynopsis(e.target.value)} />
+              <textarea style={{ overflow: "hidden" }} required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md w-[198px] h-28" onChange={(e) => setSynopsis(e.target.value)} />
             </div>
           </div>
         </div>

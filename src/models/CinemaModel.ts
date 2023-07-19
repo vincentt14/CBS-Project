@@ -12,6 +12,7 @@ export class CinemaModel {
     public id: string,
     public name: string,
     public totalSeats: number,
+    public codeId: string,
     public totalAvailableSeats: number,
     public packageId: string,
   ) { }
@@ -21,6 +22,7 @@ export class CinemaModel {
       id,
       data.name,
       data.totalSeats,
+      data.codeId,
       data.totalAvailableSeats,
       data.packageId,
     );
@@ -36,12 +38,13 @@ export class CinemaModel {
     return null;
   }
 
-  static createCinema = async (name: string, totalSeats: number, packageId: string) => {
+  static createCinema = async (name: string, totalSeats: number, codeId: string, packageId: string) => {
     try {
       const ref = FirebaseSingleton.cinemaCollectionRef();
       await addDoc(ref, {
         name,
         totalSeats,
+        codeId,
         packageId
       })
       const res: CinemaResponse = {
@@ -57,12 +60,13 @@ export class CinemaModel {
     }
   }
 
-  static updateCinema = async (id: string, name: string, totalSeats: number, packageId: string) => {
+  static updateCinema = async (id: string, name: string, totalSeats: number, codeId: string, packageId: string) => {
     try {
       const ref = FirebaseSingleton.cinemasDocRef(id);
       await updateDoc(ref, {
         name,
         totalSeats,
+        codeId,
         packageId
       });
       const res: CinemaResponse = {

@@ -61,9 +61,14 @@ const ManageMovies = ({ movies }: ManageMoviesProps) => {
             <div className="flex flex-col px-4 pt-4">
               <p className="mb-2 text-justify">{movie.genre}</p>
               <div className="flex justify-between text-justify">
-                <p className="mb-2 text-primary">Playing at <span className="text-white">{movie.playingTime}</span></p>
+                <p className="mb-2 text-primary">
+                  Playing at <span className="text-white">{movie.playingTime}</span>
+                </p>
                 <p className="mb-2 text-white">{movie.duration}</p>
               </div>
+              <p className="mb-2 text-primary">
+                Cinema <span className="text-white">{movie.cinemaId}</span>
+              </p>
               <ReadMore textSlice={60} pStyle="mb-2 text-justify text-primary">
                 {movie.synopsis}
               </ReadMore>

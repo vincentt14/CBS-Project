@@ -13,8 +13,9 @@ export class MoviesModel {
     public title: string,
     public synopsis: string,
     public playingTime: string,
-    public duration: string,
+    public duration: number,
     public genre: string,
+    public cinemaId : string,
     public cinema: RoomPackageModel | null
   ) { }
 
@@ -26,6 +27,7 @@ export class MoviesModel {
       data.playingTime,
       data.duration,
       data.genre,
+      data.cinemaId,
       null
     );
   };
@@ -40,7 +42,7 @@ export class MoviesModel {
     return null;
   };
 
-  static createMovie = async (title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
+  static createMovie = async (title: string, synopsis: string, playingTime: string, duration: number, cinemaId: string, genre: string) => {
     try {
       const ref = FirebaseSingleton.moviesCollectionRef();
       await addDoc(ref, {
@@ -48,6 +50,7 @@ export class MoviesModel {
         synopsis,
         playingTime,
         duration,
+        cinemaId,
         genre,
       });
       const res: MovieResponse = {
@@ -63,7 +66,7 @@ export class MoviesModel {
     }
   };
 
-  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
+  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: string, duration: number, cinemaId: string, genre: string) => {
     try {
       const ref = FirebaseSingleton.moviesDocRef(id);
       await updateDoc(ref, {
@@ -71,6 +74,7 @@ export class MoviesModel {
         synopsis,
         playingTime,
         duration,
+        cinemaId,
         genre,
       });
       const res: MovieResponse = {
