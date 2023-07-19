@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { onSnapshot } from "firebase/firestore";
 import { Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -7,22 +8,26 @@ import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import AddMovie from "./components/AddMovie";
+import AddCinema from "./components/AddCinema";
 import EditMovie from "./components/EditMovie";
 import RegisterPage from "./pages/RegisterPage";
+import EditCinema from "./components/EditCinema";
 import EditPackage from "./components/EditPackage";
 import PlayingNowPage from "./pages/PlayingNowPage";
 import ManageMovies from "./components/ManageMovies";
+import ManageCinemas from "./components/ManageCinema";
 import ManagePackages from "./components/ManagePackages";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 
 import { UserModel } from "./models/UserModel";
-import { onSnapshot } from "firebase/firestore";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
 import { MoviesModel } from "./models/MoviesModel";
+import { CinemaModel } from "./models/CinemaModel";
 
 const App = () => {
   const [user, setUser] = useState<any | null>(null);
   const [movies, setMovies] = useState<any>([]);
+  const [cinemas, setCinemas] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,9 +55,19 @@ const App = () => {
       setMovies(items);
     });
 
+    const getCinemas = onSnapshot(FirebaseSingleton.cinemaCollectionRef(), (querySnapshot) => {
+      const items: CinemaModel[] = [];
+      querySnapshot.forEach((doc) => {
+        const result = CinemaModel.fromFirebase(doc.data(), doc.id);
+        items.push(result);
+      });
+      setCinemas(items);
+    });
+
     return () => {
-      getMovies();
       checkActiveUser();
+      getMovies();
+      getCinemas();
     };
   }, []);
 
@@ -76,13 +91,15 @@ const App = () => {
         <Route path="register" element={<RegisterPage />} />
         <Route path="playingNow" element={<PlayingNowPage movies={movies} />} />
         <Route path="book/:id" element={<Bookpage />} />
-        <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} />}>
+        <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} cinemas={cinemas} />}>
           <Route path="manageMovies" element={<ManageMovies movies={movies} />} />
           <Route path="addMovie" element={<AddMovie />} />
           <Route path="editMovie/:id" element={<EditMovie />} />
-          <Route path="manageCinema" element={<ManageMovies movies={movies} />} />
-          <Route path="addCinema" element={<AddMovie />} />
-          <Route path="editCinema/:id" element={<EditMovie />} />
+          
+          <Route path="manageCinemas" element={<ManageCinemas cinemas={cinemas} />} />
+          <Route path="addCinema" element={<AddCinema />} />
+          <Route path="editCinema/:id" element={<EditCinema />} />
+          
           <Route path="managePackages" element={<ManagePackages />} />
           <Route path="editPackage/:id" element={<EditPackage />} />
         </Route>

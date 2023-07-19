@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { useNavigate } from "react-router-dom";
 
-const AddMovie = () => {
+const AddMovie = () => {  
   const [title, setTitle] = useState<string>("");
   const [playingTime, setPlayingTime] = useState<string>("");
   const [duration, setDuration] = useState<string>("");
@@ -60,7 +60,7 @@ const AddMovie = () => {
               <input required className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to manage movie" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageMovies" />
+              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageMovies" />
               <CustomButton btnType="submit" title="Add Movie" containerStyles="ml-4 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
             </div>
           </div>

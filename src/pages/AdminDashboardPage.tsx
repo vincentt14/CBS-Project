@@ -2,19 +2,15 @@ import { Outlet } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
 import { useState } from "react";
+import { MoviesModel } from "../models/MoviesModel";
+import { CinemaModel } from "../models/CinemaModel";
 
 interface AdminDahsboardProps {
-  movies: {
-    id: string;
-    title: string;
-    synopsis: string;
-    playingTime: string;
-    duration: string;
-    genre: string;
-  }[];
+  movies: MoviesModel,
+  cinemas: CinemaModel
 }
 
-const AdminDashboardPage = ({ movies }: AdminDahsboardProps) => {
+const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {
   const [menu, setMenu] = useState<string>("");
 
   return (
@@ -38,10 +34,10 @@ const AdminDashboardPage = ({ movies }: AdminDahsboardProps) => {
               />
               <CustomButton
                 btnType="button"
-                title="Manage Cinema"
+                title="Manage Cinemas"
                 containerStyles={menu === "c" ? "my-1 bg-secondary" : "my-1 border-black bg-white hover:bg-[#ededed]"}
                 textStyles={menu === "c" ? "text-white" : "text-black hover:text-[#262626]"}
-                to="/adminDashboard/manageCinema"
+                to="/adminDashboard/manageCinemas"
                 onClick={() => setMenu("c")}
               />
               <CustomButton
@@ -61,7 +57,7 @@ const AdminDashboardPage = ({ movies }: AdminDahsboardProps) => {
               <p className="font-base text-base lg:text-xl">Movies</p>
             </div>
             <div className="p-3 text-center border-2 border-borderColor rounded-md">
-              <h1 className="text-4xl font-bold text-secondary lg:text-5xl">1</h1>
+              <h1 className="text-4xl font-bold text-secondary lg:text-5xl">{cinemas.length}</h1>
               <p className="font-base text-base lg:text-xl">Cinema</p>
             </div>
             <div className="p-3 text-center border-2 border-borderColor rounded-md">

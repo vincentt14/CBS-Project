@@ -1,10 +1,10 @@
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
+import { DocumentData } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
-import { DocumentData } from "firebase/firestore";
 
 const EditMovie = () => {
   const [title, setTitle] = useState<string>("");

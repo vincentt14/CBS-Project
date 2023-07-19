@@ -11,8 +11,6 @@ export abstract class RoomPackageModel {
     protected cinema: CinemaModel
   ) { }
 
-  public getPackage(): {}
-
   public editPackageInfo(): void { }
 
   public deletePackage(): void { }
