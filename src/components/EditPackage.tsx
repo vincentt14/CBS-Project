@@ -56,8 +56,8 @@ const EditPackage = () => {
               </div>
             )}
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/managePackages" />
-              <CustomButton btnType="submit" title="Edit Package" containerStyles="ml-4 border-borderColor bg-black hover:border-primary" textStyles="text-white" />
+              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/managePackages" />
+              <CustomButton btnType="submit" title="Edit Package" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
           </div>
         </div>

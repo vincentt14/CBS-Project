@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { UserModel } from "../models/UserModel";
 
 interface FooterProps {
-  authUser: any;
+  authUser: UserModel | null;
 }
 
 const Footer = ({ authUser }: FooterProps) => {
@@ -39,11 +40,14 @@ const Footer = ({ authUser }: FooterProps) => {
                       User Dashboard
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/adminDashboard" className="mb-2 inline-block text-base text-primary hover:text-secondary">
-                      Admin Dashboard
-                    </Link>
-                  </li>
+
+                  {authUser.isAdmin && (
+                    <li>
+                      <Link to="/adminDashboard" className="mb-2 inline-block text-base text-primary hover:text-secondary">
+                        Admin Dashboard
+                      </Link>
+                    </li>
+                  )}
                 </>
               )}
             </ul>

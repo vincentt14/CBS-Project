@@ -4,16 +4,24 @@ import { useState } from "react";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
 import { CinemaModel } from "../models/CinemaModel";
+import { DocumentData } from "firebase/firestore";
 
-const AddCinema = () => {
+interface AddCinemaProps {
+  packages: DocumentData;
+}
+
+const AddCinema = ({ packages }: AddCinemaProps) => {
   const [name, setName] = useState<string>("");
   const [totalSeats, setTotalSeats] = useState<number>(0);
+  const [packageId, setPackageId] = useState<string>("BN");
   const navigate = useNavigate();
+
+  console.log(packages);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await CinemaModel.createCinema(name, totalSeats);
+    const data = await CinemaModel.createCinema(name, totalSeats, packageId);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -55,16 +63,20 @@ const AddCinema = () => {
               <input required type="number" className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setTotalSeats(+e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageCinemas" />
-              <CustomButton btnType="submit" title="Add Cinema" containerStyles="ml-4 border-borderColor bg-black hover:border-primary" textStyles="text-white" />
+              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageCinemas" />
+              <CustomButton btnType="submit" title="Add Cinema" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center text-center">
           <div className="p-5">
             <div className="flex items-center justify-between my-4">
-              <p className="text-secondary text-xl max-w-xl">Package</p>
-              <input className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" />
+              <p className="text-primary text-xl max-w-xl">Package</p>
+              <select required value={packageId} className="w-44 bg-bgColor ml-8 p-2  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
+                {packages.map((packagee: DocumentData) => (
+                  <option value={packagee.codeId}>{packagee.name}</option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

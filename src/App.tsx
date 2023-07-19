@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { onSnapshot } from "firebase/firestore";
+import { DocumentData, onSnapshot } from "firebase/firestore";
 import { Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -29,6 +29,7 @@ const App = () => {
   const [user, setUser] = useState<UserModel | null>(null);
   const [movies, setMovies] = useState<MoviesModel[]>([]);
   const [cinemas, setCinemas] = useState<CinemaModel[]>([]);
+  const [packages, setPackages] = useState<DocumentData | []>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const App = () => {
       if (userCredential) {
         const getUser = async () => {
           const activeUser: UserModel | null = await UserModel.getUserFromFirestore(userCredential.uid);
-          setUser(activeUser!);
+          setUser(activeUser);
           setLoading(false);
         };
         getUser();
@@ -65,10 +66,19 @@ const App = () => {
       setCinemas(items);
     });
 
+    const getPackages = onSnapshot(FirebaseSingleton.packagesCollectionRef(), (querySnapshot) => {
+      const items: DocumentData = [];
+      querySnapshot.forEach((doc) => {
+        items.push(doc.data());
+      });
+      setPackages(items);
+    });
+
     return () => {
       checkActiveUser();
       getMovies();
       getCinemas();
+      getPackages();
     };
   }, []);
 
@@ -98,8 +108,8 @@ const App = () => {
           <Route path="editMovie/:id" element={<EditMovie />} />
 
           <Route path="manageCinemas" element={<ManageCinemas cinemas={cinemas} />} />
-          <Route path="addCinema" element={<AddCinema />} />
-          <Route path="editCinema/:id" element={<EditCinema />} />
+          <Route path="addCinema" element={<AddCinema packages={packages} />} />
+          <Route path="editCinema/:id" element={<EditCinema packages={packages} />} />
 
           <Route path="managePackages" element={<ManagePackages />} />
           <Route path="editPackage/:id" element={<EditPackage />} />

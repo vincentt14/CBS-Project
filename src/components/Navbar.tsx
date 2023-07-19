@@ -92,10 +92,17 @@ const Navbar = ({ authUser }: NavbarProps) => {
                         </Link>
                       </li>
                       <li className="group">
-                        <Link to="/adminDashboard" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
-                          Admin Dashboard
-                        </Link>
-                      </li>
+                          <Link to="/userDashboard" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
+                            User Dashboard
+                          </Link>
+                        </li>
+                      {authUser.isAdmin && (
+                        <li className="group">
+                          <Link to="/adminDashboard" className="cursor-pointer text-primary text-base py-2 mx-8 flex group-hover:text-secondary" onClick={onToggleClick}>
+                            Admin Dashboard
+                          </Link>
+                        </li>
+                      )}
                       <li className="group">
                         <CustomButton btnType="submit" title="Logout" containerStyles="ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" textStyles="text-white" onClick={onLogout} />
                       </li>

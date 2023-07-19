@@ -6,9 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "./CustomButton";
 import { CinemaModel } from "../models/CinemaModel";
 
-const EditCinema = () => {
+interface EditCinemaProps {
+  packages: DocumentData;
+}
+
+const EditCinema = ({ packages }: EditCinemaProps) => {
   const [name, setName] = useState<string>("");
   const [totalSeats, setTotalSeats] = useState<number>(0);
+  const [packageId, setPackageId] = useState<string>("");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -18,6 +23,7 @@ const EditCinema = () => {
 
       setName(data.name);
       setTotalSeats(data.totalSeats);
+      setPackageId(data.packageId);
     };
     getData();
   }, []);
@@ -25,7 +31,7 @@ const EditCinema = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await CinemaModel.updateCinema(id as string, name, totalSeats);
+    const data = await CinemaModel.updateCinema(id as string, name, totalSeats, packageId);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -67,8 +73,8 @@ const EditCinema = () => {
               <input required type="number" className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor" value={totalSeats} onChange={(e) => setTotalSeats(+e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageCinemas" />
-              <CustomButton btnType="submit" title="Edit Cinema" containerStyles="ml-4 border-borderColor bg-black hover:border-primary" textStyles="text-white" />
+              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageCinemas" />
+              <CustomButton btnType="submit" title="Edit Cinema" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
           </div>
         </div>
@@ -76,7 +82,11 @@ const EditCinema = () => {
           <div className="p-5">
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
-              <input className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor" />
+              <select required value={packageId} className="w-44 bg-bgColor ml-8 p-2  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
+                {packages.map((packagee: DocumentData) => (
+                  <option value={packagee.codeId}>{packagee.name}</option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

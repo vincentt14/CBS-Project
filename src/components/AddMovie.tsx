@@ -62,8 +62,8 @@ const AddMovie = () => {
               <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
-              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageMovies" />
-              <CustomButton btnType="submit" title="Add Movie" containerStyles="ml-4 border-borderColor bg-black hover:border-primary" textStyles="text-white" />
+              <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageMovies" />
+              <CustomButton btnType="submit" title="Add Movie" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
           </div>
         </div>
