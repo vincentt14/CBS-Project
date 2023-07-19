@@ -25,9 +25,9 @@ import { MoviesModel } from "./models/MoviesModel";
 import { CinemaModel } from "./models/CinemaModel";
 
 const App = () => {
-  const [user, setUser] = useState<any | null>(null);
-  const [movies, setMovies] = useState<any>([]);
-  const [cinemas, setCinemas] = useState<any>([]);
+  const [user, setUser] = useState<UserModel | null>(null);
+  const [movies, setMovies] = useState<MoviesModel[]>([]);
+  const [cinemas, setCinemas] = useState<CinemaModel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,8 +35,8 @@ const App = () => {
     const checkActiveUser = onAuthStateChanged(auth, (userCredential) => {
       if (userCredential) {
         const getUser = async () => {
-          const activeUser = await UserModel.getUserFromFirestore(userCredential.uid);
-          setUser(activeUser);
+          const activeUser: UserModel | null = await UserModel.getUserFromFirestore(userCredential.uid);
+          setUser(activeUser!);
           setLoading(false);
         };
         getUser();
@@ -95,11 +95,11 @@ const App = () => {
           <Route path="manageMovies" element={<ManageMovies movies={movies} />} />
           <Route path="addMovie" element={<AddMovie />} />
           <Route path="editMovie/:id" element={<EditMovie />} />
-          
+
           <Route path="manageCinemas" element={<ManageCinemas cinemas={cinemas} />} />
           <Route path="addCinema" element={<AddCinema />} />
           <Route path="editCinema/:id" element={<EditCinema />} />
-          
+
           <Route path="managePackages" element={<ManagePackages />} />
           <Route path="editPackage/:id" element={<EditPackage />} />
         </Route>

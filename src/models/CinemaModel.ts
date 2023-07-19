@@ -4,7 +4,7 @@ import { RoomPackageModel } from "./RoomPackageModel";
 
 interface CinemaResponse {
   success: boolean;
-  message?: any;
+  message?: string;
 }
 
 export class CinemaModel {
@@ -13,8 +13,8 @@ export class CinemaModel {
     public name: string,
     public totalSeats: number,
     public totalAvailableSeats: number | null,
-    public roomPackages: RoomPackageModel | null, 
-  ) {}
+    public roomPackages: RoomPackageModel | null,
+  ) { }
 
   static fromFirebase = (data: DocumentData, id: string): CinemaModel => {
     return new CinemaModel(
@@ -26,7 +26,7 @@ export class CinemaModel {
     );
   };
 
-  static getCinema = async (id:string): Promise<CinemaModel | null> => {
+  static getCinema = async (id: string): Promise<CinemaModel | null> => {
     const ref = FirebaseSingleton.cinemasDocRef(id);
     const result = await getDoc(ref);
 
@@ -37,7 +37,7 @@ export class CinemaModel {
   }
 
   static createCinema = async (name: string, totalSeats: number) => {
-    try{
+    try {
       const ref = FirebaseSingleton.cinemaCollectionRef();
       await addDoc(ref, {
         name,
@@ -47,16 +47,16 @@ export class CinemaModel {
         success: true,
       };
       return res;
-    }catch(error){
+    } catch (error) {
       const res: CinemaResponse = {
         success: false,
-        message: error
+        message: 'error create cinema'
       }
       return res
     }
   }
 
-  static updateCinema = async (id:any, name: string, totalSeats:number) => {
+  static updateCinema = async (id: string, name: string, totalSeats: number) => {
     try {
       const ref = FirebaseSingleton.cinemasDocRef(id);
       await updateDoc(ref, {
@@ -70,7 +70,7 @@ export class CinemaModel {
     } catch (error) {
       const res: CinemaResponse = {
         success: false,
-        message: error,
+        message: 'error update cinema',
       };
       return res;
     }
@@ -87,9 +87,9 @@ export class CinemaModel {
     } catch (error) {
       const res: CinemaResponse = {
         success: false,
-        message: error,
+        message: 'error delete cinema',
       };
       return res;
     }
-  } 
+  }
 }

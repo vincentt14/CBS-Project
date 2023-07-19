@@ -1,8 +1,10 @@
 import CustomButton from "../components/CustomButton";
+import { MoviesModel } from "../models/MoviesModel";
+import { UserModel } from "../models/UserModel";
 
 interface HomePageProps {
-  movies: any;
-  authUser: any;
+  movies: MoviesModel[];
+  authUser: UserModel | null;
 }
 
 const HomePage = ({ authUser, movies }: HomePageProps) => {

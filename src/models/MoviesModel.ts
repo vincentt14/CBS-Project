@@ -4,27 +4,27 @@ import { FirebaseSingleton } from "./FirebaseSingleton";
 
 interface MovieResponse {
   success: boolean;
-  message?: any;
+  message?: string;
 }
 
 export class MoviesModel {
   constructor(
-    public id: string, 
-    public title: string, 
-    public synopsis: string, 
-    public playingTime: string, 
-    public duration: string, 
-    public genre: string, 
+    public id: string,
+    public title: string,
+    public synopsis: string,
+    public playingTime: string,
+    public duration: string,
+    public genre: string,
     public cinema: RoomPackageModel | null
-  ) {}
+  ) { }
 
   static fromFirebase = (data: DocumentData, id: string): MoviesModel => {
     return new MoviesModel(
       id,
-      data.title, 
-      data.synopsis, 
-      data.playingTime, 
-      data.duration, 
+      data.title,
+      data.synopsis,
+      data.playingTime,
+      data.duration,
       data.genre,
       null
     );
@@ -33,7 +33,7 @@ export class MoviesModel {
   static getMovie = async (id: string): Promise<MoviesModel | null> => {
     const ref = FirebaseSingleton.moviesDocRef(id);
     const result = await getDoc(ref);
-    
+
     if (result.exists()) {
       return this.fromFirebase(result.data(), result.id);
     }
@@ -57,13 +57,13 @@ export class MoviesModel {
     } catch (error) {
       const res: MovieResponse = {
         success: false,
-        message: error,
+        message: 'error create movie',
       };
       return res;
     }
   };
 
-  static updateMovie = async (id: any, title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
+  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: string, duration: string, genre: string) => {
     try {
       const ref = FirebaseSingleton.moviesDocRef(id);
       await updateDoc(ref, {
@@ -80,7 +80,7 @@ export class MoviesModel {
     } catch (error) {
       const res: MovieResponse = {
         success: false,
-        message: error,
+        message: 'error update movie',
       };
       return res;
     }
@@ -97,7 +97,7 @@ export class MoviesModel {
     } catch (error) {
       const res: MovieResponse = {
         success: false,
-        message: error,
+        message: 'error delete movie',
       };
       return res;
     }

@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { useNavigate } from "react-router-dom";
 
-const AddMovie = () => {  
+const AddMovie = () => {
   const [title, setTitle] = useState<string>("");
   const [playingTime, setPlayingTime] = useState<string>("");
   const [duration, setDuration] = useState<string>("");
@@ -13,7 +13,7 @@ const AddMovie = () => {
   const [synopsis, setSynopsis] = useState<string>("");
   const navigate = useNavigate();
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
     const data = await MoviesModel.createMovie(title, synopsis, playingTime, duration, genre);

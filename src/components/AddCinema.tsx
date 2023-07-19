@@ -10,7 +10,7 @@ const AddCinema = () => {
   const [totalSeats, setTotalSeats] = useState<number>(0);
   const navigate = useNavigate();
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
     const data = await CinemaModel.createCinema(name, totalSeats);
@@ -50,7 +50,7 @@ const AddCinema = () => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-secondary text-xl max-w-xl">Total Seats</p>
-              <input required type="number" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setTotalSeats(e.target.value)} />
+              <input required type="number" className="ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setTotalSeats(+e.target.value)} />
             </div>
             <div className="flex items-center justify-between">
               <CustomButton btnType="button" title="Back to Manage" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to="/adminDashboard/manageCinemas" />

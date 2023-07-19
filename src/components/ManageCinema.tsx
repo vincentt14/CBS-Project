@@ -4,14 +4,10 @@ import CustomButton from "./CustomButton";
 import { CinemaModel } from "../models/CinemaModel";
 
 interface ManageCinemaProps {
-  movies: {
-    id: string;
-    name: string;
-    totalSeats: number;
-  }[];
+  cinemas: CinemaModel[];
 }
 
-const ManageCinemas = ({ cinemas }: any) => {
+const ManageCinemas = ({ cinemas }: ManageCinemaProps) => {
   const onDeleteMovie = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
