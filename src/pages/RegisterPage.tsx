@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
@@ -13,7 +13,7 @@ const RegisterPage = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (gender !== "") {
       Swal.showLoading();

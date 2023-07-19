@@ -6,7 +6,7 @@ import CustomButton from "./CustomButton";
 import { UserModel } from "../models/UserModel";
 
 interface NavbarProps {
-  authUser: any;
+  authUser: UserModel | null;
 }
 
 const Navbar = ({ authUser }: NavbarProps) => {

@@ -29,10 +29,10 @@ const EditMovie = () => {
     getData();
   }, []);
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await MoviesModel.updateMovie(id, title, synopsis, playingTime, duration, genre);
+    const data = await MoviesModel.updateMovie(id as string, title, synopsis, playingTime, duration, genre);
     if (data.success) {
       Swal.fire({
         icon: "success",

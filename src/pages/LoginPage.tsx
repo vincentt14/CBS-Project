@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CustomButton from "../components/CustomButton";
@@ -10,7 +10,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
     const data = await UserModel.login(email, password);

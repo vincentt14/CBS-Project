@@ -5,21 +5,21 @@ import { RoomPackageModel } from "./RoomPackageModel";
 
 interface PackageResponse {
   success: boolean;
-  message?: any;
+  message?: string;
 }
 
-export class ClassicPackageModel extends RoomPackageModel{
+export class ClassicPackageModel extends RoomPackageModel {
   constructor(
     public id: string,
     public price: number,
     public description: string,
     public cinema: CinemaModel,
     public foodDiscount: number,
-  ){
+  ) {
     super(id, price, description, cinema);
   }
 
-  // public override async editPackageInfo (id: any, price:number, description:string) {
+  // public override async editPackageInfo (id: string, price:number, description:string) {
   //   try {
   //     const ref = FirebaseSingleton.packagesDocRef(id);
   //     await updateDoc(ref, {

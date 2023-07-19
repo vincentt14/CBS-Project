@@ -6,8 +6,8 @@ import { MoviesModel } from "../models/MoviesModel";
 import { CinemaModel } from "../models/CinemaModel";
 
 interface AdminDahsboardProps {
-  movies: MoviesModel;
-  cinemas: CinemaModel;
+  movies: MoviesModel[],
+  cinemas: CinemaModel[]
 }
 
 const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {

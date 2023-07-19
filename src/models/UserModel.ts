@@ -1,6 +1,6 @@
 import { User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { FirebaseSingleton } from "./FirebaseSingleton";
-import { getDoc, setDoc } from "firebase/firestore";
+import { DocumentData, getDoc, setDoc } from "firebase/firestore";
 
 interface AuthenticationResponse {
   success: boolean;
@@ -10,24 +10,34 @@ interface AuthenticationResponse {
 
 export class UserModel {
   constructor(
-    public id: string, 
-    public name: string, 
-    public gender: string, 
-    public email: string, 
-    public password: string, 
+    public id: string,
+    public name: string,
+    public gender: string,
+    public email: string,
     public isAdmin: boolean
-  ) {}
+  ) { }
 
-  static getUserFromFirestore = async (userUid: string) => {
+  static fromFirebase = (data: DocumentData, id: string): UserModel => {
+    return new UserModel(
+      id,
+      data.name,
+      data.gender,
+      data.email,
+      data.isAdmin
+    );
+  }
+
+  static getUserFromFirestore = async (userUid: string): Promise<UserModel | null> => {
     try {
       const ref = FirebaseSingleton.usersDocRef(userUid);
       const result = await getDoc(ref);
 
       if (result.exists()) {
-        return result.data();
+        return this.fromFirebase(result.data(), result.id);
       }
+      return null;
     } catch (error) {
-      return;
+      return null;
     }
   };
 

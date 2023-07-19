@@ -7,7 +7,7 @@ describe("User Model Constructor", () => {
   console.log(date.toISOString());
   console.log(date.toUTCString());
   console.log(date.toString());
-  const user = new UserModel('1','rucci','L','rucci@gmail.com','***',true);
+  const user = new UserModel('1', 'rucci', 'L', 'rucci@gmail.com', true);
   console.log(user);
   test('user.name = Rucci', () => {
     return expect(user.name).toBe('rucci');

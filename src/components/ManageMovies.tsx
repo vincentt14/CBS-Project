@@ -5,22 +5,7 @@ import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 
 interface ManageMoviesProps {
-  movies: {
-    id: string;
-    title: string;
-    synopsis: string;
-    playingTime: string;
-    duration: string;
-    genre: string;
-  }[];
-}
-interface IMovies {
-  id: string;
-  title: string;
-  synopsis: string;
-  playingTime: string;
-  duration: string;
-  genre: string;
+  movies: MoviesModel[];
 }
 
 const ManageMovies = ({ movies }: ManageMoviesProps) => {
@@ -68,7 +53,7 @@ const ManageMovies = ({ movies }: ManageMoviesProps) => {
           <h1 className="text-white font-bold text-2xl">Add Movie</h1>
           <CustomButton btnType="button" title="Add" containerStyles="border-borderColor bg-black hover:border-primary w-full" textStyles="text-white" to="/adminDashboard/addMovie" />
         </div>
-        {movies.map((movie: IMovies) => (
+        {movies.map((movie: MoviesModel) => (
           <div key={movie.id} className="border-2 border-borderColor bg-bgColor rounded-md">
             <div className="bg-black p-8 h-[120px] flex justify-center items-center border rounded-md border-borderColor">
               <h1 className="text-white font-bold text-2xl">{movie.title}</h1>

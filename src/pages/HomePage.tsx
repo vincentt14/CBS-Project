@@ -1,10 +1,12 @@
 import CustomButton from "../components/CustomButton";
 import ticket from "../lottie/ticket.json";
 import Lottie from "lottie-react";
+import { MoviesModel } from "../models/MoviesModel";
+import { UserModel } from "../models/UserModel";
 
 interface HomePageProps {
-  movies: any;
-  authUser: any;
+  movies: MoviesModel[];
+  authUser: UserModel | null;
 }
 
 const HomePage = ({ authUser, movies }: HomePageProps) => {

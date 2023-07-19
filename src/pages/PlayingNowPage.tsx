@@ -2,7 +2,11 @@ import ReadMore from "../components/ReadMore";
 import CustomButton from "../components/CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 
-const PlayingNowPage = ({ movies }: { movies: Array<MoviesModel> }) => {
+interface PlayingNowPageProps {
+  movies: MoviesModel[]
+}
+
+const PlayingNowPage = ({ movies }: PlayingNowPageProps) => {
   return (
     <section className="pt-28 pb-24 lg:py-32">
       <div className="container w-full">
