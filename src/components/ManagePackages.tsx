@@ -37,15 +37,15 @@ const ManagePackages = () => {
   return (
     <div className="flex flex-col">
       <div className="mx-4">
-        <hr className="w-[150px] my-3 p-1 bg-secondary border border-borderColor" />
+        <hr className="w-[150px] my-3 p-1 bg-bgColor border border-borderColor" />
       </div>
       <div className="m-4 grid lg:grid-cols-3 gap-5">
         {packages.map((packagee: IPackages) => (
-          <div key={packagee.id}>
-            <div className="bg-secondary px-8 pt-8 flex justify-center items-center rounded-t-xl">
+          <div key={packagee.id} className="bg-bgColor border-2 border-borderColor rounded-xl">
+            <div className="border-2 border-borderColor bg-black px-8 p-5 flex justify-center items-center rounded-t-xl">
               <h1 className="text-white font-bold text-2xl capitalize">{packagee.name}</h1>
             </div>
-            <div className="flex flex-col py-4 px-10 bg-secondary rounded-b-xl">
+            <div className="flex flex-col py-4 px-10 bg-bgColor rounded-b-xl">
               <div className="flex justify-between">
                 <p className="mb-2 text-white text-justify">
                   Price: <span className="text-white">{packagee.price}</span>
@@ -83,7 +83,7 @@ const ManagePackages = () => {
               <ReadMore textSlice={100} pStyle="mb-2 text-primary text-justify">
                 {packagee.description}
               </ReadMore>
-              <CustomButton btnType="button" to={`/adminDashboard/editPackage/${packagee.id}`} title="Edit" containerStyles="bg-secondary  w-full" textStyles="text-white" />
+              <CustomButton btnType="button" to={`/adminDashboard/editPackage/${packagee.id}`} title="Edit" containerStyles="border-borderColor bg-black hover:border-primary  w-full" textStyles="text-white" />
             </div>
           </div>
         ))}

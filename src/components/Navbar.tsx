@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
@@ -11,16 +11,30 @@ interface NavbarProps {
 
 const Navbar = ({ authUser }: NavbarProps) => {
   const [toggle, setToggle] = useState(false);
+  const refHead = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const onToggleClick = () => {
     setToggle(!toggle);
   };
 
+  useEffect(() => {
+    window.onscroll = () => {
+      const fixedNav: any = refHead.current?.offsetTop;
+
+      if (window.pageYOffset > fixedNav) {
+        refHead.current?.classList.add("navbar-fixed");
+      } else {
+        refHead.current?.classList.remove("navbar-fixed");
+      }
+    };
+  }, []);
+
   const onLogout = () => {
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
+      background: "#111",
       showCancelButton: true,
       confirmButtonText: "Logout",
       confirmButtonColor: "#000",
@@ -30,6 +44,7 @@ const Navbar = ({ authUser }: NavbarProps) => {
         UserModel.logout();
         Swal.fire({
           icon: "success",
+          background: "#111",
           title: "Log Out Success",
           showConfirmButton: false,
           timer: 1000,
@@ -41,11 +56,11 @@ const Navbar = ({ authUser }: NavbarProps) => {
 
   return (
     <nav>
-      <div className="absolute top-0 left-0 w-full flex items-center z-10 pt-2 border-b-2">
+      <div ref={refHead} className="bg-transparant absolute top-0 left-0 w-full flex items-center z-10 transition duration-100 ease-in-out pt-2">
         <div className="container">
           <div className="flex items-center justify-between relative">
             <div className="px-4">
-              <Link to="/" className="cursor-pointer text-primary font-bold text-lg block py-6 hover:text-secondary">
+              <Link to="/" className="cursor-pointer text-primary font-bold text-lg block py-6 hover:text-white">
                 CBS.
               </Link>
             </div>
@@ -82,12 +97,12 @@ const Navbar = ({ authUser }: NavbarProps) => {
                         </Link>
                       </li>
                       <li className="group">
-                        <CustomButton btnType="submit" title="Logout" containerStyles="ml-5 lg:ml-0  border-black bg-white hover:bg-[#ededed] lg:my-0 py-[10px]" textStyles="text-black hover:text-[#262626]" onClick={onLogout} />
+                        <CustomButton btnType="submit" title="Logout" containerStyles="ml-5 lg:ml-0 border-borderColor bg-bgColor hover:border-primary lg:my-0 py-[10px]" textStyles="text-white" onClick={onLogout} />
                       </li>
                     </>
                   ) : (
                     <li className="group">
-                      <CustomButton btnType="button" title="Login" to="/login" containerStyles="bg-black hover:bg-borderColor lg:my-0 py-[10px]" textStyles="text-white" />
+                      <CustomButton btnType="button" title="Login" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
                     </li>
                   )}
                 </ul>

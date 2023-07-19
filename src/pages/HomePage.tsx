@@ -1,4 +1,6 @@
 import CustomButton from "../components/CustomButton";
+import ticket from "../lottie/ticket.json";
+import Lottie from "lottie-react";
 
 interface HomePageProps {
   movies: any;
@@ -7,12 +9,12 @@ interface HomePageProps {
 
 const HomePage = ({ authUser, movies }: HomePageProps) => {
   return (
-    <section className="pt-28 pb-24 lg:pt-48 lg:pb-32">
+    <section className="pt-28 pb-24 lg:pt-44 lg:pb-32">
       <div className="container">
         <div className="flex flex-wrap">
-          <div className="self-center px-4 w-1/2">
-            <h1 className="py-1 text-5xl font-bold text-secondary">Cinema Booking System.</h1>
-            <hr className="w-[200px] my-3 p-1 bg-secondary border border-borderColor rounded-sm" />
+          <div className="w-full self-center px-4 lg:w-1/2">
+            <h1 className="py-1 text-5xl font-bold text-secondary">Cinema Booking System</h1>
+            <hr className="w-[200px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
             {authUser ? (
               <p className="text-primary text-xl max-w-xl">
                 Hello and Welcome back <span className="text-secondary font-bold capitalize">{authUser.name}</span>. Make your day by booking tickets online, <span className="text-secondary capitalize">Easy</span> and{" "}
@@ -27,11 +29,11 @@ const HomePage = ({ authUser, movies }: HomePageProps) => {
               {authUser ? (
                 <>
                   <CustomButton btnType="button" title="Playing Now" to="/playingNow" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
-                  <CustomButton btnType="button" title="Manage Packages or Movies" to="/adminDashboard" containerStyles="md:ml-5 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
+                  <CustomButton btnType="button" title="Manage Packages or Movies" to="/adminDashboard" containerStyles="md:ml-5 border-borderColor bg-bgColor hover:border-primary" textStyles="text-white" />
                 </>
               ) : (
                 <>
-                  <CustomButton btnType="button" title="Login for Book a ticket or Manage movies" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
+                  <CustomButton btnType="button" title="Login for Book tickets or Manage" to="/login" containerStyles="border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
                 </>
               )}
             </div>
@@ -54,29 +56,8 @@ const HomePage = ({ authUser, movies }: HomePageProps) => {
               </div>
             </div>
           </div>
-          <div className="self-center px-4 w-1/2 border-2 border-borderColor rounded-xl p-5 bg-secondary">
-            <h1 className="py-1 text-3xl font-bold text-white">Your Ticket</h1>
-            <div className="bg-white w-full p-2 my-3 rounded-md border-2 border-borderColor">
-              <div className="flex items-center justify-between">
-                <p className=" text-primary">Elemental Forces of Nature</p>
-                <p className=" text-primary">15:00</p>
-                <CustomButton btnType="button" title="Detail" to="/adminDashboard" containerStyles="my-0 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
-              </div>
-            </div>
-            <div className="bg-white w-full p-2 my-3 rounded-md border-2 border-borderColor">
-              <div className="flex items-center justify-between">
-                <p className=" text-primary">Elemental Forces of Nature</p>
-                <p className=" text-primary">15:00</p>
-                <CustomButton btnType="button" title="Detail" to="/adminDashboard" containerStyles="my-0 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
-              </div>
-            </div>
-            <div className="bg-white w-full p-2 my-3 rounded-md border-2 border-borderColor">
-              <div className="flex items-center justify-between">
-                <p className=" text-primary">Elemental Forces of Nature</p>
-                <p className=" text-primary">15:00</p>
-                <CustomButton btnType="button" title="Detail" to="/adminDashboard" containerStyles="my-0 border-borderColor bg-secondary hover:border-primary" textStyles="text-white" />
-              </div>
-            </div>
+          <div className="hidden w-full px-4 selft-center md:block lg:w-1/2 border-2 border-borderColor rounded-md p-4 bg-bgColor">
+            <Lottie animationData={ticket} style={{ width: "350px", height: "350px" }} className="mx-auto blur-none" />
           </div>
         </div>
       </div>

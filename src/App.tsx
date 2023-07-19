@@ -23,6 +23,7 @@ import { UserModel } from "./models/UserModel";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
 import { MoviesModel } from "./models/MoviesModel";
 import { CinemaModel } from "./models/CinemaModel";
+import Footer from "./components/Footer";
 
 const App = () => {
   const [user, setUser] = useState<any | null>(null);
@@ -76,7 +77,7 @@ const App = () => {
       <div className="flex flex-col items-center justify-center w-full h-screen">
         <div className="flex flex-col">
           <h1 className="text-5xl font-bold text-secondary">Loading</h1>
-          <hr className="w-24 my-3 mx-1 p-1 bg-secondary border border-borderColor rounded-sm" />
+          <hr className="w-24 my-3 mx-1 p-1 bg-bgColor border border-borderColor rounded-sm" />
         </div>
       </div>
     );
@@ -104,6 +105,7 @@ const App = () => {
           <Route path="editPackage/:id" element={<EditPackage />} />
         </Route>
       </Routes>
+      <Footer authUser={user} />
     </>
   );
 };
