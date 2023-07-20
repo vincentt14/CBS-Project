@@ -18,7 +18,7 @@ const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {
       <div className="container w-full">
         <div className="flex flex-col md:flex-row mb-6 items-center justify-between">
           <div className="mx-4">
-            <h1 className="py-1 text-5xl font-bold text-secondary">Admin Dashboard.</h1>
+            <h1 className="py-1 text-5xl font-bold text-secondary">Admin Dashboard</h1>
             <hr className="w-[150px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
             <p className="text-primary text-xl max-w-xl">
               Wellcome back <span className="text-secondary capitalize">Admin</span>. You can manage <span className="text-secondary capitalize">Movies</span> and <span className="text-secondary capitalize">Packages</span> here.

@@ -3,8 +3,9 @@ import { DocumentData, onSnapshot } from "firebase/firestore";
 import { Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 
-import Bookpage from "./pages/BookPage";
 import HomePage from "./pages/HomePage";
+import BookPage from "./pages/BookPage";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import AddMovie from "./components/AddMovie";
@@ -17,13 +18,13 @@ import PlayingNowPage from "./pages/PlayingNowPage";
 import ManageMovies from "./components/ManageMovies";
 import ManageCinemas from "./components/ManageCinema";
 import ManagePackages from "./components/ManagePackages";
+import UserDashboardPage from "./pages/UserDashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 
 import { UserModel } from "./models/UserModel";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
 import { MoviesModel } from "./models/MoviesModel";
 import { CinemaModel } from "./models/CinemaModel";
-import Footer from "./components/Footer";
 
 const App = () => {
   const [user, setUser] = useState<UserModel | null>(null);
@@ -100,10 +101,11 @@ const App = () => {
         <Route path="/" element={<HomePage authUser={user} movies={movies} />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="playingNow" element={<PlayingNowPage movies={movies} />} />
-        <Route path="book/:id" element={<Bookpage />} />
+        <Route path="playingNow" element={<PlayingNowPage movies={movies} cinemas={cinemas} />} />
+        <Route path="book/:id" element={<BookPage cinemas={cinemas} />} />
+        <Route path="userDashboard" element={<UserDashboardPage authUser={user} movies={movies} />} />
         <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} cinemas={cinemas} />}>
-          <Route path="manageMovies" element={<ManageMovies movies={movies} />} />
+          <Route path="manageMovies" element={<ManageMovies movies={movies} cinemas={cinemas} />} />
           <Route path="addMovie" element={<AddMovie cinemas={cinemas} />} />
           <Route path="editMovie/:id" element={<EditMovie cinemas={cinemas} />} />
 

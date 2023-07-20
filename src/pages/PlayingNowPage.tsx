@@ -2,18 +2,30 @@ import ReadMore from "../components/ReadMore";
 import CustomButton from "../components/CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { secondToHms } from "../utils/secondToHms";
+import { CinemaModel } from "../models/CinemaModel";
 
 interface PlayingNowPageProps {
   movies: MoviesModel[];
+  cinemas: CinemaModel[];
 }
 
-const PlayingNowPage = ({ movies }: PlayingNowPageProps) => {
+const PlayingNowPage = ({ movies, cinemas }: PlayingNowPageProps) => {
+  const findCinemaById = (id: string): CinemaModel => {
+    let foundedCinema: CinemaModel | null = null;
+    cinemas.map((cinema) => {
+      if (cinema.id === id) {
+        foundedCinema = cinema;
+      }
+    });
+    return foundedCinema!;
+  };
+
   return (
     <section className="pt-28 pb-24 lg:py-32">
       <div className="container w-full">
         <div className="flex flex-col">
           <div className="mx-4">
-            <h1 className="py-1 text-5xl font-bold text-secondary">Now Showing In Cinemas.</h1>
+            <h1 className="py-1 text-5xl font-bold text-secondary">Now Showing In Cinemas</h1>
             <hr className="w-[300px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
           </div>
           <input className="m-4 p-3 bg-bgColor border-borderColor border-2 rounded-md max-w-sm" placeholder="Search Movies" />
@@ -27,7 +39,7 @@ const PlayingNowPage = ({ movies }: PlayingNowPageProps) => {
                   <div className="flex justify-between text-justify">
                     <p className="mb-2 text-justify">{movie.genre}</p>
                     <p className="mb-2 text-primary">
-                      Cinema: <span className="text-white">{movie.cinemaId}</span>
+                      Cinema: <span className="text-white">{findCinemaById(movie.cinemaId).name}</span>
                     </p>
                   </div>
                   <div className="flex justify-between text-justify">

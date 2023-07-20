@@ -4,12 +4,24 @@ import ReadMore from "./ReadMore";
 import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { secondToHms } from "../utils/secondToHms";
+import { CinemaModel } from "../models/CinemaModel";
 
 interface ManageMoviesProps {
   movies: MoviesModel[];
+  cinemas: CinemaModel[];
 }
 
-const ManageMovies = ({ movies }: ManageMoviesProps) => {
+const ManageMovies = ({ movies, cinemas }: ManageMoviesProps) => {
+  const findCinemaById = (id: string): CinemaModel => {
+    let foundedCinema: CinemaModel | null = null;
+    cinemas.map((cinema) => {
+      if (cinema.id === id) {
+        foundedCinema = cinema;
+      }
+    });
+    return foundedCinema!;
+  };
+
   const onDeleteMovie = async (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -63,7 +75,7 @@ const ManageMovies = ({ movies }: ManageMoviesProps) => {
               <div className="flex justify-between text-justify">
                 <p className="mb-2 text-justify">{movie.genre}</p>
                 <p className="mb-2 text-primary">
-                  Cinema: <span className="text-white">{movie.cinemaId}</span>
+                  Cinema: <span className="text-white">{findCinemaById(movie.cinemaId).name}</span>
                 </p>
               </div>
               <div className="flex justify-between text-justify">

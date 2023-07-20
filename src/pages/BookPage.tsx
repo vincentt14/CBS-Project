@@ -4,8 +4,13 @@ import { useState, useEffect } from "react";
 import { MoviesModel } from "../models/MoviesModel";
 import CustomButton from "../components/CustomButton";
 import { secondToHms } from "../utils/secondToHms";
+import { CinemaModel } from "../models/CinemaModel";
 
-const Bookpage = () => {
+interface BookPageProps {
+  cinemas: CinemaModel[];
+}
+
+const BookPage = ({ cinemas }: BookPageProps) => {
   const [movie, setMovie] = useState<MoviesModel | null>(null);
   const [payment, setPayment] = useState<string>("");
   const { id } = useParams();
@@ -19,7 +24,15 @@ const Bookpage = () => {
     getData();
   }, []);
 
-  console.log(movie);
+  const findCinemaById = (id?: string | undefined): CinemaModel => {
+    let foundedCinema: CinemaModel | null = null;
+    cinemas.map((cinema) => {
+      if (cinema.id === id) {
+        foundedCinema = cinema;
+      }
+    });
+    return foundedCinema!;
+  };
 
   return (
     <section className="pt-28 pb-8 lg:pt-32">
@@ -34,7 +47,7 @@ const Bookpage = () => {
                 Genre : <span className="text-primary">{movie?.genre ?? ""}</span>
               </p>
               <p className="text-xl max-w-xl my-2">
-                Cinema : <span className="text-primary">{movie?.cinemaId ?? ""}</span>
+                {/* Cinema : <span className="text-primary">{findCinemaById(movie?.cinemaId ?? '').name ?? ''}</span> */}
               </p>
             </div>
             <p className="text-primary text-xl max-w-xl">{movie?.synopsis ?? ""}</p>
@@ -52,7 +65,10 @@ const Bookpage = () => {
         </div>
         <div className="mx-4 my-10">
           <p className="text-primary text-xl max-w-xl">How many seat you want to book</p>
-
+          <form className="flex gap-x-4">
+            {/* <input type="number" className="my-4 p-3 bg-bgColor border-borderColor border-2 rounded-md w-40" placeholder="Seat's" min="1" max={findCinemaById(movie?.cinemaId).totalSeats} /> */}
+            <CustomButton btnType="submit" title="Submit" containerStyles="border-borderColor bg-bgColor hover:border-primary" textStyles="text-white" />
+          </form>
         </div>
         <div className="mx-4">
           <h1 className="py-1 text-3xl font-bold text-primary">Choose Payment Method</h1>
@@ -83,11 +99,11 @@ const Bookpage = () => {
               </div>
             </div>
           </div>
-          <CustomButton btnType="button" title="Book Now" to="" containerStyles="py-4 w-full border-borderColor bg-bgColor hover:border-primary" textStyles="text-white" />
+          <CustomButton btnType="button" title="Book Now" containerStyles="py-4 w-full border-borderColor bg-bgColor hover:border-primary" textStyles="text-white" />
         </div>
       </div>
     </section>
   );
 };
 
-export default Bookpage;
+export default BookPage;

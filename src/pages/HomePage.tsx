@@ -24,7 +24,7 @@ const HomePage = ({ authUser, movies }: HomePageProps) => {
               </p>
             ) : (
               <p className="text-primary text-xl max-w-xl">
-                This application is used for <span className="text-secondary">Booking</span> and <span className="text-secondary">Manage Movies and Packages</span>.
+                This application is used for <span className="text-secondary">Booking</span> and <span className="text-secondary">Manage Movies, Cinemas and Packages</span>.
               </p>
             )}
             <div className="flex flex-col md:flex-row my-3">

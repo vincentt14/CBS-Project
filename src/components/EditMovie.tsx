@@ -100,7 +100,7 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={cinemaId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setCinemaId(e.target.value)}>
                 {cinemas.map((cinema: CinemaModel) => (
-                  <option value={cinema.codeId}>{cinema.name}</option>
+                  <option value={cinema.id}>{cinema.name}</option>
                 ))}
               </select>
             </div>
