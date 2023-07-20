@@ -90,7 +90,7 @@ const ManageMovies = ({ movies, cinemas }: ManageMoviesProps) => {
                 {movie.synopsis}
               </ReadMore>
             </div>
-            <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
+            <div className="px-4 grid grid-cols-2 gap-x-3 self-center justify-center">
               <CustomButton btnType="button" title="Edit" containerStyles="w-full border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" to={`/adminDashboard/editMovie/${movie.id}`} />
               <CustomButton btnType="button" title="Delete" containerStyles="w-full border-borderColor bg-black hover:border-primary" textStyles="text-white" onClick={() => onDeleteMovie(movie.id)} />
             </div>

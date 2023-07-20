@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 
 import { MoviesModel } from "../models/MoviesModel";
 import CustomButton from "../components/CustomButton";
@@ -13,8 +13,8 @@ interface BookPageProps {
 
 const BookPage = ({ cinemas }: BookPageProps) => {
   const [movie, setMovie] = useState<MoviesModel | null>(null);
-  // const [seatAmount, setSeatAmount] = useState<number>(0);
-  // const [submitAmountSeats, setSubmitAmountSeats] = useState<number>(0);
+  const [isBooked, setIsBooked] = useState<boolean[]>([]);
+  const [seatsChoose, setSeatsChoose] = useState<boolean[]>([]);
   const [payment, setPayment] = useState<string>("");
   const { id } = useParams();
 
@@ -37,16 +37,25 @@ const BookPage = ({ cinemas }: BookPageProps) => {
     return foundedCinema!;
   };
 
-  // const handleSubmitSeatNum = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   setSubmitAmountSeats(seatAmount);
-  //   renderChooseSeat(submitAmountSeats);
-  // };
+  const chooseSeatHandler = (id:number) => {
+    const temp = seatsChoose.map((seat) => {
+
+    })
+    // setSeatsChoose(!seatsChoose);
+  };
 
   const renderChooseSeat = (amount: number): ReactNode[] => {
     const temp: ReactNode[] = [];
     for (let i = 0; i < amount; i++) {
-      temp.push(<div className="w-10 h-10 cursor-pointer bg-bgColor border border-borderColor rounded-md" />);
+      temp.push(
+        <div
+          className={
+            isBooked[i] ? "w-10 h-10 bg-red-300 border-2 border-red-600 rounded-md" : seatsChoose[i] ? "w-10 h-10 bg-green-300 border-2 border-green-600 rounded-md" : "w-10 h-10 cursor-pointer bg-bgColor border border-borderColor rounded-md"
+          }
+          key={`A-${i}`}
+          onClick={(e:React.MouseEvent<HTMLDivElement>) => chooseSeatHandler(i)}
+        />
+      );
     }
     return temp;
   };
@@ -86,25 +95,22 @@ const BookPage = ({ cinemas }: BookPageProps) => {
               </div>
             </div>
             <div className="mx-4 my-10">
-              <p className="text-primary text-xl max-w-xl">How many seat you want to book</p>
-              <p className="max-w-xl mt-2 mb-4 text-primary">
+              <div className="flex items-center justify-between">
+                <p className="py-1 text-3xl font-bold text-primary">Choose your seat's</p>
+                <div className="flex items-center justify-between space-x-3">
+                  <p className="text-primary text-xl max-w-xl">Available</p>
+                  <div className="w-10 h-10 bg-bgColor border border-borderColor rounded-md" />
+                  <p className="text-primary text-xl max-w-xl">Choosed</p>
+                  <div className="w-10 h-10 bg-green-300 border-2 border-green-600 rounded-md" />
+                  <p className="text-primary text-xl max-w-xl">Booked</p>
+                  <div className="w-10 h-10 bg-red-300 border-2 border-red-600 rounded-md" />
+                </div>
+              </div>
+              <p className="max-w-xl mt-2 text-primary">
                 Available : <span className="text-white">{findCinemaById(movie.cinemaId).totalSeats}</span> seat's
               </p>
-              <div className={`w-full flex gap-5 justify-between `}>{renderChooseSeat(findCinemaById(movie.cinemaId).totalSeats)}</div>
+              <div className={`w-full my-5 flex flex-wrap gap-5 justify-between items-center`}>{renderChooseSeat(findCinemaById(movie.cinemaId).totalSeats)}</div>
             </div>
-            {/* <form className="flex gap-x-4" onSubmit={handleSubmitSeatNum}>
-                <input
-                  type="number"
-                  className="my-4 p-3 bg-bgColor border-borderColor border-2 rounded-md w-40"
-                  placeholder="Seat's"
-                  min="1"
-                  max={findCinemaById(movie.cinemaId).totalSeats}
-                  onChange={(e) => setSeatAmount(+e.target.value)}
-                />
-                <CustomButton btnType="submit" title="Submit" containerStyles="border-borderColor bg-bgColor hover:border-primary" textStyles="text-white" />
-              </form> */}
-
-            {/* {submitAmountSeats !== 0 && renderChooseSeat(submitAmountSeats)} */}
             <div className="mx-4">
               <h1 className="py-1 text-3xl font-bold text-primary">Choose Payment Method</h1>
               <hr className="w-[100px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />

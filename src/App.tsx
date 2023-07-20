@@ -28,6 +28,7 @@ import { CinemaModel } from "./models/CinemaModel";
 
 const App = () => {
   const [user, setUser] = useState<UserModel | null>(null);
+  const [allUsers, setAllUsers] = useState<UserModel[]>([]);
   const [movies, setMovies] = useState<MoviesModel[]>([]);
   const [cinemas, setCinemas] = useState<CinemaModel[]>([]);
   const [packages, setPackages] = useState<DocumentData | []>([]);
@@ -47,6 +48,15 @@ const App = () => {
         setUser(null);
         setLoading(false);
       }
+    });
+
+    const getAllUsers = onSnapshot(FirebaseSingleton.usersCollectionRef(), (querySnapshot) => {
+      const items: UserModel[] = [];
+      querySnapshot.forEach((doc) => {
+        const result = UserModel.fromFirebase(doc.data(), doc.id);
+        items.push(result);
+      });
+      setAllUsers(items);
     });
 
     const getMovies = onSnapshot(FirebaseSingleton.moviesCollectionRef(), (querySnapshot) => {
@@ -77,6 +87,7 @@ const App = () => {
 
     return () => {
       checkActiveUser();
+      getAllUsers();
       getMovies();
       getCinemas();
       getPackages();
@@ -98,7 +109,7 @@ const App = () => {
     <>
       <Navbar authUser={user} />
       <Routes>
-        <Route path="/" element={<HomePage authUser={user} movies={movies} />} />
+        <Route path="/" element={<HomePage authUser={user} movies={movies} allUsers={allUsers} />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="playingNow" element={<PlayingNowPage movies={movies} cinemas={cinemas} />} />

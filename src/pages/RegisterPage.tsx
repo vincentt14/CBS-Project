@@ -40,6 +40,7 @@ const RegisterPage = () => {
     } else {
       Swal.fire({
         icon: "warning",
+        background: "#111",
         title: "You must choose your gender",
         showConfirmButton: false,
         timer: 1500,

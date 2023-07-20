@@ -27,7 +27,7 @@ const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {
               <CustomButton
                 btnType="button"
                 title="Manage Movies"
-                containerStyles={menu === "m" ? "my-1 border-black bg-white hover:bg-[#ededed]" : "my-1 border-borderColor bg-black hover:border-primary"}
+                containerStyles={menu === "m" ? "w-full my-1 border-black bg-white hover:bg-[#ededed]" : "w-full my-1 border-borderColor bg-black hover:border-primary"}
                 textStyles={menu === "m" ? "text-black hover:text-[#262626]" : "text-white"}
                 to="/adminDashboard/manageMovies"
                 onClick={() => setMenu("m")}
@@ -35,7 +35,7 @@ const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {
               <CustomButton
                 btnType="button"
                 title="Manage Cinemas"
-                containerStyles={menu === "c" ? "my-1 border-black bg-white hover:bg-[#ededed]" : "my-1 border-borderColor bg-black hover:border-primary"}
+                containerStyles={menu === "c" ? "w-full my-1 border-black bg-white hover:bg-[#ededed]" : "w-full my-1 border-borderColor bg-black hover:border-primary"}
                 textStyles={menu === "c" ? "text-black hover:text-[#262626]" : "text-white"}
                 to="/adminDashboard/manageCinemas"
                 onClick={() => setMenu("c")}
@@ -43,7 +43,7 @@ const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {
               <CustomButton
                 btnType="button"
                 title="Manage Packages"
-                containerStyles={menu === "p" ? "my-1 border-black bg-white hover:bg-[#ededed]" : "my-1 border-borderColor bg-black hover:border-primary"}
+                containerStyles={menu === "p" ? "w-full my-1 border-black bg-white hover:bg-[#ededed]" : "w-full my-1 border-borderColor bg-black hover:border-primary"}
                 textStyles={menu === "p" ? "text-black hover:text-[#262626]" : "text-white"}
                 to="/adminDashboard/managePackages"
                 onClick={() => setMenu("p")}

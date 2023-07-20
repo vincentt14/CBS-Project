@@ -16,28 +16,38 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
   const [duration, setDuration] = useState<number>(0);
   const [genre, setGenre] = useState<string>("");
   const [synopsis, setSynopsis] = useState<string>("");
-  const [cinemaId, setCinemaId] = useState<string>("P474T7qra939xfD560Xa");
+  const [cinemaId, setCinemaId] = useState<string>("");
   const navigate = useNavigate();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Swal.showLoading();
-    const data = await MoviesModel.createMovie(title, synopsis, playingTime, duration, cinemaId, genre);
-    if (data.success) {
-      Swal.fire({
-        icon: "success",
-        background: "#111",
-        title: "Movie Created",
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      navigate("/adminDashboard/manageMovies");
+    if (cinemaId !== "") {
+      Swal.showLoading();
+      const data = await MoviesModel.createMovie(title, synopsis, playingTime, duration, cinemaId, genre);
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          background: "#111",
+          title: "Movie Created",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/adminDashboard/manageMovies");
+      } else {
+        Swal.fire({
+          icon: "error",
+          background: "#111",
+          title: "Create Failed",
+          text: `${data.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     } else {
       Swal.fire({
-        icon: "error",
+        icon: "warning",
         background: "#111",
-        title: "Create Failed",
-        text: `${data.message}`,
+        title: "You must choose cinema first",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -64,7 +74,7 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
               <input
                 required
                 type="time"
-                className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md"
+                className="bg-bgColor w-[200px] ml-8 p-2 border-borderColor border rounded-md"
                 onChange={(e) => {
                   const temp = e.target.value.split(":");
                   setPlayingTime(new Date(0, 0, 0, +temp[0], +temp[1]));
@@ -75,7 +85,7 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
               <p className="text-primary text-xl max-w-xl">Duration</p>
               <input required type="number" className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setDuration(+e.target.value)} />
             </div>
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-2 self-center justify-center">
               <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageMovies" />
               <CustomButton btnType="submit" title="Add Movie" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
@@ -90,8 +100,11 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={cinemaId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setCinemaId(e.target.value)}>
+                <option value=""></option>
                 {cinemas.map((cinema: CinemaModel) => (
-                  <option value={cinema.id} key={cinema.id}>{cinema.name}</option>
+                  <option value={cinema.id} key={cinema.id}>
+                    {cinema.name}
+                  </option>
                 ))}
               </select>
             </div>

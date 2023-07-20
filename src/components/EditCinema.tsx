@@ -13,7 +13,6 @@ interface EditCinemaProps {
 const EditCinema = ({ packages }: EditCinemaProps) => {
   const [name, setName] = useState<string>("");
   const [totalSeats, setTotalSeats] = useState<number>(0);
-  const [codeId, setCodeId] = useState<string>("");
   const [packageId, setPackageId] = useState<string>("");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -25,7 +24,6 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
       setName(data.name);
       setTotalSeats(data.totalSeats);
       setPackageId(data.packageId);
-      setCodeId(data.codeId);
     };
     getData();
   }, []);
@@ -33,7 +31,7 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await CinemaModel.updateCinema(id as string, name, totalSeats, codeId, packageId);
+    const data = await CinemaModel.updateCinema(id as string, name, totalSeats, packageId);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -62,7 +60,7 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
       </div>
       <form className="m-4 grid lg:grid-cols-3 gap-5 border-borderColor border-2 rounded-md" onSubmit={onSubmit}>
         <div className=" bg-bgColor border border-borderColor flex justify-center items-center p-5">
-          <h1 className="text-white font-bold text-2xl">Add Cinema</h1>
+          <h1 className="text-white font-bold text-2xl">Edit Cinema</h1>
         </div>
         <div className="flex flex-col items-center justify-start text-center">
           <div className="p-5">
@@ -72,9 +70,9 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Total Seats</p>
-              <input required type="number" className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor" value={totalSeats} onChange={(e) => setTotalSeats(+e.target.value)} />
+              <input required type="number" max="100" className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor" value={totalSeats} onChange={(e) => setTotalSeats(+e.target.value)} />
             </div>
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-2 self-center justify-center">
               <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageCinemas" />
               <CustomButton btnType="submit" title="Edit Cinema" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
@@ -82,10 +80,6 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
         </div>
         <div className="flex flex-col items-center justify-start text-center">
           <div className="p-5">
-            <div className="flex items-center justify-between my-4">
-              <p className="text-primary text-xl max-w-xl">Cinema Id</p>
-              <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" value={codeId} onChange={(e) => setCodeId(e.target.value)} />
-            </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>

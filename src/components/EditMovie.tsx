@@ -25,7 +25,7 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
   useEffect(() => {
     const getData = async () => {
       const data: MoviesModel = (await MoviesModel.getMovie(id as string))!;
-      
+
       setTitle(data.title);
       setDuration(data.duration);
       setGenre(data.genre);
@@ -82,7 +82,7 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
               <input
                 required
                 type="time"
-                className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor"
+                className="ml-8 p-2 w-[200px] border-borderColor border rounded-md bg-bgColor"
                 value={formatTime(playingTime)}
                 onChange={(e) => {
                   const temp = e.target.value.split(":");
@@ -94,7 +94,7 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
               <p className="text-primary text-xl max-w-xl">Duration</p>
               <input required type="number" className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor" value={duration} onChange={(e) => setDuration(+e.target.value)} />
             </div>
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-2 self-center justify-center">
               <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageMovies" />
               <CustomButton btnType="submit" title="Edit Movie" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>

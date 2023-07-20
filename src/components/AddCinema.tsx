@@ -12,7 +12,6 @@ interface AddCinemaProps {
 
 const AddCinema = ({ packages }: AddCinemaProps) => {
   const [name, setName] = useState<string>("");
-  const [codeId, setCodeId] = useState<string>("")
   const [totalSeats, setTotalSeats] = useState<number>(0);
   const [packageId, setPackageId] = useState<string>("BN");
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const AddCinema = ({ packages }: AddCinemaProps) => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     Swal.showLoading();
-    const data = await CinemaModel.createCinema(name, totalSeats, codeId, packageId);
+    const data = await CinemaModel.createCinema(name, totalSeats, totalSeats, packageId);
     if (data.success) {
       Swal.fire({
         icon: "success",
@@ -61,9 +60,9 @@ const AddCinema = ({ packages }: AddCinemaProps) => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Total Seats</p>
-              <input required type="number" className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setTotalSeats(+e.target.value)} />
+              <input required type="number" max="100" className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setTotalSeats(+e.target.value)} />
             </div>
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-2 self-center justify-center">
               <CustomButton btnType="button" title="Back to Manage" containerStyles="border-borderColor bg-black hover:border-primary" textStyles="text-white" to="/adminDashboard/manageCinemas" />
               <CustomButton btnType="submit" title="Add Cinema" containerStyles="ml-4 border-black bg-white hover:bg-[#ededed]" textStyles="text-black hover:text-[#262626]" />
             </div>
@@ -71,10 +70,6 @@ const AddCinema = ({ packages }: AddCinemaProps) => {
         </div>
         <div className="flex flex-col items-center justify-start text-center">
           <div className="p-5">
-            <div className="flex items-center justify-between my-4">
-              <p className="text-primary text-xl max-w-xl">Cinema Id</p>
-              <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setCodeId(e.target.value)} />
-            </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
