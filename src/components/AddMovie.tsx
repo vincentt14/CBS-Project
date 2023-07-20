@@ -12,14 +12,12 @@ interface AddMovieProps {
 
 const AddMovie = ({ cinemas }: AddMovieProps) => {
   const [title, setTitle] = useState<string>("");
-  const [playingTime, setPlayingTime] = useState<string>("");
+  const [playingTime, setPlayingTime] = useState<Date>(new Date(0, 0, 0, 0, 0));
   const [duration, setDuration] = useState<number>(0);
   const [genre, setGenre] = useState<string>("");
   const [synopsis, setSynopsis] = useState<string>("");
-  const [cinemaId, setCinemaId] = useState<string>("");
+  const [cinemaId, setCinemaId] = useState<string>("P474T7qra939xfD560Xa");
   const navigate = useNavigate();
-
-  console.log(cinemas);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,7 +61,15 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Playing Time</p>
-              <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setPlayingTime(e.target.value)} />
+              <input
+                required
+                type="time"
+                className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md"
+                onChange={(e) => {
+                  const temp = e.target.value.split(":");
+                  setPlayingTime(new Date(0, 0, 0, +temp[0], +temp[1]));
+                }}
+              />
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Duration</p>
@@ -85,7 +91,7 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={cinemaId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setCinemaId(e.target.value)}>
                 {cinemas.map((cinema: CinemaModel) => (
-                  <option value={cinema.id}>{cinema.name}</option>
+                  <option value={cinema.id} key={cinema.id}>{cinema.name}</option>
                 ))}
               </select>
             </div>

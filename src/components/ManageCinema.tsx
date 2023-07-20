@@ -49,7 +49,7 @@ const ManageCinemas = ({ cinemas }: ManageCinemaProps) => {
       </div>
       <div className="m-4 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
         <div className="border-2 border-borderColor bg-bgColor rounded-md flex flex-col justify-center items-center p-8">
-          <h1 className="text-white font-bold text-2xl">Add Cinema</h1>
+          <h1 className="text-white font-bold text-2xl text-center">Add Cinema</h1>
           <CustomButton btnType="button" title="Add" containerStyles="border-borderColor bg-black hover:border-primary w-full" textStyles="text-white" to="/adminDashboard/addCinema" />
         </div>
         {cinemas.map((cinema: CinemaModel) => (

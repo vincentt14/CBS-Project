@@ -3,6 +3,7 @@ import CustomButton from "../components/CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { secondToHms } from "../utils/secondToHms";
 import { CinemaModel } from "../models/CinemaModel";
+import { formatTime } from "../utils/formatTime";
 
 interface PlayingNowPageProps {
   movies: MoviesModel[];
@@ -33,7 +34,7 @@ const PlayingNowPage = ({ movies, cinemas }: PlayingNowPageProps) => {
             {movies.map((movie: MoviesModel) => (
               <div key={movie.title} className="border-2 border-borderColor bg-bgColor rounded-md">
                 <div className="bg-black p-8 h-[120px] flex justify-center items-center border rounded-md border-borderColor">
-                  <h1 className="text-white font-bold text-2xl">{movie.title}</h1>
+                  <h1 className="text-white font-bold text-2xl text-center">{movie.title}</h1>
                 </div>
                 <div className="flex flex-col p-4 ">
                   <div className="flex justify-between text-justify">
@@ -44,11 +45,11 @@ const PlayingNowPage = ({ movies, cinemas }: PlayingNowPageProps) => {
                   </div>
                   <div className="flex justify-between text-justify">
                     <p className="mb-2 text-primary">
-                      Playing at <span className="text-white">{movie.playingTime}</span>
+                      Playing at <span className="text-white">{formatTime(movie.playingTime)}</span>
                     </p>
                     <p className="mb-2 text-white">{secondToHms(movie.duration)}</p>
                   </div>
-                  <ReadMore textSlice={65} pStyle="mb-2 text-justify text-primary">
+                  <ReadMore textSlice={70} pStyle="mb-2 text-justify text-primary">
                     {movie.synopsis}
                   </ReadMore>
                   <CustomButton btnType="button" to={`/book/${movie.id}`} title="Book Now" containerStyles="border-borderColor bg-black hover:border-primary w-full" textStyles="text-white" />

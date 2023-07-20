@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "./CustomButton";
 import { MoviesModel } from "../models/MoviesModel";
 import { CinemaModel } from "../models/CinemaModel";
+import { formatTime } from "../utils/formatTime";
 
 interface EditMovieProps {
   cinemas: CinemaModel[];
@@ -13,7 +14,7 @@ interface EditMovieProps {
 
 const EditMovie = ({ cinemas }: EditMovieProps) => {
   const [title, setTitle] = useState<string>("");
-  const [playingTime, setPlayingTime] = useState<string>("");
+  const [playingTime, setPlayingTime] = useState<Date>(new Date(0, 0, 0, 0, 0));
   const [duration, setDuration] = useState<number>(0);
   const [genre, setGenre] = useState<string>("");
   const [cinemaId, setCinemaId] = useState<string>("");
@@ -23,12 +24,12 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
 
   useEffect(() => {
     const getData = async () => {
-      const data: DocumentData = (await MoviesModel.getMovie(id as string))!;
-
+      const data: MoviesModel = (await MoviesModel.getMovie(id as string))!;
+      
       setTitle(data.title);
-      setPlayingTime(data.playingTime);
       setDuration(data.duration);
       setGenre(data.genre);
+      setPlayingTime(data.playingTime);
       setCinemaId(data.cinemaId);
       setSynopsis(data.synopsis);
     };
@@ -78,7 +79,16 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Playing Time</p>
-              <input required className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor" value={playingTime} onChange={(e) => setPlayingTime(e.target.value)} />
+              <input
+                required
+                type="time"
+                className="ml-8 p-2 border-borderColor border rounded-md bg-bgColor"
+                value={formatTime(playingTime)}
+                onChange={(e) => {
+                  const temp = e.target.value.split(":");
+                  setPlayingTime(new Date(0, 0, 0, +temp[0], +temp[1]));
+                }}
+              />
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Duration</p>
@@ -100,7 +110,9 @@ const EditMovie = ({ cinemas }: EditMovieProps) => {
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={cinemaId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setCinemaId(e.target.value)}>
                 {cinemas.map((cinema: CinemaModel) => (
-                  <option value={cinema.id}>{cinema.name}</option>
+                  <option value={cinema.id} key={cinema.id}>
+                    {cinema.name}
+                  </option>
                 ))}
               </select>
             </div>

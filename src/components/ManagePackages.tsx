@@ -43,7 +43,7 @@ const ManagePackages = () => {
         {packages.map((packagee: IPackages) => (
           <div key={packagee.id} className="bg-bgColor border-2 border-borderColor rounded-xl">
             <div className="border-2 border-borderColor bg-black px-8 p-5 flex justify-center items-center rounded-t-xl">
-              <h1 className="text-white font-bold text-2xl capitalize">{packagee.name}</h1>
+              <h1 className="text-white font-bold text-2xl capitalize text-center">{packagee.name}</h1>
             </div>
             <div className="flex flex-col py-4 px-10 bg-bgColor rounded-b-xl">
               <div className="flex justify-between">

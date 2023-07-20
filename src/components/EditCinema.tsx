@@ -21,7 +21,7 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
   useEffect(() => {
     const getData = async () => {
       const data: DocumentData = (await CinemaModel.getCinema(id as string))!;
-      
+
       setName(data.name);
       setTotalSeats(data.totalSeats);
       setPackageId(data.packageId);
@@ -88,7 +88,7 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
             </div>
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
-              <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-2  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
+              <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
                 {packages.map((packagee: DocumentData) => (
                   <option value={packagee.codeId}>{packagee.name}</option>
                 ))}

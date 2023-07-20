@@ -5,6 +5,7 @@ import { useState } from "react";
 import { MoviesModel } from "../models/MoviesModel";
 import { UserModel } from "../models/UserModel";
 import { secondToHms } from "../utils/secondToHms";
+import { formatTime } from "../utils/formatTime";
 
 interface AdminDahsboardProps {
   authUser: UserModel | null;
@@ -74,23 +75,31 @@ const UserDashboardPage = ({ authUser, movies }: AdminDahsboardProps) => {
                 {/* yg dibawah ini outlet */}
                 <div className="border-2 border-borderColor bg-bgColor rounded-md">
                   <div className="bg-black p-8 h-[120px] flex justify-center items-center border rounded-md border-borderColor">
-                    <h1 className="text-white font-bold text-2xl">{movies[1].title}</h1>
+                    <h1 className="text-white font-bold text-2xl">{movies[0].title}</h1>
                   </div>
                   <div className="flex flex-col p-4 lg:px-28 lg:py-8">
-                    <h1 className="text-primary font-bold text-2xl mb-8 mx-auto">Pay within 72 hours at counter</h1>
+                    <div className="mb-8 mx-auto text-primary text-center">
+                      <h1 className="font-bold text-2xl">Pay within 72 hours at counter</h1>
+                      <div className="flex justify-between">
+                        <p className="mx-1">A-1</p>
+                        <p className="mx-1">A-2</p>
+                        <p className="mx-1">A-3</p>
+                        <p className="mx-1">A-4</p>
+                      </div>
+                    </div>
                     <div className="flex justify-between text-justify">
-                      <p className="mb-2 text-justify">{movies[1].genre}</p>
+                      <p className="mb-2 text-justify">{movies[0].genre}</p>
                       <p className="mb-2 text-primary">
-                        Cinema: <span className="text-white">{movies[1].cinemaId}</span>
+                        Cinema: <span className="text-white">{movies[0].cinemaId}</span>
                       </p>
                     </div>
                     <div className="flex justify-between text-justify">
                       <p className="mb-2 text-primary">
-                        Playing at <span className="text-white">{movies[1].playingTime}</span>
+                        Playing at <span className="text-white">{formatTime(movies[0].playingTime)}</span>
                       </p>
-                      <p className="mb-2 text-white">{secondToHms(movies[1].duration)}</p>
+                      <p className="mb-2 text-white">{secondToHms(movies[0].duration)}</p>
                     </div>
-                    <p className="mb-2 text-justify text-primary">{movies[1].synopsis}</p>
+                    <p className="mb-2 text-justify text-primary">{movies[0].synopsis}</p>
                   </div>
                 </div>
                 {/* outlet selesai */}

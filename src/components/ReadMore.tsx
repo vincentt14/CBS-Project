@@ -17,8 +17,8 @@ const ReadMore = ({ children, pStyle, textSlice }: ReadMoreProps) => {
   return (
     <p className={pStyle}>
       {isReadMore ? text.slice(0, textSlice) : text}
-      <span onClick={toggleReadMore} className="text-primary cursor-pointer hover:text-secondary">
-        {isReadMore ? "...read more" : " show less"}
+      <span onClick={toggleReadMore} className="text-secondary cursor-pointer hover:underline">
+        {isReadMore ? " ...read more" : " show less"}
       </span>
     </p>
   );

@@ -1,6 +1,7 @@
 import { DocumentData, addDoc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import { RoomPackageModel } from "./RoomPackageModel";
 import { FirebaseSingleton } from "./FirebaseSingleton";
+import { formatTime } from "../utils/formatTime";
 
 interface MovieResponse {
   success: boolean;
@@ -8,28 +9,12 @@ interface MovieResponse {
 }
 
 export class MoviesModel {
-  constructor(
-    public id: string,
-    public title: string,
-    public synopsis: string,
-    public playingTime: string,
-    public duration: number,
-    public genre: string,
-    public cinemaId : string,
-    public cinema: RoomPackageModel | null
-  ) { }
+  constructor(public id: string, public title: string, public synopsis: string, public playingTime: Date, public duration: number, public genre: string, public cinemaId: string, public cinema: RoomPackageModel | null) {}
 
   static fromFirebase = (data: DocumentData, id: string): MoviesModel => {
-    return new MoviesModel(
-      id,
-      data.title,
-      data.synopsis,
-      data.playingTime,
-      data.duration,
-      data.genre,
-      data.cinemaId,
-      null
-    );
+    const splittedDate: string[] = data.playingTime.split(":");
+    const tempDate = new Date(0, 0, 0, +splittedDate[0], +splittedDate[1]);
+    return new MoviesModel(id, data.title, data.synopsis, tempDate, data.duration, data.genre, data.cinemaId, null);
   };
 
   static getMovie = async (id: string): Promise<MoviesModel | null> => {
@@ -42,13 +27,14 @@ export class MoviesModel {
     return null;
   };
 
-  static createMovie = async (title: string, synopsis: string, playingTime: string, duration: number, cinemaId: string, genre: string) => {
+  static createMovie = async (title: string, synopsis: string, playingTime: Date, duration: number, cinemaId: string, genre: string): Promise<MovieResponse> => {
     try {
       const ref = FirebaseSingleton.moviesCollectionRef();
+      const tempDate = formatTime(playingTime);
       await addDoc(ref, {
         title,
         synopsis,
-        playingTime,
+        playingTime: tempDate,
         duration,
         cinemaId,
         genre,
@@ -60,19 +46,20 @@ export class MoviesModel {
     } catch (error) {
       const res: MovieResponse = {
         success: false,
-        message: 'error create movie',
+        message: "error create movie",
       };
       return res;
     }
   };
 
-  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: string, duration: number, cinemaId: string, genre: string) => {
+  static updateMovie = async (id: string, title: string, synopsis: string, playingTime: Date, duration: number, cinemaId: string, genre: string): Promise<MovieResponse> => {
     try {
       const ref = FirebaseSingleton.moviesDocRef(id);
+      const tempDate = formatTime(playingTime);
       await updateDoc(ref, {
         title,
         synopsis,
-        playingTime,
+        playingTime: tempDate,
         duration,
         cinemaId,
         genre,
@@ -84,13 +71,13 @@ export class MoviesModel {
     } catch (error) {
       const res: MovieResponse = {
         success: false,
-        message: 'error update movie',
+        message: "error update movie",
       };
       return res;
     }
   };
 
-  static deleteMovie = async (id: string) => {
+  static deleteMovie = async (id: string): Promise<MovieResponse> => {
     try {
       const ref = FirebaseSingleton.moviesDocRef(id);
       await deleteDoc(ref);
@@ -101,7 +88,7 @@ export class MoviesModel {
     } catch (error) {
       const res: MovieResponse = {
         success: false,
-        message: 'error delete movie',
+        message: "error delete movie",
       };
       return res;
     }
