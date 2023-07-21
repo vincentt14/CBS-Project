@@ -32,8 +32,6 @@ const ManagePackages = () => {
     };
   }, []);
 
-  console.log(packages);
-
   return (
     <div className="flex flex-col">
       <div className="mx-4">
