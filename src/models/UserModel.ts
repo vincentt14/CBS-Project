@@ -1,6 +1,7 @@
 import { User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import { DocumentData, getDoc, setDoc } from "firebase/firestore";
+import { MoviesModel } from "./MoviesModel";
 
 interface AuthenticationResponse {
   success: boolean;
@@ -10,22 +11,17 @@ interface AuthenticationResponse {
 
 export class UserModel {
   constructor(
-    public id: string,
-    public name: string,
-    public gender: string,
-    public email: string,
-    public isAdmin: boolean
-  ) { }
+    public id: string, 
+    public name: string, 
+    public gender: string, 
+    public email: string, 
+    public isAdmin: boolean, 
+    public booking: []
+  ) {}
 
   static fromFirebase = (data: DocumentData, id: string): UserModel => {
-    return new UserModel(
-      id,
-      data.name,
-      data.gender,
-      data.email,
-      data.isAdmin
-    );
-  }
+    return new UserModel(id, data.name, data.gender, data.email, data.isAdmin, data.booking);
+  };
 
   static getUserFromFirestore = async (userUid: string): Promise<UserModel | null> => {
     try {
@@ -80,6 +76,31 @@ export class UserModel {
       const res: AuthenticationResponse = {
         success: false,
         message: "Register error",
+      };
+      return res;
+    }
+  };
+
+  static bookMovie = async (userUid: string, bookedSeat: number[], paymentMethod: string, movie: MoviesModel) => {
+    try {
+      const ref = FirebaseSingleton.usersDocRef(userUid);
+      await setDoc(ref, {
+        booking: [
+          {
+            bookedSeat,
+            paymentMethod,
+            movie,
+          },
+        ],
+      });
+      const res: AuthenticationResponse = {
+        success: true,
+      };
+      return res;
+    } catch (_) {
+      const res: AuthenticationResponse = {
+        success: false,
+        message: "Booking error",
       };
       return res;
     }

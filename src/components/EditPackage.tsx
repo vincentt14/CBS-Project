@@ -31,7 +31,7 @@ const EditPackage = () => {
         <hr className="w-[150px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
       </div>
       <form className="m-4 grid lg:grid-cols-3 gap-5 border-borderColor border-2 rounded-md">
-        <div className=" bg-bgColor border border-borderColor flex justify-center items-center p-5">
+        <div className=" bg-bgColor border border-borderColor flex justify-center items-center p-5 mr-3 md:mr-0">
           <h1 className="text-white font-bold text-2xl">Edit Package</h1>
         </div>
         <div className="flex flex-col items-center justify-center text-center">

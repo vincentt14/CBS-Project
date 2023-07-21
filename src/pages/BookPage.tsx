@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect, ReactNode } from "react";
 
 import { MoviesModel } from "../models/MoviesModel";
@@ -6,17 +6,21 @@ import CustomButton from "../components/CustomButton";
 import { secondToHms } from "../utils/secondToHms";
 import { CinemaModel } from "../models/CinemaModel";
 import { formatTime } from "../utils/formatTime";
+import Swal from "sweetalert2";
+import { UserModel } from "../models/UserModel";
 
 interface BookPageProps {
   cinemas: CinemaModel[];
+  authUser: UserModel | null;
 }
 
-const BookPage = ({ cinemas }: BookPageProps) => {
+const BookPage = ({ cinemas, authUser }: BookPageProps) => {
   const [movie, setMovie] = useState<MoviesModel | null>(null);
   const [cinema, setCinema] = useState<CinemaModel | null>(null);
   const [isBooked, setIsBooked] = useState<boolean[]>([]);
   const [seatsChoosed, setSeatsChoosed] = useState<boolean[]>([]);
   const [payment, setPayment] = useState<string>("");
+  const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -34,7 +38,7 @@ const BookPage = ({ cinemas }: BookPageProps) => {
     setSeatsChoosed(initialState);
 
     const a: boolean[] = [];
-    a[5] = a[10] = a[4] = a[8] = a[9] = a[14] = a[20] = a[41]= a[19]= a[37] = true;
+    a[5] = a[10] = a[4] = a[8] = a[9] = a[14] = a[20] = a[41] = a[19] = a[37] = a[36] = true;
     setIsBooked(a);
   }, [cinema]);
 
@@ -49,39 +53,95 @@ const BookPage = ({ cinemas }: BookPageProps) => {
   };
 
   const chooseSeatHandler = (id: number) => {
-    if(isBooked[id]){
+    if (isBooked[id]) {
       return;
     }
 
     const temp = seatsChoosed.map((value) => value);
-    temp[id] = !temp[id]
-    setSeatsChoosed(temp)
+    temp[id] = !temp[id];
+    setSeatsChoosed(temp);
   };
 
   const handlingColor = (isBooked: boolean, seatsChoosed: boolean) => {
     if (isBooked) {
-      return "w-10 h-10 bg-red-300 border-2 border-red-600 rounded-md";
+      return "w-11 h-11 bg-red-300 border-2 border-red-600 rounded-md";
     }
     if (seatsChoosed === true) {
-      return "w-10 h-10 bg-green-300 border-2 border-green-600 rounded-md cursor-pointer";
+      return "w-11 h-11 bg-green-300 border-2 border-green-600 rounded-md cursor-pointer";
     }
-    return "w-10 h-10 cursor-pointer bg-bgColor border border-borderColor rounded-md";
+    return "w-11 h-11 cursor-pointer bg-bgColor border border-borderColor rounded-md";
   };
 
   const renderChooseSeat = (amount: number): ReactNode[] => {
     const temp: ReactNode[] = [];
     for (let i = 0; i < amount; i++) {
-      temp.push(<div className={handlingColor(isBooked[i], seatsChoosed[i])} key={`A-${i}`} onClick={(e: React.MouseEvent<HTMLDivElement>) => chooseSeatHandler(i)}></div>);
+      temp.push(
+        <div className={`${handlingColor(isBooked[i], seatsChoosed[i])} flex items-center justify-center font-light text-primary text-sm`} key={`A-${i}`} onClick={(e: React.MouseEvent<HTMLDivElement>) => chooseSeatHandler(i)}>
+          A{i + 1}
+        </div>
+      );
     }
     return temp;
   };
 
-  const handleBook = () => {
+  const countAvailableSeats = (available: number) => {
     const temp: number[] = [];
-    for(let i = 0; i < isBooked.length; i++){
-      console.log(isBooked[i])
+    for (let i = 0; i < isBooked.length; i++) {
+      if (isBooked[i] === true) {
+        temp.push(i);
+      }
     }
-  }
+    return available - temp.length;
+  };
+
+  const handleBook = async () => {
+    const tempCinema: number[] = [];
+    const tempBook: number[] = [];
+
+    for (let i = 0; i < isBooked.length; i++) {
+      if (isBooked[i] === true) {
+        tempCinema.push(i);
+      }
+    }
+    for (let i = 0; i < seatsChoosed.length; i++) {
+      if (seatsChoosed[i] === true) {
+        tempCinema.push(i);
+        tempBook.push(i);
+      }
+    }
+
+    if (payment != "" && tempBook.length != 0) {
+      Swal.showLoading();
+      const data = await UserModel.bookMovie(authUser!.id, tempBook, payment, movie!);
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          background: "#111",
+          title: "Booking Success",
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        navigate("/userDashboard");
+      } else {
+        Swal.fire({
+          icon: "error",
+          background: "#111",
+          title: "Booking Failed",
+          text: `${data.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: "warning",
+        background: "#111",
+        title: "You must choose at least 1 seat & payment method",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   return (
     <section className="pt-28 pb-8 lg:pt-32">
@@ -118,21 +178,24 @@ const BookPage = ({ cinemas }: BookPageProps) => {
               </div>
             </div>
             <div className="mx-4 my-10">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col md:flex-row items-center justify-between">
                 <p className="py-1 text-3xl font-bold text-primary">Choose your seat's</p>
                 <div className="flex items-center justify-between space-x-3">
-                  <p className="text-primary text-xl max-w-xl">Available</p>
+                  <p className="text-primary lg:text-xl max-w-xl">Available</p>
                   <div className="w-10 h-10 bg-bgColor border border-borderColor rounded-md" />
-                  <p className="text-primary text-xl max-w-xl">Choosed</p>
+                  <p className="text-primary lg:text-xl max-w-xl">Choosed</p>
                   <div className="w-10 h-10 bg-green-300 border-2 border-green-600 rounded-md" />
-                  <p className="text-primary text-xl max-w-xl">Booked</p>
+                  <p className="text-primary lg:text-xl max-w-xl">Booked</p>
                   <div className="w-10 h-10 bg-red-300 border-2 border-red-600 rounded-md" />
                 </div>
               </div>
               <p className="max-w-xl mt-2 text-primary">
-                Available : <span className="text-white">{cinema.totalSeats}</span> seat's
+                Available : <span className="text-white">{countAvailableSeats(cinema.totalAvailableSeats)}</span> seat's
               </p>
               <div className={`w-full my-5 flex flex-wrap gap-5 justify-between items-center`}>{renderChooseSeat(cinema.totalSeats)}</div>
+              <div className="mt-14 w-full h-20 bg-bgColor border border-borderColor flex items-center justify-center rounded-xl">
+                <h1 className="font-bold text-xl text-primary">Movie Screen</h1>
+              </div>
             </div>
             <div className="mx-4">
               <h1 className="py-1 text-3xl font-bold text-primary">Choose Payment Method</h1>
@@ -142,9 +205,9 @@ const BookPage = ({ cinemas }: BookPageProps) => {
                   <CustomButton
                     btnType="button"
                     heading="Full Pay Online"
-                    containerStyles={payment === "now" ? "w-full border-black bg-white hover:bg-[#ededed] rounded-xl" : "w-full border-borderColor bg-black hover:border-primary rounded-xl"}
-                    textStyles={payment === "now" ? "text-black hover:text-[#262626]" : "text-white"}
-                    onClick={() => setPayment("now")}
+                    containerStyles={payment === "fullPay" ? "w-full border-black bg-white hover:bg-[#ededed] rounded-xl" : "w-full border-borderColor bg-black hover:border-primary rounded-xl"}
+                    textStyles={payment === "fullPay" ? "text-black hover:text-[#262626]" : "text-white"}
+                    onClick={() => setPayment("fullPay")}
                   />
                   <div className="flex items-center justify-center">
                     <p className="max-w-xl text-center">With the "Full Pay Online" method, you need to pay for your ticket's now, this makes it easier for you to watch your favorite movies later on cinema.</p>
@@ -154,9 +217,9 @@ const BookPage = ({ cinemas }: BookPageProps) => {
                   <CustomButton
                     btnType="button"
                     heading="Pay Later"
-                    containerStyles={payment === "later" ? "w-full border-black bg-white hover:bg-[#ededed] rounded-xl" : "w-full border-borderColor bg-black hover:border-primary rounded-xl"}
-                    textStyles={payment === "later" ? "text-black hover:text-[#262626]" : "text-white"}
-                    onClick={() => setPayment("later")}
+                    containerStyles={payment === "payLater" ? "w-full border-black bg-white hover:bg-[#ededed] rounded-xl" : "w-full border-borderColor bg-black hover:border-primary rounded-xl"}
+                    textStyles={payment === "payLater" ? "text-black hover:text-[#262626]" : "text-white"}
+                    onClick={() => setPayment("payLater")}
                   />
                   <div className="flex items-center justify-center">
                     <p className="max-w-xl text-center">With the "Pay Later" method, you don't have to pay your ticket's now!, but you need to pay your bill at counter within 72 hours from the booking date.</p>

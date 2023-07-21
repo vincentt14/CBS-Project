@@ -113,7 +113,7 @@ const App = () => {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="playingNow" element={<PlayingNowPage movies={movies} cinemas={cinemas} />} />
-        <Route path="book/:id" element={<BookPage cinemas={cinemas}/>} />
+        <Route path="book/:id" element={<BookPage cinemas={cinemas} authUser={user} />} />
         <Route path="userDashboard" element={<UserDashboardPage authUser={user} movies={movies} />} />
         <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} cinemas={cinemas} />}>
           <Route path="manageMovies" element={<ManageMovies movies={movies} cinemas={cinemas} />} />

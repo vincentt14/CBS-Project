@@ -26,10 +26,12 @@ const PlayingNowPage = ({ movies, cinemas }: PlayingNowPageProps) => {
       <div className="container w-full">
         <div className="flex flex-col">
           <div className="mx-4">
-            <h1 className="py-1 text-5xl font-bold text-secondary">Now Showing In Cinemas</h1>
+            <h1 className="py-1 text-5xl font-bold text-secondary">Playing Now In Cinemas</h1>
             <hr className="w-[300px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
           </div>
-          <input className="m-4 p-3 bg-bgColor border-borderColor border-2 rounded-md max-w-sm" placeholder="Search Movies" />
+          <form>
+            <input className="m-4 p-3 bg-bgColor border-borderColor border-2 rounded-md max-w-sm" placeholder="Search Movies" />
+          </form>
           <div className="m-4 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {movies.map((movie: MoviesModel) => (
               <div key={movie.title} className="border-2 border-borderColor bg-bgColor rounded-md">

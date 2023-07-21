@@ -98,7 +98,7 @@ const AddMovie = ({ cinemas }: AddMovieProps) => {
               <input required className="bg-bgColor ml-8 p-2 border-borderColor border rounded-md" onChange={(e) => setGenre(e.target.value)} />
             </div>
             <div className="flex items-center justify-between my-4">
-              <p className="text-primary text-xl max-w-xl">Package</p>
+              <p className="text-primary text-xl max-w-xl">Cinema</p>
               <select required value={cinemaId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setCinemaId(e.target.value)}>
                 <option value=""></option>
                 {cinemas.map((cinema: CinemaModel) => (

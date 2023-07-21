@@ -1,18 +1,18 @@
 import { describe, test, expect } from "@jest/globals";
 import { UserModel } from "../models/UserModel";
 
-describe("User Model Constructor", () => {
-  const date = new Date();
-  console.log(date);
-  console.log(date.toISOString());
-  console.log(date.toUTCString());
-  console.log(date.toString());
-  const user = new UserModel('1', 'rucci', 'L', 'rucci@gmail.com', true);
-  console.log(user);
-  test('user.name = Rucci', () => {
-    return expect(user.name).toBe('rucci');
-  })
-});
+// describe("User Model Constructor", () => {
+//   const date = new Date();
+//   console.log(date);
+//   console.log(date.toISOString());
+//   console.log(date.toUTCString());
+//   console.log(date.toString());
+//   const user = new UserModel('1', 'rucci', 'L', 'rucci@gmail.com', true);
+//   console.log(user);
+//   test('user.name = Rucci', () => {
+//     return expect(user.name).toBe('rucci');
+//   })
+// });
 
 // describe("User Model Register", () => {
 

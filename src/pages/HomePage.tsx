@@ -59,7 +59,7 @@ const HomePage = ({ authUser, movies, allUsers }: HomePageProps) => {
               </div>
             </div>
           </div>
-          <div className="hidden w-full px-4 selft-center md:block lg:w-1/2 border-2 border-borderColor rounded-md p-4 bg-bgColor">
+          <div className=" w-full px-4 selft-center md:block lg:w-1/2 border-2 border-borderColor rounded-md p-4 bg-bgColor">
             <Lottie animationData={ticket} style={{ width: "350px", height: "350px" }} className="mx-auto blur-none" />
           </div>
         </div>
