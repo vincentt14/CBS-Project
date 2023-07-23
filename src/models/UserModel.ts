@@ -11,13 +11,13 @@ interface AuthenticationResponse {
 
 export class UserModel {
   constructor(
-    public id: string, 
-    public name: string, 
-    public gender: string, 
-    public email: string, 
-    public isAdmin: boolean, 
+    public id: string,
+    public name: string,
+    public gender: string,
+    public email: string,
+    public isAdmin: boolean,
     public booking: []
-  ) {}
+  ) { }
 
   static fromFirebase = (data: DocumentData, id: string): UserModel => {
     return new UserModel(id, data.name, data.gender, data.email, data.isAdmin, data.booking);
@@ -81,30 +81,30 @@ export class UserModel {
     }
   };
 
-  static bookMovie = async (userUid: string, bookedSeat: number[], paymentMethod: string, movie: MoviesModel) => {
-    try {
-      const ref = FirebaseSingleton.usersDocRef(userUid);
-      await setDoc(ref, {
-        booking: [
-          {
-            bookedSeat,
-            paymentMethod,
-            movie,
-          },
-        ],
-      });
-      const res: AuthenticationResponse = {
-        success: true,
-      };
-      return res;
-    } catch (_) {
-      const res: AuthenticationResponse = {
-        success: false,
-        message: "Booking error",
-      };
-      return res;
-    }
-  };
+  // static bookMovie = async (userUid: string, bookedSeat: number[], paymentMethod: string, movie: MoviesModel) => {
+  //   try {
+  //     const ref = FirebaseSingleton.usersDocRef(userUid);
+  //     await setDoc(ref, {
+  //       booking: [
+  //         {
+  //           bookedSeat,
+  //           paymentMethod,
+  //           movie,
+  //         },
+  //       ],
+  //     });
+  //     const res: AuthenticationResponse = {
+  //       success: true,
+  //     };
+  //     return res;
+  //   } catch (_) {
+  //     const res: AuthenticationResponse = {
+  //       success: false,
+  //       message: "Booking error",
+  //     };
+  //     return res;
+  //   }
+  // };
 
   static logout = () => {
     signOut(FirebaseSingleton.getAuth);

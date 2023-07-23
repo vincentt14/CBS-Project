@@ -1,4 +1,4 @@
-import { DocumentData, addDoc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
+import { DocumentData, addDoc, deleteDoc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import { RoomPackageModel } from "./RoomPackageModel";
 
@@ -14,6 +14,7 @@ export class CinemaModel {
     public totalSeats: number,
     public totalAvailableSeats: number,
     public packageId: string,
+    public seats: number[],
   ) { }
 
   static fromFirebase = (data: DocumentData, id: string): CinemaModel => {
@@ -23,6 +24,7 @@ export class CinemaModel {
       data.totalSeats,
       data.totalAvailableSeats,
       data.packageId,
+      data.seats
     );
   };
 
@@ -91,6 +93,25 @@ export class CinemaModel {
       const res: CinemaResponse = {
         success: false,
         message: 'error delete cinema',
+      };
+      return res;
+    }
+  }
+
+  static updateSeats = async (id: string, seats: number[]): Promise<CinemaResponse> => {
+    try {
+      const ref = FirebaseSingleton.cinemasDocRef(id);
+      await updateDoc(ref, {
+        seats
+      });
+      const res: CinemaResponse = {
+        success: true,
+      };
+      return res;
+    } catch (error) {
+      const res: CinemaResponse = {
+        success: false,
+        message: 'error update cinema seats',
       };
       return res;
     }

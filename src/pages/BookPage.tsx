@@ -8,6 +8,7 @@ import { CinemaModel } from "../models/CinemaModel";
 import { formatTime } from "../utils/formatTime";
 import Swal from "sweetalert2";
 import { UserModel } from "../models/UserModel";
+import { BookingModel } from "../models/BookingModel";
 
 interface BookPageProps {
   cinemas: CinemaModel[];
@@ -34,12 +35,11 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
   }, [id]);
 
   useEffect(() => {
-    const initialState: boolean[] = new Array(cinema?.totalSeats).fill(false);
-    setSeatsChoosed(initialState);
-
-    const a: boolean[] = [];
-    a[5] = a[10] = a[4] = a[8] = a[9] = a[14] = a[20] = a[41] = a[19] = a[37] = a[36] = true;
-    setIsBooked(a);
+    const initialAvailableSeats: boolean[] = new Array(cinema?.totalSeats).fill(false);
+    setSeatsChoosed(initialAvailableSeats);
+    const initialBookedSeats: boolean[] = new Array(cinema?.totalSeats).fill(false);
+    (cinema?.seats ?? []).forEach(v => initialBookedSeats[v] = true);
+    setIsBooked(initialBookedSeats);
   }, [cinema]);
 
   const findCinemaById = (id?: string | undefined): CinemaModel => {
@@ -95,8 +95,11 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
   };
 
   const handleBook = async () => {
-    const tempCinema: number[] = [];
-    const tempBook: number[] = [];
+    /// cinemas/:id/seats   
+    const tempCinema: number[] = [];  // red and green
+
+    /// booking/:id/seats
+    const tempBooking: number[] = [];    // only green
 
     for (let i = 0; i < isBooked.length; i++) {
       if (isBooked[i] === true) {
@@ -106,14 +109,20 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
     for (let i = 0; i < seatsChoosed.length; i++) {
       if (seatsChoosed[i] === true) {
         tempCinema.push(i);
-        tempBook.push(i);
+        tempBooking.push(i);
       }
     }
 
-    if (payment != "" && tempBook.length != 0) {
+    console.table(tempCinema);
+    console.table(tempBooking);
+
+    if (payment != "" && tempBooking.length != 0) {
       Swal.showLoading();
-      const data = await UserModel.bookMovie(authUser!.id, tempBook, payment, movie!);
-      if (data.success) {
+      // const data = await UserModel.bookMovie(authUser!.id, tempBook, payment, movie!);
+      const resBooking = await BookingModel.create(authUser!.id, movie!.id, payment, tempBooking);
+      const resCinema = await CinemaModel.updateSeats(cinema!.id, tempCinema);
+
+      if (resBooking.success && resCinema.success) {
         Swal.fire({
           icon: "success",
           background: "#111",
@@ -127,7 +136,7 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
           icon: "error",
           background: "#111",
           title: "Booking Failed",
-          text: `${data.message}`,
+          text: `${resBooking.message} \n ${resCinema.message}`,
           showConfirmButton: false,
           timer: 1500,
         });

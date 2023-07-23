@@ -8,6 +8,7 @@ export const enum Endpoint {
   movies = "movies",
   cinemas = "cinemas",
   packages = "packages",
+  bookings = "bookings"
 }
 
 // https://refactoring.guru/design-patterns/singleton/typescript/example
@@ -18,7 +19,7 @@ export class FirebaseSingleton {
 
   private static db: Firestore;
 
-  private constructor() {}
+  private constructor() { }
 
   public static get getAuth(): Auth {
     if (!this.auth || this.auth === undefined) this.auth = getAuth(app);
@@ -30,6 +31,7 @@ export class FirebaseSingleton {
     return this.db;
   }
 
+  // users
   public static usersCollectionRef(): CollectionReference {
     return collection(this.getFirestore, Endpoint.users);
   }
@@ -63,5 +65,14 @@ export class FirebaseSingleton {
 
   public static packagesDocRef(id: string = ""): DocumentReference {
     return doc(this.getFirestore, `${Endpoint.packages}/${id}`);
+  }
+
+  // bookings
+  public static bookingsCollectionRef(): CollectionReference {
+    return collection(this.getFirestore, Endpoint.bookings);
+  }
+
+  public static bookingssDocRef(id: string = ""): DocumentReference {
+    return doc(this.getFirestore, `${Endpoint.bookings}/${id}`);
   }
 }

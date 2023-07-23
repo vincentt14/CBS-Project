@@ -9,7 +9,16 @@ interface MovieResponse {
 }
 
 export class MoviesModel {
-  constructor(public id: string, public title: string, public synopsis: string, public playingTime: Date, public duration: number, public genre: string, public cinemaId: string, public cinema: RoomPackageModel | null) {}
+  constructor(
+    public id: string,
+    public title: string,
+    public synopsis: string,
+    public playingTime: Date,
+    public duration: number,
+    public genre: string,
+    public cinemaId: string,
+    public cinema: RoomPackageModel | null
+  ) { }
 
   static fromFirebase = (data: DocumentData, id: string): MoviesModel => {
     const splittedDate: string[] = data.playingTime.split(":");
