@@ -51,7 +51,7 @@ const AdminDashboardPage = ({ movies, cinemas }: AdminDahsboardProps) => {
             </div>
           </div>
 
-          <div className="grid w-full grid-cols-3 gap-2 self-center mx-4 text-primary md:max-w-md mt-5 md:mt-0 ">
+          <div className="grid w-full grid-cols-3 gap-2 self-center mx-4 px-4 md:px-0 text-primary md:max-w-md mt-5 md:mt-0 ">
             <div className="p-3 text-center bg-bgColor border-2 border-borderColor rounded-md">
               <h1 className="text-4xl font-bold text-secondary lg:text-5xl">{movies.length}</h1>
               <p className="font-base text-base lg:text-xl">Movies</p>

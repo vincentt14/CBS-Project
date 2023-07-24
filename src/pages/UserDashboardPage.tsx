@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getDocs, query, where } from "firebase/firestore";
 
 import CustomButton from "../components/CustomButton";
-import { useState } from "react";
 import { MoviesModel } from "../models/MoviesModel";
 import { UserModel } from "../models/UserModel";
 import { secondToHms } from "../utils/secondToHms";
 import { formatTime } from "../utils/formatTime";
+import { FirebaseSingleton } from "../models/FirebaseSingleton";
+import { BookingModel } from "../models/BookingModel";
+import { CinemaModel } from "../models/CinemaModel";
 
 interface AdminDahsboardProps {
   authUser: UserModel | null;
@@ -13,12 +17,39 @@ interface AdminDahsboardProps {
 }
 
 const UserDashboardPage = ({ authUser, movies }: AdminDahsboardProps) => {
+  const [allBooking, setAllBooking] = useState<BookingModel[] | null>(null);
   const [menu, setMenu] = useState<string>("");
+
+  useEffect(() => {
+    const findBookingBasedOnUser = async () => {
+      const ref = query(FirebaseSingleton.bookingsCollectionRef(), where("userId", "==", authUser?.id));
+
+      const querySnapshot = await getDocs(ref);
+      const items: BookingModel[] = [];
+      querySnapshot.forEach((doc) => {
+        const result = BookingModel.fromFirebase(doc.data(), doc.id);
+        items.push(result);
+      });
+      setAllBooking(items);
+    };
+
+    findBookingBasedOnUser();
+  }, []);
+
+  const findMovieById = (id: string): MoviesModel => {
+    let foundedmovie: MoviesModel | null = null;
+    movies.map((movie) => {
+      if (movie.id === id) {
+        foundedmovie = movie;
+      }
+    });
+    return foundedmovie!;
+  };
 
   return (
     <section className="pt-28 pb-8 lg:pt-32">
       <div className="container w-full">
-        {authUser ? (
+        {authUser && allBooking ? (
           <>
             <div className="flex flex-col md:flex-row mb-6 items-center justify-between">
               <div className="mx-4">
@@ -30,8 +61,8 @@ const UserDashboardPage = ({ authUser, movies }: AdminDahsboardProps) => {
               </div>
 
               <div className="grid w-full grid-cols-1 gap-2 self-center mx-4 text-primary md:max-w-md mt-5 md:mt-0 ">
-                <div className="p-3 text-center bg-bgColor border-2 border-borderColor rounded-md">
-                  <h1 className="text-4xl font-bold text-secondary lg:text-5xl">{movies.length}</h1>
+                <div className="mx-4 p-3 text-center bg-bgColor border-2 border-borderColor rounded-md">
+                  <h1 className="text-4xl font-bold text-secondary lg:text-5xl">{allBooking.length}</h1>
                   <p className="font-base text-base lg:text-xl">Ticket's</p>
                 </div>
               </div>
@@ -42,67 +73,25 @@ const UserDashboardPage = ({ authUser, movies }: AdminDahsboardProps) => {
               </div>
               <div className="m-4 grid md:grid-cols-2 gap-5">
                 <div className="border-2 border-borderColor bg-bgColor rounded-md flex flex-col justify-center items-center p-8">
-                  <div className="flex flex-col">
-                    <h1 className="text-3xl font-bold text-primary mx-auto">Ticket's</h1>
-                    <CustomButton
-                      btnType="button"
-                      title="Elemental Forces of Nature"
-                      containerStyles={menu === "m" ? "w-full border-black bg-white hover:bg-[#ededed]" : "w-full border-borderColor bg-black hover:border-primary"}
-                      textStyles={menu === "m" ? "text-black hover:text-[#262626]" : "text-white"}
-                      to=""
-                      onClick={() => setMenu("m")}
-                    />
-                    <CustomButton
-                      btnType="button"
-                      title="John Wick: Chapter 4"
-                      containerStyles={menu === "c" ? "w-full border-black bg-white hover:bg-[#ededed]" : "w-full border-borderColor bg-black hover:border-primary"}
-                      textStyles={menu === "c" ? "text-black hover:text-[#262626]" : "text-white"}
-                      to=""
-                      onClick={() => setMenu("c")}
-                    />
-                    <CustomButton
-                      btnType="button"
-                      title="Fast X"
-                      containerStyles={menu === "p" ? "w-full border-black bg-white hover:bg-[#ededed]" : "w-full border-borderColor bg-black hover:border-primary"}
-                      textStyles={menu === "p" ? "text-black hover:text-[#262626]" : "text-white"}
-                      to=""
-                      onClick={() => setMenu("p")}
-                    />
+                  <div className="flex flex-col w-full">
+                    <h1 className="text-3xl font-bold text-primary mx-auto mb-5">Ticket's</h1>
+                    <div className={`grid grid-rows-1 w-full gap-y-2 justify-center items-center`}>
+                      {allBooking.map((item: BookingModel) => (
+                        <CustomButton
+                          key={item.id}
+                          btnType="button"
+                          title={findMovieById(item.movieId).title}
+                          containerStyles={menu === `${item.id}` ? "w-full my-0 border-black bg-white hover:bg-[#ededed]" : "w-full my-0 border-borderColor bg-black hover:border-primary"}
+                          textStyles={menu === `${item.id}` ? "text-black hover:text-[#262626]" : "text-white"}
+                          to={`/userDashboard/${item.id}`}
+                          onClick={() => setMenu(`${item.id}`)}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 <Outlet />
-                {/* yg dibawah ini outlet */}
-                <div className="border-2 border-borderColor bg-bgColor rounded-md">
-                  <div className="bg-black p-8 h-[120px] flex justify-center items-center border rounded-md border-borderColor">
-                    <h1 className="text-white font-bold text-2xl">{movies[0].title}</h1>
-                  </div>
-                  <div className="flex flex-col p-4 lg:px-28 lg:py-8">
-                    <div className="mb-8 mx-auto text-primary text-center">
-                      <h1 className="font-bold text-2xl">Pay within 72 hours at counter</h1>
-                      <div className="flex justify-between">
-                        <p className="mx-1">A-1</p>
-                        <p className="mx-1">A-2</p>
-                        <p className="mx-1">A-3</p>
-                        <p className="mx-1">A-4</p>
-                      </div>
-                    </div>
-                    <div className="flex justify-between text-justify">
-                      <p className="mb-2 text-justify">{movies[0].genre}</p>
-                      <p className="mb-2 text-primary">
-                        Cinema: <span className="text-white">{movies[0].cinemaId}</span>
-                      </p>
-                    </div>
-                    <div className="flex justify-between text-justify">
-                      <p className="mb-2 text-primary">
-                        Playing at <span className="text-white">{formatTime(movies[0].playingTime)}</span>
-                      </p>
-                      <p className="mb-2 text-white">{secondToHms(movies[0].duration)}</p>
-                    </div>
-                    <p className="mb-2 text-justify text-primary">{movies[0].synopsis}</p>
-                  </div>
-                </div>
-                {/* outlet selesai */}
               </div>
             </div>
           </>

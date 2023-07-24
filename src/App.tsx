@@ -25,6 +25,7 @@ import { UserModel } from "./models/UserModel";
 import { FirebaseSingleton } from "./models/FirebaseSingleton";
 import { MoviesModel } from "./models/MoviesModel";
 import { CinemaModel } from "./models/CinemaModel";
+import DetailTicket from "./components/DetailTicket";
 
 const App = () => {
   const [user, setUser] = useState<UserModel | null>(null);
@@ -114,7 +115,9 @@ const App = () => {
         <Route path="register" element={<RegisterPage />} />
         <Route path="playingNow" element={<PlayingNowPage movies={movies} cinemas={cinemas} />} />
         <Route path="book/:id" element={<BookPage cinemas={cinemas} authUser={user} />} />
-        <Route path="userDashboard" element={<UserDashboardPage authUser={user} movies={movies} />} />
+        <Route path="userDashboard" element={<UserDashboardPage authUser={user} movies={movies} />}>
+          <Route path=":id" element={<DetailTicket movies={movies} cinemas={cinemas} />} />
+        </Route>
         <Route path="adminDashboard" element={<AdminDashboardPage movies={movies} cinemas={cinemas} />}>
           <Route path="manageMovies" element={<ManageMovies movies={movies} cinemas={cinemas} />} />
           <Route path="addMovie" element={<AddMovie cinemas={cinemas} />} />

@@ -113,9 +113,6 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
       }
     }
 
-    console.table(tempCinema);
-    console.table(tempBooking);
-
     if (payment != "" && tempBooking.length != 0) {
       Swal.showLoading();
       // const data = await UserModel.bookMovie(authUser!.id, tempBook, payment, movie!);

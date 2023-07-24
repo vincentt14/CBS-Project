@@ -81,31 +81,6 @@ export class UserModel {
     }
   };
 
-  // static bookMovie = async (userUid: string, bookedSeat: number[], paymentMethod: string, movie: MoviesModel) => {
-  //   try {
-  //     const ref = FirebaseSingleton.usersDocRef(userUid);
-  //     await setDoc(ref, {
-  //       booking: [
-  //         {
-  //           bookedSeat,
-  //           paymentMethod,
-  //           movie,
-  //         },
-  //       ],
-  //     });
-  //     const res: AuthenticationResponse = {
-  //       success: true,
-  //     };
-  //     return res;
-  //   } catch (_) {
-  //     const res: AuthenticationResponse = {
-  //       success: false,
-  //       message: "Booking error",
-  //     };
-  //     return res;
-  //   }
-  // };
-
   static logout = () => {
     signOut(FirebaseSingleton.getAuth);
   };
