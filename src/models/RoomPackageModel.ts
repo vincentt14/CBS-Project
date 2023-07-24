@@ -1,6 +1,11 @@
 import { CinemaModel } from "./CinemaModel";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 
+export interface PackageResponse {
+  success: boolean;
+  message?: string;
+}
+
 // https://www.typescriptlang.org/docs/handbook/2/classes.html
 // https://www.w3schools.com/typescript/typescript_classes.php
 export abstract class RoomPackageModel {
@@ -8,10 +13,12 @@ export abstract class RoomPackageModel {
     protected id: string,
     protected price: number,
     protected description: string,
-    protected cinema: CinemaModel
   ) { }
 
-  public editPackageInfo(): void { }
-
-  public deletePackage(): void { }
+  public static updatePackage = async (...props: any): Promise<PackageResponse> => {
+    return {
+      success: false,
+      message: ""
+    } as PackageResponse;
+  }
 }

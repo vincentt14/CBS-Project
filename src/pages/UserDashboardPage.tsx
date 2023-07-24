@@ -81,7 +81,7 @@ const UserDashboardPage = ({ authUser, movies }: AdminDahsboardProps) => {
                           key={item.id}
                           btnType="button"
                           title={findMovieById(item.movieId).title}
-                          containerStyles={menu === `${item.id}` ? "w-full my-0 border-black bg-white hover:bg-[#ededed]" : "w-full my-0 border-borderColor bg-black hover:border-primary"}
+                          containerStyles={menu === `${item.id}` ? "w-full !my-0 border-black bg-white hover:bg-[#ededed]" : "w-full !my-0 border-borderColor bg-black hover:border-primary"}
                           textStyles={menu === `${item.id}` ? "text-black hover:text-[#262626]" : "text-white"}
                           to={`/userDashboard/${item.id}`}
                           onClick={() => setMenu(`${item.id}`)}

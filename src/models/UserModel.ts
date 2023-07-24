@@ -1,7 +1,7 @@
-import { User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { AuthError, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import { DocumentData, getDoc, setDoc } from "firebase/firestore";
-import { MoviesModel } from "./MoviesModel";
+import { FirebaseError } from "firebase/app";
 
 interface AuthenticationResponse {
   success: boolean;
@@ -10,14 +10,7 @@ interface AuthenticationResponse {
 }
 
 export class UserModel {
-  constructor(
-    public id: string,
-    public name: string,
-    public gender: string,
-    public email: string,
-    public isAdmin: boolean,
-    public booking: []
-  ) { }
+  constructor(public id: string, public name: string, public gender: string, public email: string, public isAdmin: boolean, public booking: []) {}
 
   static fromFirebase = (data: DocumentData, id: string): UserModel => {
     return new UserModel(id, data.name, data.gender, data.email, data.isAdmin, data.booking);
@@ -56,7 +49,7 @@ export class UserModel {
   };
 
   // https://firebase.google.com/docs/auth/web/start?hl=en&authuser=0#sign_up_new_users
-  static register = async (name: string, email: string, password: string, gender: string, isAdmin: boolean) => {
+  static register = async (name: string, email: string, password: string, gender: string, isAdmin: boolean): Promise<AuthenticationResponse> => {
     try {
       const auth = FirebaseSingleton.getAuth;
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -72,10 +65,16 @@ export class UserModel {
         user: userCredential.user,
       };
       return res;
-    } catch (_) {
+    } catch (e: unknown) {
+      let message = "register error";
+      if (e instanceof FirebaseError) {
+        const error: FirebaseError = e;
+        message = error.message;
+      }
+
       const res: AuthenticationResponse = {
         success: false,
-        message: "Register error",
+        message: message,
       };
       return res;
     }
