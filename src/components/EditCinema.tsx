@@ -1,13 +1,14 @@
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
-import { DocumentData } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
 
 import CustomButton from "./CustomButton";
 import { CinemaModel } from "../models/CinemaModel";
+import { IPackage } from "../App";
+import { DocumentData } from "firebase/firestore";
 
 interface EditCinemaProps {
-  packages: DocumentData;
+  packages: IPackage[];
 }
 
 const EditCinema = ({ packages }: EditCinemaProps) => {
@@ -83,8 +84,8 @@ const EditCinema = ({ packages }: EditCinemaProps) => {
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
-                {packages.map((packagee: DocumentData) => (
-                  <option value={packagee.codeId}>{packagee.name}</option>
+                {packages.map((packagee: IPackage) => (
+                  <option value={packagee.data.codeId}>{packagee.data.name}</option>
                 ))}
               </select>
             </div>

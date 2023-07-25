@@ -1,4 +1,4 @@
-import { updateDoc } from "firebase/firestore";
+import { DocumentData, updateDoc } from "firebase/firestore";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import {PackageResponse, RoomPackageModel } from "./RoomPackageModel";
 
@@ -10,8 +10,21 @@ export class DeluxePackageModel extends RoomPackageModel{
     public foodDiscount: number,
     public souvenir: string,
     public bedType: string,
+    public codeId: string
     ){
-    super(id, price, description)
+    super(id, price, description, codeId)
+  }
+
+  static fromFirebase = (data: DocumentData, id: string): DeluxePackageModel => {
+    return new DeluxePackageModel(
+      id,
+      data.price,
+      data.description,
+      data.foodDiscount,
+      data.souvenir,
+      data.bedType,
+      data.codeId
+    );
   }
 
   static override updatePackage = async (id: string, price: number, description: string, foodDiscount: number, souvenir: string, bedType: string): Promise<PackageResponse> => {

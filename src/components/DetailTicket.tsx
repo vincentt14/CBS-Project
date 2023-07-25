@@ -6,8 +6,6 @@ import { secondToHms } from "../utils/secondToHms";
 import { CinemaModel } from "../models/CinemaModel";
 import { MoviesModel } from "../models/MoviesModel";
 import { BookingModel } from "../models/BookingModel";
-// import CustomButton from "./CustomButton";
-// import Swal from "sweetalert2";
 
 interface DetailTicketProps {
   movies: MoviesModel[];
@@ -49,40 +47,6 @@ const DetailTicket = ({ movies, cinemas }: DetailTicketProps) => {
     return foundedCinema!;
   };
 
-  // const onDeleteBooking = async (id: string) => {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     background: "#111",
-  //     confirmButtonText: "Cancel Booking",
-  //     confirmButtonColor: "#000",
-  //     cancelButtonText: "Back",
-  //   }).then(async (result) => {
-  //     if (result.isConfirmed) {
-  //       const result = await BookingModel.delete(id);
-  //       if (result.success) {
-  //         Swal.fire({
-  //           icon: "success",
-  //           background: "#111",
-  //           title: "Cancel Booking Success",
-  //           showConfirmButton: false,
-  //           timer: 1000,
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           icon: "error",
-  //           background: "#111",
-  //           title: "Cancel Booking Failed",
-  //           text: `${result.message}`,
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //       }
-  //     }
-  //   });
-  // };
-
   return (
     <div className="border-2 border-borderColor bg-bgColor rounded-md">
       {movie && booking ? (
@@ -91,8 +55,14 @@ const DetailTicket = ({ movies, cinemas }: DetailTicketProps) => {
             <h1 className="text-white font-bold text-2xl text-center">{movie?.title}</h1>
           </div>
           <div className="flex flex-col p-4 lg:px-28 lg:py-8">
-            <div className="mb-8 mx-auto text-primary text-center">
-              <h1 className="font-bold text-2xl">{booking.paymentId === "fullPay" ? "Fully Paid" : "Pay within 72 hours at counter"}</h1>
+            <div className="mb-4 mx-auto text-primary text-center">
+              <div className="grid grid-cols-2">
+                <div className="text-left">
+                  <h1 className="font-bold text-2xl">Price: </h1>
+                  <h1 className="font-bold text-2xl text-white">{booking.price}</h1>
+                </div>
+                <h1 className="font-bold text-2xl text-left">{booking.paymentId === "fullPay" ? "Fully Paid" : "Pay within 72 hours at counter"}</h1>
+              </div>
               <p className="mt-2">Seat's:</p>
               <div className="flex flex-wrap gap-x-3 items-center justify-between">
                 {booking.seats.map((item) => (
@@ -113,7 +83,6 @@ const DetailTicket = ({ movies, cinemas }: DetailTicketProps) => {
               <p className="mb-2 text-white">{secondToHms(movie.duration)}</p>
             </div>
             <p className="mb-2 text-justify text-primary">{movie.synopsis}</p>
-          {/* <CustomButton btnType="button" title="Cancel Ticket" containerStyles="mb-0 border-borderColor bg-black hover:border-primary w-full" textStyles="text-white" onClick={() => onDeleteBooking(booking.id)} /> */}
           </div>
         </>
       ) : (

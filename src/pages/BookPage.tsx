@@ -1,26 +1,33 @@
+import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect, ReactNode } from "react";
 
-import { MoviesModel } from "../models/MoviesModel";
-import CustomButton from "../components/CustomButton";
+import { IPackage } from "../App";
+import { UserModel } from "../models/UserModel";
+import { formatTime } from "../utils/formatTime";
 import { secondToHms } from "../utils/secondToHms";
 import { CinemaModel } from "../models/CinemaModel";
-import { formatTime } from "../utils/formatTime";
-import Swal from "sweetalert2";
-import { UserModel } from "../models/UserModel";
+import { MoviesModel } from "../models/MoviesModel";
+import CustomButton from "../components/CustomButton";
 import { BookingModel } from "../models/BookingModel";
+import { BeaniePackageModel } from "../models/BeaniePackageModel";
+import { DeluxePackageModel } from "../models/DeluxePackageModel";
+import { ClassicPackageModel } from "../models/ClassicPackageModel";
 
 interface BookPageProps {
   cinemas: CinemaModel[];
   authUser: UserModel | null;
+  packages: IPackage[];
 }
 
-const BookPage = ({ cinemas, authUser }: BookPageProps) => {
+const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
   const [movie, setMovie] = useState<MoviesModel | null>(null);
   const [cinema, setCinema] = useState<CinemaModel | null>(null);
+  const [packagee, setpackagee] = useState<BeaniePackageModel | DeluxePackageModel | ClassicPackageModel | null>(null);
   const [isBooked, setIsBooked] = useState<boolean[]>([]);
   const [seatsChoosed, setSeatsChoosed] = useState<boolean[]>([]);
   const [payment, setPayment] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -38,8 +45,9 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
     const initialAvailableSeats: boolean[] = new Array(cinema?.totalSeats).fill(false);
     setSeatsChoosed(initialAvailableSeats);
     const initialBookedSeats: boolean[] = new Array(cinema?.totalSeats).fill(false);
-    (cinema?.seats ?? []).forEach(v => initialBookedSeats[v] = true);
+    (cinema?.seats ?? []).forEach((v) => (initialBookedSeats[v] = true));
     setIsBooked(initialBookedSeats);
+    setpackagee(findPackageByCodeId());
   }, [cinema]);
 
   const findCinemaById = (id?: string | undefined): CinemaModel => {
@@ -50,6 +58,23 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
       }
     });
     return foundedCinema!;
+  };
+
+  const findPackageByCodeId = (): BeaniePackageModel | DeluxePackageModel | ClassicPackageModel => {
+    let foundedPackage: BeaniePackageModel | DeluxePackageModel | ClassicPackageModel | null = null;
+    packages?.forEach((pack: IPackage) => {
+      if (cinema?.packageId === "BN" && pack.data.codeId === "BN") {
+        foundedPackage = BeaniePackageModel.fromFirebase(pack.data, pack.id);
+        return;
+      } else if (cinema?.packageId === "DX" && pack.data.codeId === "DX") {
+        foundedPackage = DeluxePackageModel.fromFirebase(pack.data, pack.id);
+        return;
+      } else if (cinema?.packageId === "CS" && pack.data.codeId === "CS") {
+        foundedPackage = ClassicPackageModel.fromFirebase(pack.data, pack.id);
+        return;
+      }
+    });
+    return foundedPackage!;
   };
 
   const chooseSeatHandler = (id: number) => {
@@ -94,12 +119,24 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
     return available - temp.length;
   };
 
+  const countPrice = (packagePrice: number): number => {
+    const tempBooking: number[] = [];
+    for (let i = 0; i < seatsChoosed.length; i++) {
+      if (seatsChoosed[i] === true) {
+        tempBooking.push(i);
+      }
+    }
+    const totalPrice = tempBooking.length * packagePrice;
+
+    return totalPrice;  
+  };
+
   const handleBook = async () => {
-    /// cinemas/:id/seats   
-    const tempCinema: number[] = [];  // red and green
+    /// cinemas/:id/seats
+    const tempCinema: number[] = []; // red and green
 
     /// booking/:id/seats
-    const tempBooking: number[] = [];    // only green
+    const tempBooking: number[] = []; // only green
 
     for (let i = 0; i < isBooked.length; i++) {
       if (isBooked[i] === true) {
@@ -113,10 +150,12 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
       }
     }
 
+    setPrice(countPrice(packagee!.price));
+    console.log(price);
+
     if (payment != "" && tempBooking.length != 0) {
       Swal.showLoading();
-      // const data = await UserModel.bookMovie(authUser!.id, tempBook, payment, movie!);
-      const resBooking = await BookingModel.create(authUser!.id, movie!.id, payment, tempBooking);
+      const resBooking = await BookingModel.create(authUser!.id, movie!.id, payment, tempBooking, price);
       const resCinema = await CinemaModel.updateSeats(cinema!.id, tempCinema);
 
       if (resBooking.success && resCinema.success) {
@@ -152,7 +191,7 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
   return (
     <section className="pt-28 pb-8 lg:pt-32">
       <div className="container w-full">
-        {movie && cinema ? (
+        {movie && cinema && packagee ? (
           <>
             <div className="flex flex-col md:flex-row mb-6 items-center justify-between">
               <div className="mx-4">
@@ -204,6 +243,44 @@ const BookPage = ({ cinemas, authUser }: BookPageProps) => {
               </div>
             </div>
             <div className="mx-4">
+              <div className="my-5">
+                <div className="flex justify-between items-center gap-x-5">
+                  <h1 className="py-1 text-3xl font-bold text-primary">Total Price:</h1>
+                  <h1 className="py-1 text-3xl font-bold text-white">{countPrice(packagee.price)}</h1>
+                </div>
+                {packages.map((pack) => {
+                  if (pack.data.codeId === packagee.codeId) {
+                    return (
+                      <div key={pack.id}>
+                        <div className="flex justify-between items-center gap-x-5">
+                          {pack.data.souvenir && (
+                            <>
+                              <p className="text-primary text-xl max-w-xl">Free Souvenir</p>
+                              <p className="capitalize text-white text-xl max-w-xl">{pack.data.souvenir}</p>
+                            </>
+                          )}
+                        </div>
+                        <div className="flex justify-between items-center gap-x-5">
+                          {pack.data.foodDiscount && (
+                            <>
+                              <p className="text-primary text-xl max-w-xl">Food Discount Voucher</p>
+                              <p className="text-white text-xl max-w-xl">{pack.data.foodDiscount}%</p>
+                            </>
+                          )}
+                        </div>
+                        <div className="flex justify-between items-center gap-x-5">
+                          {pack.data.bedType && (
+                            <>
+                              <p className="text-primary text-xl max-w-xl">Cinema Bed Type</p>
+                              <p className="capitalize text-white text-xl max-w-xl">{pack.data.bedType}</p>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
               <h1 className="py-1 text-3xl font-bold text-primary">Choose Payment Method</h1>
               <hr className="w-[100px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
               <div className="mb-10 grid grid-cols-2 gap-x-5 w-full self-center">

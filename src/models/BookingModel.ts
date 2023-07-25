@@ -14,6 +14,7 @@ export class BookingModel {
     public movieId: string,
     public paymentId: string,
     public seats: number[],
+    public price: number,
   ) { }
 
   static fromFirebase = (data: DocumentData, id: string): BookingModel => {
@@ -23,6 +24,7 @@ export class BookingModel {
       data.movieId,
       data.paymentId,
       data.seats,
+      data.price
     );
   }
 
@@ -36,7 +38,7 @@ export class BookingModel {
     return null;
   };
   
-  static create = async (userId: string, movieId: string, paymentId: string, seats: number[]) => {
+  static create = async (userId: string, movieId: string, paymentId: string, seats: number[], price: number) => {
     try {
       const ref = FirebaseSingleton.bookingsCollectionRef();
       await addDoc(ref, {
@@ -44,6 +46,7 @@ export class BookingModel {
         movieId,
         paymentId,
         seats,
+        price
       });
       const res: BookingResponse = {
         success: true,

@@ -1,6 +1,3 @@
-import { CinemaModel } from "./CinemaModel";
-import { FirebaseSingleton } from "./FirebaseSingleton";
-
 export interface PackageResponse {
   success: boolean;
   message?: string;
@@ -13,6 +10,7 @@ export abstract class RoomPackageModel {
     protected id: string,
     protected price: number,
     protected description: string,
+    protected codeId: string
   ) { }
 
   public static updatePackage = async (...props: any): Promise<PackageResponse> => {

@@ -27,12 +27,17 @@ import { MoviesModel } from "./models/MoviesModel";
 import { CinemaModel } from "./models/CinemaModel";
 import DetailTicket from "./components/DetailTicket";
 
+export interface IPackage {
+  "data" : DocumentData,
+  "id" : string
+}
+
 const App = () => {
   const [user, setUser] = useState<UserModel | null>(null);
   const [allUsers, setAllUsers] = useState<UserModel[]>([]);
   const [movies, setMovies] = useState<MoviesModel[]>([]);
   const [cinemas, setCinemas] = useState<CinemaModel[]>([]);
-  const [packages, setPackages] = useState<DocumentData | []>([]);
+  const [packages, setPackages] = useState<IPackage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -79,9 +84,12 @@ const App = () => {
     });
 
     const getPackages = onSnapshot(FirebaseSingleton.packagesCollectionRef(), (querySnapshot) => {
-      const items: DocumentData = [];
+      const items: IPackage[] = [];
       querySnapshot.forEach((doc) => {
-        items.push(doc.data());
+        items.push({
+          "data" :doc.data(),
+          "id" : doc.id
+        });
       });
       setPackages(items);
     });
@@ -114,7 +122,7 @@ const App = () => {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="playingNow" element={<PlayingNowPage movies={movies} cinemas={cinemas} />} />
-        <Route path="book/:id" element={<BookPage cinemas={cinemas} authUser={user} />} />
+        <Route path="book/:id" element={<BookPage cinemas={cinemas} authUser={user} packages={packages} />} />
         <Route path="userDashboard" element={<UserDashboardPage authUser={user} movies={movies} />}>
           <Route path=":id" element={<DetailTicket movies={movies} cinemas={cinemas} />} />
         </Route>

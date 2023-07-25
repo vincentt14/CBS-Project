@@ -4,10 +4,10 @@ import { useState } from "react";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
 import { CinemaModel } from "../models/CinemaModel";
-import { DocumentData } from "firebase/firestore";
+import { IPackage } from "../App";
 
 interface AddCinemaProps {
-  packages: DocumentData;
+  packages: IPackage[];
 }
 
 const AddCinema = ({ packages }: AddCinemaProps) => {
@@ -15,8 +15,6 @@ const AddCinema = ({ packages }: AddCinemaProps) => {
   const [totalSeats, setTotalSeats] = useState<number>(0);
   const [packageId, setPackageId] = useState<string>("BN");
   const navigate = useNavigate();
-
-  console.log(packages);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,8 +71,8 @@ const AddCinema = ({ packages }: AddCinemaProps) => {
             <div className="flex items-center justify-between my-4">
               <p className="text-primary text-xl max-w-xl">Package</p>
               <select required value={packageId} className="w-[200px] bg-bgColor ml-8 p-3  border-borderColor border rounded-md" onChange={(e) => setPackageId(e.target.value)}>
-                {packages.map((packagee: DocumentData) => (
-                  <option value={packagee.codeId}>{packagee.name}</option>
+                {packages.map((packagee: IPackage) => (
+                  <option value={packagee.data.codeId}>{packagee.data.name}</option>
                 ))}
               </select>
             </div>
