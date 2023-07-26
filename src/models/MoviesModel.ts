@@ -1,5 +1,4 @@
 import { DocumentData, addDoc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
-import { RoomPackageModel } from "./RoomPackageModel";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import { formatTime } from "../utils/formatTime";
 
@@ -17,13 +16,12 @@ export class MoviesModel {
     public duration: number,
     public genre: string,
     public cinemaId: string,
-    public cinema: RoomPackageModel | null
   ) { }
 
   static fromFirebase = (data: DocumentData, id: string): MoviesModel => {
     const splittedDate: string[] = data.playingTime.split(":");
     const tempDate = new Date(0, 0, 0, +splittedDate[0], +splittedDate[1]);
-    return new MoviesModel(id, data.title, data.synopsis, tempDate, data.duration, data.genre, data.cinemaId, null);
+    return new MoviesModel(id, data.title, data.synopsis, tempDate, data.duration, data.genre, data.cinemaId);
   };
 
   static getMovie = async (id: string): Promise<MoviesModel | null> => {

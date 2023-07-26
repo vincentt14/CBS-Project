@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
+
 import ReadMore from "../components/ReadMore";
-import CustomButton from "../components/CustomButton";
-import { MoviesModel } from "../models/MoviesModel";
-import { secondToHms } from "../utils/secondToHms";
-import { CinemaModel } from "../models/CinemaModel";
 import { formatTime } from "../utils/formatTime";
+import { secondToHms } from "../utils/secondToHms";
+import { MoviesModel } from "../models/MoviesModel";
+import { CinemaModel } from "../models/CinemaModel";
+import CustomButton from "../components/CustomButton";
 
 interface PlayingNowPageProps {
   movies: MoviesModel[];
@@ -11,6 +13,13 @@ interface PlayingNowPageProps {
 }
 
 const PlayingNowPage = ({ movies, cinemas }: PlayingNowPageProps) => {
+  const [search, setSearch] = useState<string>("");
+  const [filteredMovie, setFilteredMovie] = useState<MoviesModel[]>([]);
+
+  useEffect(() => {
+    setFilteredMovie(movies.filter((item) => item.title.toLowerCase().includes(search.toLowerCase())));
+  }, [search, movies]);
+
   const findCinemaById = (id: string): CinemaModel => {
     let foundedCinema: CinemaModel | null = null;
     cinemas.map((cinema) => {
@@ -29,11 +38,11 @@ const PlayingNowPage = ({ movies, cinemas }: PlayingNowPageProps) => {
             <h1 className="py-1 text-5xl font-bold text-secondary">Playing Now In Cinemas</h1>
             <hr className="w-[300px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
           </div>
-          <form>
-            <input className="m-4 p-3 bg-bgColor border-borderColor border-2 rounded-md max-w-sm" placeholder="Search Movies" />
-          </form>
+          <div className="m-4 max-w-sm">
+            <input className="p-3 bg-bgColor border-borderColor border-2 rounded-md w-full" placeholder="Search Movies" onChange={(e) => setSearch(e.target.value)} />
+          </div>
           <div className="m-4 grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {movies.map((movie: MoviesModel) => (
+            {filteredMovie.map((movie: MoviesModel) => (
               <div key={movie.title} className="border-2 border-borderColor bg-bgColor rounded-md">
                 <div className="bg-black p-8 h-[120px] flex justify-center items-center border rounded-md border-borderColor">
                   <h1 className="text-white font-bold text-2xl text-center">{movie.title}</h1>

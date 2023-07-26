@@ -127,14 +127,12 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
       }
     }
     const totalPrice = tempBooking.length * packagePrice;
-
-    return totalPrice;  
+    return totalPrice;
   };
 
   const handleBook = async () => {
     /// cinemas/:id/seats
     const tempCinema: number[] = []; // red and green
-
     /// booking/:id/seats
     const tempBooking: number[] = []; // only green
 
@@ -153,7 +151,7 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
     setPrice(countPrice(packagee!.price));
     console.log(price);
 
-    if (payment != "" && tempBooking.length != 0) {
+    if (payment !== "" && tempBooking.length !== 0) {
       Swal.showLoading();
       const resBooking = await BookingModel.create(authUser!.id, movie!.id, payment, tempBooking, price);
       const resCinema = await CinemaModel.updateSeats(cinema!.id, tempCinema);
@@ -187,6 +185,8 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
       });
     }
   };
+
+  // console.log(price);
 
   return (
     <section className="pt-28 pb-8 lg:pt-32">

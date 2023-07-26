@@ -1,4 +1,4 @@
-import { AuthError, User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { User, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { FirebaseSingleton } from "./FirebaseSingleton";
 import { DocumentData, getDoc, setDoc } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
