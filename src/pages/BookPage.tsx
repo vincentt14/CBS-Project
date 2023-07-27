@@ -81,9 +81,13 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
     if (isBooked[id]) {
       return;
     }
-
-    const temp = seatsChoosed.map((value) => value);
+    let count = 0;
+    const temp = seatsChoosed.map((value, index) => {
+      if (index === id || value) count++;
+      return value;
+    });
     temp[id] = !temp[id];
+    setPrice(count * (packagee?.price === undefined ? 0 : packagee!.price));
     setSeatsChoosed(temp);
   };
 
@@ -119,17 +123,6 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
     return available - temp.length;
   };
 
-  const countPrice = (packagePrice: number): number => {
-    const tempBooking: number[] = [];
-    for (let i = 0; i < seatsChoosed.length; i++) {
-      if (seatsChoosed[i] === true) {
-        tempBooking.push(i);
-      }
-    }
-    const totalPrice = tempBooking.length * packagePrice;
-    return totalPrice;
-  };
-
   const handleBook = async () => {
     /// cinemas/:id/seats
     const tempCinema: number[] = []; // red and green
@@ -148,8 +141,6 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
       }
     }
 
-    setPrice(countPrice(packagee!.price));
-    console.log(price);
 
     if (payment !== "" && tempBooking.length !== 0) {
       Swal.showLoading();
@@ -246,7 +237,7 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
               <div className="my-5">
                 <div className="flex justify-between items-center gap-x-5">
                   <h1 className="py-1 text-3xl font-bold text-primary">Total Price:</h1>
-                  <h1 className="py-1 text-3xl font-bold text-white">{countPrice(packagee.price)}</h1>
+                  <h1 className="py-1 text-3xl font-bold text-white">{price}</h1>
                 </div>
                 {packages.map((pack) => {
                   if (pack.data.codeId === packagee.codeId) {
