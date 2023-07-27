@@ -83,10 +83,17 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
     }
     let count = 0;
     const temp = seatsChoosed.map((value, index) => {
-      if (index === id || value) count++;
+      if (index === id || value === true) count++;
       return value;
     });
-    temp[id] = !temp[id];
+    // temp[id] = !temp[id];
+    if(temp[id] === true){
+      temp[id] = !temp[id]
+      count--;
+    } else if (temp[id] === false){
+      temp[id] = !temp[id]
+    }
+
     setPrice(count * (packagee?.price === undefined ? 0 : packagee!.price));
     setSeatsChoosed(temp);
   };
@@ -140,7 +147,6 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
         tempBooking.push(i);
       }
     }
-
 
     if (payment !== "" && tempBooking.length !== 0) {
       Swal.showLoading();
@@ -226,7 +232,7 @@ const BookPage = ({ cinemas, authUser, packages }: BookPageProps) => {
                 </div>
               </div>
               <p className="max-w-xl mt-2 text-primary">
-                Available : <span className="text-white">{countAvailableSeats(cinema.totalAvailableSeats)}</span> seat's
+                Available : <span className="text-white">{countAvailableSeats(cinema.totalSeats)}</span> seat's
               </p>
               <div className={`w-full my-5 flex flex-wrap gap-5 justify-between items-center`}>{renderChooseSeat(cinema.totalSeats)}</div>
               <div className="mt-14 w-full h-20 bg-bgColor border border-borderColor flex items-center justify-center rounded-xl">
