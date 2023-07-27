@@ -15,9 +15,8 @@ const Footer = ({ authUser }: FooterProps) => {
               <h2 className="py-1 text-4xl font-bold text-white">Cinema Booking System</h2>
               <hr className="w-[150px] my-3 p-1 bg-bgColor border border-borderColor rounded-sm" />
               <h3 className="mb-2 text-2xl font-bold text-white">Founder</h3>
-              <p className="text-primary">Rucci</p>
-              <p className="text-primary">Darren</p>
-              <p className="text-primary">Vincent</p>
+              <p className="text-primary">Dustin Darell</p>
+              <p className="text-primary">21056205</p>
             </ul>
           </div>
           <div className="mb-5 w-full flex-col place-items-center md:flex md:w-1/3">
@@ -57,17 +56,17 @@ const Footer = ({ authUser }: FooterProps) => {
               <h3 className="mb-5 mt-4 text-xl font-semibold text-white">About</h3>
               <li>
                 <a href="/" target="blank" className="mb-2 inline-block text-base text-primary hover:text-secondary">
-                  apapun
+                  anything
                 </a>
               </li>
               <li>
                 <a href="/" target="blank" className="mb-2 inline-block text-base text-primary hover:text-secondary">
-                  apapun
+                  anything
                 </a>
               </li>
               <li>
                 <a href="/" target="blank" className="mb-2 inline-block text-base text-primary hover:text-secondary">
-                  apapun
+                  anything
                 </a>
               </li>
             </ul>
